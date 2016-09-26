@@ -1,72 +1,55 @@
-/**
- * 对系统的业务进行钩子设置
- * 将业务开始和完成添加钩子的支持
- **/
-var Q = require('q');
-var _ = require('lodash');
-var E = require('../error');
-var async = require('async');
+import _ from 'lodash';
+import E from '../error.js';
 
-module.exports = (function(){
-    //{"":[],"":[]}
-    var _hooks = {};
-    function addHook(hookName,hookHandler,priority){
-        priority = priority || 100;
-        if(!_.isFunction(hookHandler)){
-            return false;
-        }
-        var _list = _hooks[hookName] || [];
-        _list.push({priority:priority,handler:hookHandler});
-        _list = _.sortBy(_list,'priority');
-        _hooks[hookName] = _list;
-        return true;
-    };
+export default class {
+  constructor(){
+    this._hooks = {};
+  }
 
-    function addAfterHook(hookName,hookHandler,priority){
-        return addHook('after_' + hookName,hookHandler,priority);
-    };
+  addHook(hookName, hookHandler, priority){
+    priority = priority || 100;
+    if(!_.isFunction(hookHandler)){
+        return false;
+    }
+    let _list = this._hooks[hookName] || [];
+    _list.push({priority: priority,handler: hookHandler});
+    _list = _.sortBy(_list,'priority');
+    this._hooks[hookName] = _list;
+    return true;
+  }
 
-    function addBeforeHook(hookName,hookHandler,priority){
-        return addHook('before_' + hookName,hookHandler,priority);
+  addAfterHook(hookName, hookHandler, priority){
+    return this.addHook('after_' + hookName, hookHandler, priority);
+  }
+
+  addBeforeHook(hookName, hookHandler, priority){
+    return this.addHook('before_' + hookName, hookHandler, priority);
+  }
+
+  async runHook(hookName, input){
+    let _list = this._hooks[hookName] || [];
+    if(_.isEmpty(_list)){
+        return new Promise( (resolve, reject) => {
+          resolve({});
+        });
+    }
+    let len = _list.length;
+    let results = [];
+    try{
+      for(let i = 0; i < len; i++){
+        let h = _list[i];
+        let result = await h.handler(input);
+        results[i] = result;
+      }
+      return new Promise( (resolve, reject) => {
+        resolve(results);
+      });
+    }catch(err){
+      return new Promise( (resolve, reject) => {
+        reject(err);
+      });
     }
 
-    /**
-     * 执行所有注册了的钩子
-     * @param hookName
-     * @returns {Function}
-     */
-    function callHook(hookName,input){
-        var _list = _hooks[hookName] || [];
-        var q = Q.defer();
-        if(_.isEmpty(_list)){
-            q.resolve({});
-            return q.promise;
-        }
-        //for()
-        async.eachSeries(_list,function(n,cb){
-                var h = n.handler(input);
-                if(h.then){
-                    h.then(function(data){
-                        cb(null,data);
-                    }).catch(function(err){
-                        cb(err);
-                    });
-                }else{
-                    cb(null,h);
-                }
-            }
-            ,function(err,result){
-                if(err){
-                    q.reject(err);
-                }else{
-                    q.resolve(result);
-                }
-            });
-        return q.promise;
-    }
-    return {
-        addBeforeHook:addBeforeHook,
-        addAfterHook:addAfterHook,
-        callHook:callHook
-    }
-})();
+  }
+
+}

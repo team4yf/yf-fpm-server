@@ -39,11 +39,12 @@ function getFunction(method, v){
 };
 
 export default async (method,args,v) => {
-    var handler = getFunction(method,v);
+    let handler = getFunction(method,v);
+    let hook = global.__hook;
     try{
-      // let beforeResult = await hook.callHook('before_' + method, args);
+      let beforeResult = await hook.runHook('before_' + method, args);
       let result = await handler(args);
-      // let afterResult = await hook.callHook('after_' + method, {input: args, result: result.data});
+      let afterResult = await hook.runHook('after_' + method, {input: args, result: result.data});
       return new Promise( (resolve,reject) => {
         resolve(result);
       })

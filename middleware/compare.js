@@ -1,6 +1,5 @@
 'use strict';
 import _ from 'lodash';
-import kit from '../utils/kit.js';
 import E from '../error';
 import crypto from 'crypto';
 import cache from 'memory-cache';

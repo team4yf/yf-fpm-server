@@ -12,5 +12,12 @@ app.setBizModules({
 		}
 	}
 });
+app.addBeforeHook('test', () => {
+	return new Promise( (resolve, reject) => {
+		console.log('run before hook from app.js');
+		resolve('ok');
+	});
+
+}, 100);
 const httpPort = 9999;
 app.run(httpPort);

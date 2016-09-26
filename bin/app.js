@@ -12,6 +12,8 @@ import analyse from '../middleware/analyse.js';
 
 import compare from '../middleware/compare.js';
 
+import Hook from '../utils/hook.js';
+
 import api from '../router/api.js';
 
 export default class {
@@ -30,14 +32,22 @@ export default class {
     	console.error('server error', err, ctx);
     });
     this.app = app;
+
+    this.hook = new Hook();
+
+    global.__hook = this.hook;
   }
 
   setBizModules(modules){
     global.__biz_module = modules;
   }
 
-  addHook(){
-    console.log('add');
+  addBeforeHook(hookName, fn, priority){
+    return this.hook.addBeforeHook(hookName, fn, priority);
+  }
+
+  addAfterHook(hookName, fn, priority){
+    return this.hook.addAfterHook(hookName, fn, priority);
   }
 
   getApp(){
