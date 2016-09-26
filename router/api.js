@@ -1,17 +1,19 @@
 import Router from 'koa-router';
+import core from '../bin/core.js';
 
 const Api = Router();
 
 Api.post('/api', async(ctx, next) => {
-
-  // var v = req.v;
-  // var method = req.method;
-  // var param = req.param;
-  // var timestamp = req.timestamp;
-  // var p = reflecter.invoke(method,param,v);
-
-  await ctx.success({data:'ok'});
-	// await ctx.fail({errno:-901,message:'aaa'});
+  let postData = ctx.body;
+  let v = postData.v;
+  let method = postData.method;
+  let param = postData.param;
+  try{
+    let p = await core(method,param,v);
+    await ctx.success(p);
+  }catch(err){
+    await ctx.fail(err);
+  }
 })
 
 export default Api;
