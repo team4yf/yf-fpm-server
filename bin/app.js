@@ -14,7 +14,13 @@ import compare from '../middleware/compare.js';
 
 import Hook from '../utils/hook.js';
 
+import Biz from '../utils/biz.js';
+
 import api from '../router/api.js';
+
+import ping from '../router/ping.js';
+
+import upload from '../router/upload.js';
 
 export default class {
   constructor(){
@@ -26,28 +32,33 @@ export default class {
     app.use(analyse);
     app.use(compare);
     app.use(api.routes()).use(api.allowedMethods());
-
+    app.use(ping.routes()).use(ping.allowedMethods());
+    app.use(upload.routes()).use(upload.allowedMethods());
     // err handler
     app.on('error', (err, ctx) => {
     	console.error('server error', err, ctx);
     });
     this.app = app;
 
-    this.hook = new Hook();
-
-    global.__hook = this.hook;
+    this._biz_module = {};
+    this._hook = {};
   }
 
-  setBizModules(modules){
-    global.__biz_module = modules;
+  addBizModules(biz){
+    if(biz instanceof Biz){
+      let m = biz.convert();
+      this._biz_module[m.version] = m.modules;
+    }else{
+      throw new Error('Biz must be instanceof Biz');
+    }
   }
 
-  addBeforeHook(hookName, fn, priority){
-    return this.hook.addBeforeHook(hookName, fn, priority);
-  }
-
-  addAfterHook(hookName, fn, priority){
-    return this.hook.addAfterHook(hookName, fn, priority);
+  addHook(hook){
+    if(hook instanceof Hook){
+      this._hook = hook;
+    }else{
+      throw new Error('Hook must be instanceof Hook');
+    }
   }
 
   getApp(){
@@ -55,6 +66,8 @@ export default class {
   }
 
   run(port){
+    global.__biz_module = this._biz_module;
+    global.__hook = this._hook;
     this.app.listen(port);
     console.log(`http server listening on port ${port}`);
   }

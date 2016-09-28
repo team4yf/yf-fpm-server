@@ -40,11 +40,16 @@ function getFunction(method, v){
 
 export default async (method,args,v) => {
     let handler = getFunction(method,v);
+    if(!_.isFunction(handler)){
+      return new Promise( (resolve, reject) => {
+        reject(E.System.NOT_METHOD);
+      })
+    }
     let hook = global.__hook;
     try{
-      let beforeResult = await hook.runHook('before_' + method, args);
+      let beforeResult = await hook.runHook('before_' + method, args, v);
       let result = await handler(args);
-      let afterResult = await hook.runHook('after_' + method, {input: args, result: result.data});
+      let afterResult = await hook.runHook('after_' + method, {input: args, result: result.data}, v);
       return new Promise( (resolve,reject) => {
         resolve(result);
       })

@@ -32,7 +32,8 @@
     "lodash": "^4.16.1",
     "md5": "^2.1.0",
     "memory-cache": "^0.1.6",
-    "moment": "^2.13.0"
+    "moment": "^2.13.0",
+    "qiniu": "^6.1.9"
   },
   "devDependencies": {
     "babel-core": "^6.14.0",

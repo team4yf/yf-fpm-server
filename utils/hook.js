@@ -6,28 +6,41 @@ export default class {
     this._hooks = {};
   }
 
-  addHook(hookName, hookHandler, priority){
+  addHook(hookName, hookHandler, v, priority){
     priority = priority || 100;
+    if(!v){
+      throw new Error('hook version cant be undefined');
+    }
     if(!_.isFunction(hookHandler)){
         return false;
     }
-    let _list = this._hooks[hookName] || [];
-    _list.push({priority: priority,handler: hookHandler});
-    _list = _.sortBy(_list,'priority');
-    this._hooks[hookName] = _list;
+    let versionArray = [];
+    if(_.isArray(v)){
+      //版本号数组
+      versionArray = v;
+    }else if(_.isString(v)){
+      versionArray.push(v);
+    }
+    for(let i = 0 ; i < versionArray.length ; i++){
+      v = versionArray[i];
+      let _list = this._hooks[hookName + '@' + v] || [];
+      _list.push({priority: priority,handler: hookHandler});
+      _list = _.sortBy(_list,'priority');
+      this._hooks[hookName + '@' + v] = _list;
+    }
     return true;
   }
 
-  addAfterHook(hookName, hookHandler, priority){
-    return this.addHook('after_' + hookName, hookHandler, priority);
+  addAfterHook(hookName, hookHandler, v, priority){
+    return this.addHook('after_' + hookName, hookHandler, v, priority);
   }
 
-  addBeforeHook(hookName, hookHandler, priority){
-    return this.addHook('before_' + hookName, hookHandler, priority);
+  addBeforeHook(hookName, hookHandler, v, priority){
+    return this.addHook('before_' + hookName, hookHandler, v, priority);
   }
 
-  async runHook(hookName, input){
-    let _list = this._hooks[hookName] || [];
+  async runHook(hookName, input, v){
+    let _list = this._hooks[hookName + '@' + v] || [];
     if(_.isEmpty(_list)){
         return new Promise( (resolve, reject) => {
           resolve({});
