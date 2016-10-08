@@ -1,6 +1,6 @@
 {
   "name": "yf-fpm-server",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "yf fast-platform api server",
   "main": "index.js",
   "scripts": {
@@ -15,7 +15,7 @@
     "fast"
   ],
   "author": "yfsoft",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "babel-polyfill": "^6.13.0",
     "babel-runtime": "^6.0.0",
@@ -32,8 +32,7 @@
     "lodash": "^4.16.1",
     "md5": "^2.1.0",
     "memory-cache": "^0.1.6",
-    "moment": "^2.13.0",
-    "qiniu": "^6.1.9"
+    "moment": "^2.13.0"
   },
   "devDependencies": {
     "babel-core": "^6.14.0",

@@ -17,5 +17,6 @@ node_modules
 cache/*.json
 public/dist/*
 uploads/*.zip
+uploads/*.json
 
 key.js
