@@ -11,6 +11,7 @@ let app = new yfServer();
 
 app.use(configuration);
 
+/*
 let biz = new Biz('0.0.1');
 
 biz.addSubModules('test',{
@@ -36,6 +37,6 @@ hook.addBeforeHook('test', (args) => {
 },['0.0.1','0.0.2']);
 
 app.addHook(hook);
-
+//*/
 const httpPort = 9999;
 app.run(httpPort);

@@ -4,6 +4,13 @@
 import _ from 'lodash';
 
 export default async (ctx, next) => {
+  if(ctx.method === 'GET'){
+    if(ctx.request.url != '/ping'){
+      await next();
+      return;
+    }
+  }
+
   let data = {
     errno: 0,
     message: '',

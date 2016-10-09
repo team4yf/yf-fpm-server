@@ -42,6 +42,10 @@ export default class {
     this.app.use(middleware);
   }
 
+  addRouter(routers,methods){
+    this.app.use(routers,methods);
+  }
+
   addBizModules(biz){
     if(biz instanceof Biz){
       let m = biz.convert();
