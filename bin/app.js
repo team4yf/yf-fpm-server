@@ -4,9 +4,9 @@ import cors from 'koa-cors';
 // koa1中间件转换
 import convert from 'koa-convert';
 
-import config from '../config.js';
-
 import response from '../middleware/response.js';
+
+import clientFilter from '../middleware/clientFilter.js';
 
 import analyse from '../middleware/analyse.js';
 
@@ -25,15 +25,9 @@ import upload from '../router/upload.js';
 export default class {
   constructor(){
     let app = new Koa();
-    // middleware
     app.use(convert(KoaBodyParser()));
     app.use(convert(cors()));
     app.use(response);
-    app.use(analyse);
-    app.use(compare);
-    app.use(api.routes()).use(api.allowedMethods());
-    app.use(ping.routes()).use(ping.allowedMethods());
-    app.use(upload.routes()).use(upload.allowedMethods());
     // err handler
     app.on('error', (err, ctx) => {
     	console.error('server error', err, ctx);
@@ -42,6 +36,10 @@ export default class {
 
     this._biz_module = {};
     this._hook = {};
+  }
+
+  use(middleware){
+    this.app.use(middleware);
   }
 
   addBizModules(biz){
@@ -66,6 +64,14 @@ export default class {
   }
 
   run(port){
+    // middleware
+    this.app.use(clientFilter);
+    this.app.use(analyse);
+    this.app.use(compare);
+    this.app.use(api.routes()).use(api.allowedMethods());
+    this.app.use(ping.routes()).use(ping.allowedMethods());
+    this.app.use(upload.routes()).use(upload.allowedMethods());
+
     global.__biz_module = this._biz_module;
     global.__hook = this._hook;
     this.app.listen(port);

@@ -2,9 +2,14 @@ import yfServer from './bin/app.js';
 
 import Hook from './utils/hook.js';
 import Biz from './utils/biz.js';
+//加载配置信息的中间件，默认通过编码中的代码信息加载
+import configuration from './middleware/defaultConfig.js';
+
 
 global.__env = 'DEV';
 let app = new yfServer();
+
+app.use(configuration);
 
 let biz = new Biz('0.0.1');
 

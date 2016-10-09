@@ -2,97 +2,101 @@
 import _ from 'lodash';
 import E from '../error';
 import crypto from 'crypto';
-import cache from 'memory-cache';
 
-function compare(postData){
-    var checkResult = checkArgs(postData);
-    if(checkResult.errno !== true ){
-        return checkResult;
-    };
-    //需要请求的函数名
-    var method = postData.method;
-    //客户端的应用密钥
-    var appkey = postData.appkey;
-    //接口版本
-    var v = postData.v || '0.0.1';
-    //时间戳
-    var timestamp = postData.timestamp;
+let compare = (ctx) => {
+  let postData = ctx.body;
+  let dev = ctx.getConfig('dev');
+  let checkResult = checkArgs(postData, dev);
+  if(checkResult.errno !== true ){
+    return checkResult;
+  };
+  //需要请求的函数名
+  let method = postData.method;
+  //客户端的应用密钥
+  let appkey = postData.appkey;
+  //接口版本
+  let v = postData.v || ctx.getConfig('defaultVersion');
+  //时间戳
+  let timestamp = postData.timestamp;
 
-    timestamp = parseInt(timestamp);
+  timestamp = parseInt(timestamp);
 
-    if('DEV' != global.__env){
-        //两个时间内的时间戳不能相差过大,默认30分钟
-        var delta = _.now() - timestamp;
+  if('DEV' != dev){
+    //两个时间内的时间戳不能相差过大,默认30分钟
+    let delta = _.now() - timestamp;
 
-        if(Math.abs(delta/100/60) > 30){
-            return E.System.TIMEZONE_OVER;
-        }
+    if(Math.abs(delta/100/60) > 30){
+        return E.System.TIMEZONE_OVER;
     }
+  }
 
-    var param = postData.param;
+  let param = postData.param;
 
-    if(_.isString(param)){
-        try{
-            param = JSON.parse(param);
-        }catch(e){
-            //传入的param不是JSON格式
-            return E.System.PARAM_IS_NOT_JSON;
-        }
-    }
-    return true;
+  if(_.isString(param)){
+      try{
+          param = JSON.parse(param);
+      }catch(e){
+          //传入的param不是JSON格式
+          return E.System.PARAM_IS_NOT_JSON;
+      }
+  }
+  return true;
 }
 
 
-function checkArgs(args){
+let checkArgs = (args, dev) => {
     if(!args){
         return E.System.NO_POST_DATA;
     }
-    var argArray = 'method,appkey,timestamp,sign'.split(',');
-    var len = argArray.length;
+    let argArray = 'method,appkey,timestamp,sign'.split(',');
+    let len = argArray.length;
     for(let i = 0; i < len; i++){
-        var a = argArray[i];
-        if(!args.hasOwnProperty(a)){
-            return E.System.LOST_PARAM( a );
-        }
+      let a = argArray[i];
+      if(!args.hasOwnProperty(a)){
+          return E.System.LOST_PARAM( a );
+      }
     }
-    // if(!sign(args)){
+    //开发模式忽略验证
+    if('DEV' === dev){
+      return true;
+    }
     //验证数据的完整性
-    if(!sign(args) && 'DEV' != global.__env){
-        return E.System.SIGN_ERROR;
+    if(sign(args)){
+      return true;
     }
-    return true;
+    return E.System.SIGN_ERROR;
 }
 
 /**
  * 将传入的参数做一个签名的验证，确认其身份和数据的完整性
  * @param args
  */
-function sign (args){
-    var md5 = crypto.createHash('md5');
-    var sign = args.sign;
+let sign = (args) => {
+    let md5 = crypto.createHash('md5');
+    let sign = args.sign;
     delete args.sign;
-    var apps = cache.get('apps');
+    let apps = cache.get('apps');
     if(apps){
         args.masterKey = apps[args.appkey].secretkey;
     }else{
         args.masterKey = '123';
     }
-    var ks = [];
+    let ks = [];
     for(var k in args){
         ks.push(k);
     }
     ks = ks.sort();
-    var strArgs = [];
+    let strArgs = [];
     ks.forEach(function(item){
-        var val = args[item];
+        let val = args[item];
         if(_.isObject(val)){
             val = JSON.stringify(val);
         }
-        strArgs.push(item+'='+encodeURIComponent(val));
+        strArgs.push(item + '=' + encodeURIComponent(val));
     });
-    var content = strArgs.join('&');
+    let content = strArgs.join('&');
     md5.update(content);
-    var d = md5.digest('hex');
+    let d = md5.digest('hex');
     return d == sign;
 }
 
@@ -100,7 +104,7 @@ export default async (ctx, next) => {
   let req = ctx.request;
   let path = req.url;
   if(path === '/api'){
-    let judgeResult = compare(ctx.body);
+    let judgeResult = compare(ctx);
     if(judgeResult === true){
       await next();
     }else{
