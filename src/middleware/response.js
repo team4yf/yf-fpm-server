@@ -3,12 +3,14 @@
  */
 import _ from 'lodash';
 
+const DEFAULT_ROUTERS = '/api,/upload,/ping'.split(',');
+
 export default async (ctx, next) => {
-  if(ctx.method === 'GET'){
-    if(ctx.request.url != '/ping'){
-      await next();
-      return;
-    }
+  let req = ctx.request;
+  let path = req.url;
+  if(_.indexOf(DEFAULT_ROUTERS,path) < 0){
+    await next();
+    return;
   }
 
   let data = {

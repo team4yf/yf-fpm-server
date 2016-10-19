@@ -22,7 +22,7 @@ import ping from '../router/ping.js';
 
 import upload from '../router/upload.js';
 
-export default class {
+class Fpm {
   constructor(){
     let app = new Koa();
     app.use(convert(KoaBodyParser()));
@@ -82,3 +82,6 @@ export default class {
     console.log(`http server listening on port ${port}`);
   }
 }
+
+
+export{ Fpm , Hook , Biz }
