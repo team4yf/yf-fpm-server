@@ -23,7 +23,7 @@ let getFunction = (method, v) => {
     let obj = bizModule[v];
     let handler = noMethodHandler;
     let hasFunction = true;
-    for(let i = 0;i<len;i++){
+    for(let i = 0 ; i<len ; i++){
         obj = obj[path[i]];
         //handler = obj;
         //未定位到任何的函数
@@ -54,8 +54,9 @@ export default async (method,args,v) => {
         resolve(result);
       })
     }catch(err){
-      if(err.errno > 0)
+      if(err.errno > 0){
           err.errno = 0 - err.errno;
+      }
       return new Promise( (resolve, reject) => {
         reject(err);
       })

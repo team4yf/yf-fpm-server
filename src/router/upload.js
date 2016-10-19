@@ -30,10 +30,10 @@ upload.post('/upload', async (ctx, next) => {
       return;
   }
   try{
-    let data = await copy(f.path,'uploads/'+f.name);
-    ctx.success({errno:0,data:data});
+    let data = await copy(f.path, 'uploads/'+f.name);
+    await ctx.success({errno:0, data:data});
   }catch(err){
-    ctx.fail(err);
+    await ctx.fail(err);
   }
 });
 

@@ -12,7 +12,6 @@ export default async (ctx, next) => {
     await next();
     return;
   }
-
   let data = {
     errno: 0,
     message: '',
@@ -22,7 +21,9 @@ export default async (ctx, next) => {
   ctx.success = (result, msg) => {
     data.message = msg || '';
     data.data = result.data;
+    console.log('ss');
   }
+
   ctx.fail = (err) => {
     data.message = err.message || 'System Error!';
     data.errno = err.errno == undefined ? -999 : err.errno;

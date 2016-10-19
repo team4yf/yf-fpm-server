@@ -42,9 +42,7 @@ export default class {
   async runHook(hookName, input, v){
     let _list = this._hooks[hookName + '@' + v] || [];
     if(_.isEmpty(_list)){
-        return new Promise( (resolve, reject) => {
-          resolve({});
-        });
+        return 1;
     }
     let len = _list.length;
     let results = [];

@@ -2,8 +2,8 @@ import Router from 'koa-router';
 
 const ping = Router();
 
-ping.get('/ping', async (ctx, next) => {
-  await ctx.success({
+ping.get('/ping', (ctx, next) => {
+  ctx.success({
     data:{}
   }, 'System online');
 })

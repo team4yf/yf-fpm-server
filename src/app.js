@@ -25,7 +25,7 @@ biz.addSubModules('test',{
 app.addBizModules(biz);
 
 let hook = new Hook();
-hook.addBeforeHook('test', (args) => {
+hook.addBeforeHook('test.foo13', (args) => {
 	return new Promise( (resolve, reject) => {
 		console.log('run before hook from app.js');
 		console.log(args);
