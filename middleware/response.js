@@ -4,7 +4,7 @@
 import _ from 'lodash';
 
 export default async (ctx, next) => {
-    let data = {
+    var data = {
       errno: 0,
       message: '',
       starttime: _.now()
