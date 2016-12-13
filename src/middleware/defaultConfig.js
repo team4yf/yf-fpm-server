@@ -4,7 +4,7 @@
 */
 import _ from 'lodash';
 
-export default (ctx, next) =>{
+export default async (ctx, next) =>{
 
   const _defaultConfig = {
     server:{
@@ -39,5 +39,5 @@ export default (ctx, next) =>{
     }
   }
 
-  next();
+  await next();
 }

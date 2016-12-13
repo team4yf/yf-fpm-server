@@ -12,7 +12,7 @@ export default async (ctx, next) => {
     await next();
     return;
   }
-  var data = {
+  let data = {
     errno: 0,
     message: '',
     starttime: _.now()
@@ -21,7 +21,6 @@ export default async (ctx, next) => {
   ctx.success = (result, msg) => {
     data.message = msg || '';
     data.data = result.data;
-    console.log('ss');
   }
 
   ctx.fail = (err) => {
