@@ -8,6 +8,7 @@ Api.post('/api', async (ctx, next) => {
   let v = postData.v;
   let method = postData.method;
   let param = postData.param;
+  param = JSON.parse(param);
   try{
     let p = await core(method,param,v);
     ctx.success(p);
