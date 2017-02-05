@@ -52,7 +52,7 @@ let checkArgs = (args, dev) => {
     let len = argArray.length;
     for(let i = 0; i < len; i++){
       let a = argArray[i];
-      if(!args.hasOwnProperty(a)){
+      if(!_.has(args, a)){
           return E.System.LOST_PARAM( a );
       }
     }
