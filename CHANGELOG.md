@@ -1,4 +1,12 @@
+# 2.1.6 (2017-02-05)
+
+Feature:
+
+- support post json data
+- update Koa Modules
+
 # 2.1.5 (2017-02-05)
+
 
 FixBugs:
 

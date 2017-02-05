@@ -4,7 +4,7 @@ import E from '../error';
 import crypto from 'crypto';
 
 let compare = (ctx) => {
-  let postData = ctx.body;
+  let postData = ctx.request.body;
   let dev = ctx.getConfig('dev');
   let checkResult = checkArgs(postData, dev);
   if(checkResult.errno !== true ){

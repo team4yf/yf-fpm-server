@@ -4,7 +4,7 @@ import core from '../bin/core.js';
 const Api = Router();
 
 Api.post('/api', async (ctx, next) => {
-  let postData = ctx.body;
+  let postData = ctx.request.body;
   let v = postData.v;
   let method = postData.method;
   let param = postData.param;

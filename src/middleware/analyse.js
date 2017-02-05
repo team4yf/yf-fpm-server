@@ -7,7 +7,7 @@ export default async (ctx, next) => {
   //如果调用的是api路由，则进行分析和拦截
   if(path === '/api'){
     //验证安全性并进行日志记录
-    let postData = ctx.body;
+    let postData = ctx.request.body;
     // 从缓存中获取已经授权的应用列表
     let apps = await ctx.getAppsFromCache();
     // 验证应用授权信息

@@ -1,6 +1,6 @@
 {
   "name": "yf-fpm-server",
-  "version": "2.1.5",
+  "version": "2.1.6",
   "description": "yf fast-platform api server",
   "main": "lib/bin/app.js",
   "scripts": {
@@ -22,10 +22,10 @@
     "babel-polyfill": "^6.13.0",
     "babel-runtime": "^6.0.0",
     "koa": "^2.0.0",
-    "koa-better-body": "^2.0.0",
+    "koa-bodyparser": "^3.2.0",
+    "koa-router": "^7.1.0",
     "koa-convert": "^1.2.0",
     "koa-cors": "0.0.16",
-    "koa-router": "^7.0.1",
     "lodash": "^4.16.1",
     "md5": "^2.1.0",
     "memory-cache": "^0.1.6",

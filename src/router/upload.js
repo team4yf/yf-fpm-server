@@ -17,7 +17,7 @@ let copy = (src, dst) => {
 };
 
 upload.post('/upload', async (ctx, next) => {
-  const f = ctx.body.files.file;
+  const f = ctx.request.body.files.file;
   const t = f.type;
   const n = f.name;
   const s = f.size;

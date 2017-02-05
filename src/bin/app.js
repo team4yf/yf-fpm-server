@@ -1,5 +1,5 @@
 import Koa from 'koa';
-import KoaBodyParser from 'koa-better-body';
+import BodyParser from 'koa-bodyparser'
 import cors from 'koa-cors';
 // koa1中间件转换
 import convert from 'koa-convert';
@@ -25,7 +25,7 @@ import upload from '../router/upload.js';
 class Fpm {
   constructor(){
     let app = new Koa();
-    app.use(convert(KoaBodyParser()));
+    app.use(BodyParser());
     app.use(convert(cors()));
     app.use(response);
     // err handler
