@@ -18,7 +18,7 @@ const loadPlugin = function(fpm){
   let modulesDir = path.join(process.cwd(), 'node_modules')
   let files = fs.readdirSync(modulesDir)
   files = _.filter(files, (f)=>{
-    return _.startsWith(f, 'fpm-')
+    return _.startsWith(f, 'fpm-plugin-')
   })
   //load package.json
   let plugins = {}
@@ -62,6 +62,7 @@ class Fpm {
     this._action = {};
     //add plugins
     loadPlugin(this)
+    this.runAction('INIT')
   }
 
   use(middleware){
