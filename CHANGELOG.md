@@ -5,6 +5,8 @@ Feature:
 - Support Plugin
 - update koa2-cors modules
 
+- Add getConfig() from config.json static config file
+
 # 2.1.6 (2017-02-05)
 
 Feature:

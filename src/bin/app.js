@@ -29,12 +29,18 @@ const loadPlugin = function(fpm){
 
   plugins = _.map(plugins, (p) => {
     let m = require(path.join(modulesDir, p.name))
-    let deps = m.getDependencies() || []
-    _.map(deps, (d) => {
-      if(!_.has(plugins, d.name)){
-        throw new Error('missing plugin ! plugin: ' + p.name + ' dependent plugin: ' + d.name)
-      }
-    })
+    if(_.has(m, 'default')){
+      m = m.default
+    }
+    if(_.isFunction(m.getDependencies)){
+      let deps = m.getDependencies() || []
+      _.map(deps, (d) => {
+        if(!_.has(plugins, d.name)){
+          throw new Error('missing plugin ! plugin: ' + p.name + ' dependent plugin: ' + d.name)
+        }
+      })
+    }
+
     return m.bind(fpm)
   })
 }
@@ -103,6 +109,14 @@ class Fpm {
 
   getApp(){
     return this.app;
+  }
+
+  getConfig(){
+    let configPath = path.join(process.cwd(), 'config.json')
+    if(fs.existsSync(configPath)){
+      return require(configPath)
+    }
+    return {}
   }
 
   run(port){
