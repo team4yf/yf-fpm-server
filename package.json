@@ -1,6 +1,6 @@
 {
   "name": "yf-fpm-server",
-  "version": "2.1.14",
+  "version": "2.1.15",
   "description": "yf fast-platform api server",
   "main": "lib/bin/app.js",
   "scripts": {

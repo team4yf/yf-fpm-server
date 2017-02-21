@@ -60,6 +60,8 @@ class Fpm {
     this._biz_module = {};
     this._hook = {};
     this._action = {};
+    //add plugins
+    loadPlugin(this)
   }
 
   use(middleware){
@@ -67,16 +69,20 @@ class Fpm {
   }
 
   addRouter(routers,methods){
+    this.runAction('BEFORE_ROUTER_ADDED')
     this.app.use(routers,methods);
+    this.runAction('BEFORE_ROUTER_ADDED')
   }
 
   addBizModules(biz){
+    this.runAction('BEFORE_MODULES_ADDED')
     if(biz instanceof Biz){
       let m = biz.convert();
       this._biz_module[m.version] = m.modules;
     }else{
       throw new Error('Biz must be instanceof Biz');
     }
+    this.runAction('AFTER_MODULES_ADDED')
   }
 
   registerAction(actionName, action){
@@ -130,8 +136,7 @@ class Fpm {
 
     global.__biz_module = this._biz_module;
     global.__hook = this._hook;
-    //add plugins
-    loadPlugin(this)
+
     this.runAction('BEFORE_SERVER_START')
     this.app.listen(port);
     this.runAction('AFTER_SERVER_START')
