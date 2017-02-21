@@ -1,11 +1,11 @@
 export default class {
-  constructor(v){
+  constructor(v, fpm){
     if(!v){
-      throw new Error('biz should be set version,ex: 0.0.1 or 1.0 ...');
+      throw new Error('biz should be set version,ex: 0.0.1 or 1.0 ...')
     }
-    this.v = v ;
-
-    this.m = {} ;
+    this.v = v
+    this.m = {}
+    this.fpm = fpm
   }
 
   convert(){
