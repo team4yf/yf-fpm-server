@@ -10,6 +10,7 @@ import Biz from '../utils/biz.js';
 import api from '../router/api.js';
 import ping from '../router/ping.js';
 import upload from '../router/upload.js';
+import core from './core'
 import path from 'path'
 import fs from 'fs'
 import _ from 'lodash'
@@ -62,7 +63,7 @@ class Fpm {
     this._action = {};
     //add plugins
     loadPlugin(this)
-    this.runAction('INIT')
+    this.runAction('INIT', this)
   }
 
   use(middleware){
@@ -72,18 +73,18 @@ class Fpm {
   addRouter(routers,methods){
     this.runAction('BEFORE_ROUTER_ADDED')
     this.app.use(routers,methods);
-    this.runAction('BEFORE_ROUTER_ADDED')
+    this.runAction('AFTER_ROUTER_ADDED')
   }
 
   addBizModules(biz){
-    this.runAction('BEFORE_MODULES_ADDED')
+    this.runAction('BEFORE_MODULES_ADDED', biz)
     if(biz instanceof Biz){
       let m = biz.convert();
       this._biz_module[m.version] = m.modules;
     }else{
       throw new Error('Biz must be instanceof Biz');
     }
-    this.runAction('AFTER_MODULES_ADDED')
+    this.runAction('AFTER_MODULES_ADDED', biz)
   }
 
   registerAction(actionName, action){
@@ -100,10 +101,15 @@ class Fpm {
   runAction(actionName){
     if(_.has(this._action, actionName)){
       let actionList = this._action[actionName]
+      let argument = _.drop(arguments)
       _.map(actionList, action=>{
-        action()
+        action(argument)
       })
     }
+  }
+
+  async execute(method, args, v){
+    return await core(method, args, v)
   }
 
   addHook(hook){
@@ -138,12 +144,12 @@ class Fpm {
     global.__biz_module = this._biz_module;
     global.__hook = this._hook;
 
-    this.runAction('BEFORE_SERVER_START')
+    this.runAction('BEFORE_SERVER_START', this)
     this.app.listen(port);
-    this.runAction('AFTER_SERVER_START')
+    this.runAction('AFTER_SERVER_START', this)
     console.log(`http server listening on port ${port}`);
   }
 }
 
 
-export{ Fpm , Hook , Biz }
+export{ Fpm , Hook , Biz}

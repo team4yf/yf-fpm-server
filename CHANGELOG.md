@@ -7,6 +7,11 @@ Feature:
 
 - Add getConfig() from config.json static config file
 
+- add more hook points
+[ INIT, BEFORE_ROUTER_ADDED, AFTER_ROUTER_ADDED, BEFORE_MODULES_ADDED, AFTER_MODULES_ADDED, BEFORE_SERVER_START, AFTER_SERVER_START]
+
+- add execute method for fpm class
+
 # 2.1.6 (2017-02-05)
 
 Feature:
