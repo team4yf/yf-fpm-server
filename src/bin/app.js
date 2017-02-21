@@ -1,32 +1,49 @@
 import Koa from 'koa';
 import BodyParser from 'koa-bodyparser'
-import cors from 'koa-cors';
-// koa1中间件转换
-import convert from 'koa-convert';
-
+import cors from 'koa2-cors';
 import response from '../middleware/response.js';
-
 import clientFilter from '../middleware/clientFilter.js';
-
 import analyse from '../middleware/analyse.js';
-
 import compare from '../middleware/compare.js';
-
 import Hook from '../utils/hook.js';
-
 import Biz from '../utils/biz.js';
-
 import api from '../router/api.js';
-
 import ping from '../router/ping.js';
-
 import upload from '../router/upload.js';
+import path from 'path'
+import fs from 'fs'
+import _ from 'lodash'
+
+const loadPlugin = function(fpm){
+  let modulesDir = path.join(process.cwd(), 'node_modules')
+  let files = fs.readdirSync(modulesDir)
+  files = _.filter(files, (f)=>{
+    return _.startsWith(f, 'fpm-')
+  })
+  //load package.json
+  let plugins = {}
+  _.map(files, (f)=>{
+    let packageInfo = require(path.join(modulesDir, f, 'package.json'))
+    plugins[packageInfo.name] = { name: packageInfo.name, version: packageInfo.version}
+  })
+
+  plugins = _.map(plugins, (p) => {
+    let m = require(path.join(modulesDir, p.name))
+    let deps = m.getDependencies() || []
+    _.map(deps, (d) => {
+      if(!_.has(plugins, d.name)){
+        throw new Error('missing plugin ! plugin: ' + p.name + ' dependent plugin: ' + d.name)
+      }
+    })
+    return m.bind(fpm)
+  })
+}
 
 class Fpm {
   constructor(){
     let app = new Koa();
     app.use(BodyParser());
-    app.use(convert(cors()));
+    app.use(cors());
     app.use(response);
     // err handler
     app.on('error', (err, ctx) => {
@@ -36,6 +53,7 @@ class Fpm {
 
     this._biz_module = {};
     this._hook = {};
+    this._action = {};
   }
 
   use(middleware){
@@ -52,6 +70,26 @@ class Fpm {
       this._biz_module[m.version] = m.modules;
     }else{
       throw new Error('Biz must be instanceof Biz');
+    }
+  }
+
+  registerAction(actionName, action){
+    let actionList
+    if(_.has(this._action, actionName)){
+      actionList = this._action[actionName]
+    }else {
+      actionList = []
+    }
+    actionList.push(action)
+    this._action[actionName] = actionList
+  }
+
+  runAction(actionName){
+    if(_.has(this._action, actionName)){
+      let actionList = this._action[actionName]
+      _.map(actionList, action=>{
+        action()
+      })
     }
   }
 
@@ -78,7 +116,11 @@ class Fpm {
 
     global.__biz_module = this._biz_module;
     global.__hook = this._hook;
+    //add plugins
+    loadPlugin(this)
+    this.runAction('BEFORE_SERVER_START')
     this.app.listen(port);
+    this.runAction('AFTER_SERVER_START')
     console.log(`http server listening on port ${port}`);
   }
 }
