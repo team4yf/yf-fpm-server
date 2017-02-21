@@ -1,3 +1,4 @@
+import _ from 'lodash'
 export default class {
   constructor(v, fpm){
     if(!v){
@@ -11,11 +12,15 @@ export default class {
   convert(){
     return {
       version: this.v,
-      modules: this.m
+      modules: this.m,
     }
   }
 
-  addSubModules(mName,subM){
-    this.m[mName] = subM ;
+  addSubModules(mName, subM){
+    if(_.isFunction(subM)){
+      this.m[mName] = subM(this.fpm)
+    }else{
+      this.m[mName] = subM
+    }
   }
 }
