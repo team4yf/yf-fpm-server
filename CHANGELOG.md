@@ -1,3 +1,13 @@
+# 2.1.8 (2017-30-01)
+
+TODO:
+
+- check config.json when FPM.INIT()
+
+BreakChange:
+
+- cancel config middleware
+
 # 2.1.7 (2017-02-21)
 
 Feature:

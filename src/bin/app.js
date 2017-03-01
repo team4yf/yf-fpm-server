@@ -1,19 +1,62 @@
-import Koa from 'koa';
+import Koa from 'koa'
 import BodyParser from 'koa-bodyparser'
-import cors from 'koa2-cors';
-import response from '../middleware/response.js';
-import clientFilter from '../middleware/clientFilter.js';
-import analyse from '../middleware/analyse.js';
-import compare from '../middleware/compare.js';
-import Hook from '../utils/hook.js';
-import Biz from '../utils/biz.js';
-import api from '../router/api.js';
-import ping from '../router/ping.js';
-import upload from '../router/upload.js';
+import cors from 'koa2-cors'
+import response from '../middleware/response.js'
+import auth from '../middleware/auth.js'
+import analyse from '../middleware/analyse.js'
+import compare from '../middleware/compare.js'
+import Hook from '../utils/hook.js'
+import Biz from '../utils/biz.js'
+import api from '../router/api.js'
+import ping from '../router/ping.js'
+import upload from '../router/upload.js'
 import core from './core'
 import path from 'path'
 import fs from 'fs'
 import _ from 'lodash'
+
+//load local config.json
+let configPath = path.join(process.cwd(), 'config.json')
+let config = {
+  server:{
+    port: 9999
+  },
+  defaultVersion: '0.0.1',
+  dev: 'DEV',
+  log4js: {
+    appenders: [
+      { type: 'console' },{
+        type: 'file',
+        filename: 'logs/access.log',
+        maxLogSize: 1024 * 1024 * 100, //100Mb一个文件 1024*1024*100 = 104857600
+        backups: 10,
+        category: 'normal'
+      }
+    ],
+    replaceConsole: true,
+    levels:{
+      dateFileLog: 'debug',
+      console: 'errno'
+    }
+  },
+  apps: {
+    '123123': {
+      appkey: '123123',
+      approot: '*',
+      secretkey: '123123',
+    }
+  },
+  mysql: {
+    host: 'localhost',
+    database: 'fpm',
+    username: 'xxx',
+    password: 'xxx',
+    showSql: true
+  },
+}
+if(fs.existsSync(configPath)){
+  config = _.assign(config, require(configPath));
+}
 
 const loadPlugin = function(fpm){
   let modulesDir = path.join(process.cwd(), 'node_modules')
@@ -48,41 +91,44 @@ const loadPlugin = function(fpm){
 
 class Fpm {
   constructor(){
-    let app = new Koa();
-    app.use(BodyParser());
-    app.use(cors());
-    app.use(response);
+    let app = new Koa()
+    app.use(BodyParser())
+    app.use(cors())
+    app.use(response)
     // err handler
     app.on('error', (err, ctx) => {
-    	console.error('server error', err, ctx);
-    });
-    this.app = app;
+    	console.error('server error', err, ctx)
+    })
+    this.app = app
 
-    this._biz_module = {};
-    this._hook = {};
-    this._action = {};
+    this._biz_module = {}
+    this._hook = {}
+    this._action = {}
+    this._start_time = _.now()
+    this._env = config.dev
+
     //add plugins
     loadPlugin(this)
     this.runAction('INIT', this)
   }
 
   use(middleware){
-    this.app.use(middleware);
+    this.app.use(middleware)
   }
 
   addRouter(routers,methods){
     this.runAction('BEFORE_ROUTER_ADDED')
-    this.app.use(routers,methods);
+    this.app.use(routers,methods)
     this.runAction('AFTER_ROUTER_ADDED')
   }
 
   addBizModules(biz){
     this.runAction('BEFORE_MODULES_ADDED', biz)
     if(biz instanceof Biz){
-      let m = biz.convert();
-      this._biz_module[m.version] = m.modules;
+      let m = biz.convert()
+      this._biz_module[m.version] = m.modules
     }else{
-      throw new Error('Biz must be instanceof Biz');
+      throw new Error('Biz must be instanceof Biz')
     }
     this.runAction('AFTER_MODULES_ADDED', biz)
   }
@@ -114,40 +160,49 @@ class Fpm {
 
   addHook(hook){
     if(hook instanceof Hook){
-      this._hook = hook;
+      this._hook = hook
     }else{
-      throw new Error('Hook must be instanceof Hook');
+      throw new Error('Hook must be instanceof Hook')
     }
   }
 
   getApp(){
-    return this.app;
+    return this.app
   }
 
-  getConfig(){
-    let configPath = path.join(process.cwd(), 'config.json')
-    if(fs.existsSync(configPath)){
-      return require(configPath)
+  getConfig(c){
+    if(_.isEmpty(c)){
+      return config
     }
-    return {}
+    return config[c]
   }
 
-  run(port){
-    // middleware
-    this.app.use(clientFilter);
-    this.app.use(analyse);
-    this.app.use(compare);
-    this.app.use(api.routes()).use(api.allowedMethods());
-    this.app.use(ping.routes()).use(ping.allowedMethods());
-    this.app.use(upload.routes()).use(upload.allowedMethods());
+  getClients(){
+    let apps = this.getConfig('apps')
+    return apps || {}
+  }
 
-    global.__biz_module = this._biz_module;
-    global.__hook = this._hook;
+  run(){
+    // middleware
+    let self = this
+    this.app.use(async(ctx, next) => {
+      ctx.fpm = self
+      await next()
+    })
+    this.app.use(auth)
+    this.app.use(analyse)
+    this.app.use(compare)
+    this.app.use(api.routes()).use(api.allowedMethods())
+    this.app.use(ping.routes()).use(ping.allowedMethods())
+    this.app.use(upload.routes()).use(upload.allowedMethods())
+
+    global.__biz_module = this._biz_module
+    global.__hook = this._hook
 
     this.runAction('BEFORE_SERVER_START', this)
-    this.app.listen(port);
+    this.app.listen(config.server.port)
     this.runAction('AFTER_SERVER_START', this)
-    console.log(`http server listening on port ${port}`);
+    console.log(`http server listening on port ${config.server.port}`)
   }
 }
 

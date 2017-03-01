@@ -1,11 +1,11 @@
-import Router from 'koa-router';
+import Router from 'koa-router'
 
-const ping = Router();
+const ping = Router()
 
 ping.get('/ping', (ctx, next) => {
   ctx.success({
     data:{}
-  }, 'System online');
+  }, 'System online')
 })
 
-export default ping;
+export default ping
