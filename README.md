@@ -5,7 +5,7 @@
 点击查看更新日志 [CHANGELOG](CHANGELOG.md)
 
 ### 0.OVERVIEW
-> 一轻量级的api服务端，可通过插件集成数据库(mysql,mongodb)的数据操作，灵活扩展自定义业务逻辑
+> 一款轻量级的api服务端，可通过插件集成数据库(mysql,mongodb)的数据操作，灵活扩展自定义业务逻辑
 
 * 源码地址: https://github.com/team4yf/yf-fpm-server.git
 * 基于koa2框架
