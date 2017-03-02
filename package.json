@@ -1,12 +1,12 @@
 {
   "name": "yf-fpm-server",
-  "version": "2.1.20",
+  "version": "2.2.0",
   "description": "yf fast-platform api server",
   "main": "lib/bin/app.js",
   "scripts": {
     "compile": "babel -d lib/ src/",
     "prepublish": "npm run compile",
-    "server": "node app.babel.js",
+    "server": "node example/app.babel.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [

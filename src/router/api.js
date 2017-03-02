@@ -10,7 +10,7 @@ Api.post('/api', async (ctx, next) => {
   let param = postData.param
   param = JSON.parse(param)
   try{
-    let p = await core(method, param, v)
+    let p = await core(method, param, v, ctx.fpm)
     ctx.success(p)
   }catch(err){
     ctx.fail(err)

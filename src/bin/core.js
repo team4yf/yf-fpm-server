@@ -12,8 +12,8 @@ function versionUndefinedHandler(){
   })
 }
 
-let getFunction = (method, v) => {
-    let bizModule = global.__biz_module || {}
+let getFunction = (method, v, bizModule) => {
+    bizModule = bizModule || {}
     console.log("[CALL METHOD]:" + method + "@" + v)
     if(!_.has(bizModule,v)){
         return versionUndefinedHandler
@@ -37,9 +37,9 @@ let getFunction = (method, v) => {
     return handler
 }
 
-export default async (method, args, v) => {
-    let handler = getFunction(method, v)
-    let hook = global.__hook
+export default async (method, args, v, fpm) => {
+    let handler = getFunction(method, v, fpm._biz_module)
+    let hook = fpm._hook
     try{
       let result = {}
       if(_.isFunction(hook.runHook)){

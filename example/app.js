@@ -1,10 +1,6 @@
-import { Fpm, Hook,Biz }  from './bin/app.js';
-
+import { Fpm, Hook,Biz }  from '../src/bin/app.js';
 let app = new Fpm();
-
-//*
 let biz = new Biz('0.0.1');
-
 biz.addSubModules('test',{
 	foo:async function(args){
 		return new Promise( (resolve, reject) => {
@@ -12,7 +8,5 @@ biz.addSubModules('test',{
 		});
 	}
 })
-
 app.addBizModules(biz);
-
 app.run();

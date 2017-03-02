@@ -1,6 +1,24 @@
-# 2.1.8 (2017-30-01)
+# 2.2.0 (2017-03-02)
 
-TODO:
+Feature
+
+- plugin inject config to FPM.config
+
+```javascript
+extendConfig(c){
+  config = _.assign(config, c || {})
+}
+```
+
+Remove
+
+- util.job,util.logger
+
+Files Change
+
+- Add example dir with app.js 
+
+# 2.1.8 (2017-03-01)
 
 - check config.json when FPM.INIT()
 

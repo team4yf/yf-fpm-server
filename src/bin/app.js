@@ -23,36 +23,13 @@ let config = {
   },
   defaultVersion: '0.0.1',
   dev: 'DEV',
-  log4js: {
-    appenders: [
-      { type: 'console' },{
-        type: 'file',
-        filename: 'logs/access.log',
-        maxLogSize: 1024 * 1024 * 100, //100Mb一个文件 1024*1024*100 = 104857600
-        backups: 10,
-        category: 'normal'
-      }
-    ],
-    replaceConsole: true,
-    levels:{
-      dateFileLog: 'debug',
-      console: 'errno'
-    }
-  },
   apps: {
     '123123': {
       appkey: '123123',
       approot: '*',
       secretkey: '123123',
     }
-  },
-  mysql: {
-    host: 'localhost',
-    database: 'fpm',
-    username: 'xxx',
-    password: 'xxx',
-    showSql: true
-  },
+  }
 }
 if(fs.existsSync(configPath)){
   config = _.assign(config, require(configPath));
@@ -95,18 +72,16 @@ class Fpm {
     app.use(BodyParser())
     app.use(cors())
     app.use(response)
-    // err handler
+    //TODO: Handle The Error
     app.on('error', (err, ctx) => {
     	console.error('server error', err, ctx)
     })
     this.app = app
-
     this._biz_module = {}
     this._hook = {}
     this._action = {}
     this._start_time = _.now()
     this._env = config.dev
-
     //add plugins
     loadPlugin(this)
     this.runAction('INIT', this)
@@ -155,7 +130,7 @@ class Fpm {
   }
 
   async execute(method, args, v){
-    return await core(method, args, v)
+    return await core(method, args, v, this)
   }
 
   addHook(hook){
@@ -177,15 +152,19 @@ class Fpm {
     return config[c]
   }
 
+  extendConfig(c){
+    config = _.assign(config, c || {})
+  }
+
   getClients(){
     let apps = this.getConfig('apps')
     return apps || {}
   }
 
   run(){
-    // middleware
     let self = this
     this.app.use(async(ctx, next) => {
+      //将fpm注入到ctx中,供其他中间件使用
       ctx.fpm = self
       await next()
     })
