@@ -175,9 +175,6 @@ class Fpm {
     this.app.use(ping.routes()).use(ping.allowedMethods())
     this.app.use(upload.routes()).use(upload.allowedMethods())
 
-    global.__biz_module = this._biz_module
-    global.__hook = this._hook
-
     this.runAction('BEFORE_SERVER_START', this)
     this.app.listen(config.server.port)
     this.runAction('AFTER_SERVER_START', this)
