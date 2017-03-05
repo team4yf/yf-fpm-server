@@ -1,3 +1,13 @@
+# 2.2.1 (2017-03-05)
+
+Remove
+
+- concat analyse.js to auth.js
+
+Change
+
+- Use `Reg.test()` To Validate The App Root
+
 # 2.2.0 (2017-03-02)
 
 Feature

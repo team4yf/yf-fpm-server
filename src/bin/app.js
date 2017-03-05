@@ -3,7 +3,6 @@ import BodyParser from 'koa-bodyparser'
 import cors from 'koa2-cors'
 import response from '../middleware/response.js'
 import auth from '../middleware/auth.js'
-import analyse from '../middleware/analyse.js'
 import compare from '../middleware/compare.js'
 import Hook from '../utils/hook.js'
 import Biz from '../utils/biz.js'
@@ -72,10 +71,7 @@ class Fpm {
     app.use(BodyParser())
     app.use(cors())
     app.use(response)
-    //TODO: Handle The Error
-    app.on('error', (err, ctx) => {
-    	console.error('server error', err, ctx)
-    })
+
     this.app = app
     this._biz_module = {}
     this._hook = {}
@@ -85,16 +81,14 @@ class Fpm {
     //add plugins
     loadPlugin(this)
     this.runAction('INIT', this)
+
+    this.errorHandler = (err, ctx) => {
+    	console.error('server error', err, ctx)
+    }
   }
 
-  use(middleware){
-    this.app.use(middleware)
-  }
-
-  addRouter(routers,methods){
-    this.runAction('BEFORE_ROUTER_ADDED')
-    this.app.use(routers,methods)
-    this.runAction('AFTER_ROUTER_ADDED')
+  getApp(){
+    return this.app
   }
 
   addBizModules(biz){
@@ -141,10 +135,6 @@ class Fpm {
     }
   }
 
-  getApp(){
-    return this.app
-  }
-
   getConfig(c){
     if(_.isEmpty(c)){
       return config
@@ -161,6 +151,10 @@ class Fpm {
     return apps || {}
   }
 
+  bindErrorHandler(handler){
+    this.errorHandler = handler
+  }
+
   run(){
     let self = this
     this.app.use(async(ctx, next) => {
@@ -169,15 +163,18 @@ class Fpm {
       await next()
     })
     this.app.use(auth)
-    this.app.use(analyse)
     this.app.use(compare)
     this.app.use(api.routes()).use(api.allowedMethods())
     this.app.use(ping.routes()).use(ping.allowedMethods())
     this.app.use(upload.routes()).use(upload.allowedMethods())
 
-    this.runAction('BEFORE_SERVER_START', this)
+    this.runAction('FPM_MIDDLEWARE', this, this.app)
+    this.runAction('FPM_ROUTER', this, this.app)
+    this.runAction('BEFORE_SERVER_START', this, this.app)
+
+    this.app.on('error', this.errorHandler)
     this.app.listen(config.server.port)
-    this.runAction('AFTER_SERVER_START', this)
+    this.runAction('AFTER_SERVER_START', this, this.app)
     console.log(`http server listening on port ${config.server.port}`)
   }
 }
