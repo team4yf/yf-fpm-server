@@ -1,3 +1,9 @@
+# 2.2.2 (2017-03-05)
+
+Feature
+
+- Support Pub/Sub
+
 # 2.2.1 (2017-03-05)
 
 Remove

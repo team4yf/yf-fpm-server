@@ -1,6 +1,10 @@
 import Koa from 'koa'
 import BodyParser from 'koa-bodyparser'
 import cors from 'koa2-cors'
+import PubSub from 'pubsub-js'
+import path from 'path'
+import fs from 'fs'
+import _ from 'lodash'
 import response from '../middleware/response.js'
 import auth from '../middleware/auth.js'
 import compare from '../middleware/compare.js'
@@ -10,9 +14,6 @@ import api from '../router/api.js'
 import ping from '../router/ping.js'
 import upload from '../router/upload.js'
 import core from './core'
-import path from 'path'
-import fs from 'fs'
-import _ from 'lodash'
 
 //load local config.json
 let configPath = path.join(process.cwd(), 'config.json')
@@ -153,6 +154,14 @@ class Fpm {
 
   bindErrorHandler(handler){
     this.errorHandler = handler
+  }
+
+  publish(topic, data){
+    PubSub.publish(topic, data)
+  }
+
+  subscribe(topic, callback){
+    PubSub.subscribe(topic, callback)
   }
 
   run(){
