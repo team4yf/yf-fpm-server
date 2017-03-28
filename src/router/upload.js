@@ -1,8 +1,14 @@
 import Router from 'koa-router'
+import multer from 'koa-multer'
 import fs from 'fs'
 import E from '../error.js'
 
-const upload = Router()
+function fileFilter (req, file, cb) {
+  // console.log(file)
+  cb(null, 1)
+}
+const upload = multer({ dest: 'uploads/' , fileFilter: fileFilter});
+const router = Router()
 
 let copy = (src, dst) => {
   return new Promise( (resolve, reject) => {
@@ -16,30 +22,15 @@ let copy = (src, dst) => {
   })
 }
 
-upload.post('/upload', async (ctx, next) => {
-  const f = ctx.request.body.files.file
-  const t = f.type
-  const n = f.name
-  const s = f.size
-  if(t!='application/zip' && t!= 'application/x-zip-compressed' && t!='application/octet-stream' && t!='application/json'){
-      ctx.fail(E.System.FILE_TYPE_REJECT)
-      return
-  }
-  if(s > 100 * 1024 * 1024){
-      ctx.fail(E.System.FILE_TOO_LARGE)
-      return
-  }
-  try{
-    let data = await copy(f.path, 'uploads/'+f.name)
-    await ctx.success({errno:0, data:data})
-  }catch(err){
-    await ctx.fail(err)
-  }
+router.post('/upload', upload.single('file'), async (ctx, next) => {
+  // TODO: add fpm upload hook
+  await ctx.success({data: ctx.req.file})
+  await next()
 })
 
-upload.get('/upload/:id', async (ctx, next) => {
+router.get('/upload/:id', async (ctx, next) => {
   ctx.body = fs.readFileSync('uploads/.gitkeep')
   // await ctx.response.attachment(['uploads/.getkeep'])
 })
 
-export default upload
+export default router

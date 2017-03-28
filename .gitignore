@@ -21,3 +21,4 @@ uploads/*.zip
 uploads/*.json
 
 key.js
+.DS_Store
