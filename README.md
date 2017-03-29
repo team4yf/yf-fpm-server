@@ -4,10 +4,15 @@
 
 点击查看更新日志 [CHANGELOG](CHANGELOG.md)
 
+### ROADMAP
+
+点击查看 [ROADMAP](ROADMAP.md)
+
 ### 0.OVERVIEW
 > yf-fpm-server是一款轻量级的api服务端，可通过插件集成数据库(mysql,mongodb)的数据操作，灵活扩展自定义业务逻辑
 
 * 源码地址: https://github.com/team4yf/yf-fpm-server.git
+* 微内核，源码
 * 基于koa2框架
 * 支持key + secret安全验证
 * 支持接口权限验证
@@ -51,186 +56,32 @@
 
 　　这样的设计不能满足现在的restful范式，但是能满足小规模团队的需求，可提高业务实现的开发效率；
 
-* 效果预览
-
-![启动服务](http://upload-images.jianshu.io/upload_images/1449977-1bb3e9ec2207730e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-
-![postman 测试](http://upload-images.jianshu.io/upload_images/1449977-c137a12698a8ca09.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
 ### 1.Install
-* 依赖不少，请耐心等待几分钟。
 `
 $ npm install yf-fpm-server --save
 `
 
-* 需要手动创建一下logs记录日志文件的目录
+### 2.Code
 `
-$ mkdir logs
-`
-
-### 2.Config
-```
-$ touch config.js
-$ vi config.js
-```
-
-```
-var k = {
-  db:{
-      host: '192.168.1.1',
-      port:3306,
-      username:'root',
-      password:'',
-  },
-  database:{'api':'api'},
-  server:{port:8080},
-  dev:'DEV'
-};
-
-var getDbConfig = function(option){
-    var originConfig = {
-        host: 'localhost',
-        port:3306,
-        username:'root',
-        password:'',
-        debug:false,
-        pool:{
-            connectionLimit:10,
-            queueLimit:0,
-            waitForConnections:true
-        }
-    };
-    for(var key in k.db){
-        originConfig[key] = k.db[key];
-    }
-    for(var key in option){
-        originConfig[key] = option[key];
-    }
-    return originConfig;
-};
-module.exports = {
-    db:(function(database){
-        var _dbs = {};
-        for(var d in database){
-            _dbs[d] = getDbConfig({database:database[d]});
-        }
-        return _dbs;
-    })(k.database),
-    server: k.server||{
-        port: k.dev == 'PRODUCT'?9001:8080
-    },
-    defaultVersion:'0.0.1',
-    dev:k.dev,
-    log4js: {
-        appenders: [
-            { type: 'console' },{
-                type: 'file',
-                filename: 'logs/access.log',
-                maxLogSize: 1024 * 1024 * 100, //100Mb一个文件
-                backups:10,
-                category: 'normal'
-            }
-        ],
-        replaceConsole: true,
-        levels:{
-            dateFileLog: 'debug',
-            console: 'errno'
-        }
-    }
-};
-
-```
-
-### 3.Code
-编写代码，最终的目录结构预览如下
-
-![项目目录](http://upload-images.jianshu.io/upload_images/1449977-7ed3cc46880a3f01.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-```
-$ mkdir V0.0.2 && cd V0.0.2 && touch index.js && vi index.js
-```
-
-```
-'use strict';
-var _ = require('underscore');
-var Q = require('q');
-module.exports = function(C,M,H){
-  var q = Q.defer();
-
-  M.test = function(){
-    var _q = Q.defer();
-    _q.resolve({data:"中文和zimu from v0.0.2"})
-    return _q.promise;
-  }
-
-  q.resolve({'foo':M});  //业务名称： foo.test
-  return q.promise;
-};
-
-```
-
-```
-$ touch app.js
 $ vi app.js
-```
-
-```
-var async = require('async');
-var config = require('./config.js');
-var M = {};
-var v002 = require('./V0.0.2');
-var yfserver = require('yf-api-server');
-var app = yfserver(config);
-
-async.parallel({
-  '0.0.2':function(cb){
-    v002(config,M,yfserver.hook).then(function(biz){
-      cb(null,biz);
-    });
+`
+```javascript
+'use strict';
+import { Fpm, Hook,Biz }  from 'yf-fpm-server'
+let app = new Fpm()
+let biz = new Biz('0.0.1')
+biz.addSubModules('test', {
+  foo: async function(args){
+    return new Promise( (resolve, reject) => {
+      reject({errno: -3001});
+	})
   }
-},function(err,results){
-    if(err){
-      console.log(err);
-      return;
-    }
-    app.setBizModules(results);
-    app.start();
-  }
-);
+})
+app.addBizModules(biz)
+app.run()
 
 ```
-### 4.Run
+### 3.Run With Babel
 `
 $ node app.js
 `
-
-使用之前需要访问一个地址来创建2张表，和一些默认值
-[http://yourdomain:8080/init](http://localhost:8080/init)
-
-之后就可以正式使用了
-
-![node app.js](http://upload-images.jianshu.io/upload_images/1449977-d50ed01a85013779.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-postman测试
-![postman测试](http://upload-images.jianshu.io/upload_images/1449977-7c444753ed6ec12f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-### 5.Other
-到此，一个能满足基本业务的api服务端就搭建好了
-目前我的项目在使用它做生产环境了
-
-![代码结构](http://upload-images.jianshu.io/upload_images/1449977-f3a2a954324d56dd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-pm2 logs
-
-![pm2 logs](http://upload-images.jianshu.io/upload_images/1449977-57ad8df18e055c0f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-欢迎拍砖~~
-
-### 6.Demo
-
-我部署了一个demo项目，代码在这里 [https://github.com/yfsoftcom/yf-demo-api](https://github.com/yfsoftcom/yf-demo-api)
-
-请笑纳~
-
-![测试的](http://upload-images.jianshu.io/upload_images/1449977-b787b6f88cfcc4ae.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)

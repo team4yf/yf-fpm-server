@@ -1,3 +1,10 @@
+# 2.2.3 (2017-03-29)
+
+Feature
+
+- Support upload use `koa-multer`
+
+
 # 2.2.2 (2017-03-28)
 
 Feature

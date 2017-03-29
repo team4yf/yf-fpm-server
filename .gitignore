@@ -19,6 +19,7 @@ cache/*.json
 public/dist/*
 uploads/*.zip
 uploads/*.json
+uploads/*
 
 key.js
 .DS_Store

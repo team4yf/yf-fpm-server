@@ -9,7 +9,12 @@ module.exports = {
     User:{
         NOT_EXISTS:{errno:-11,code:'NOT_EXISTS',message:"login_name does't exists!"},
         PASSWORD_ERROR:{errno:-12,code:'PASSWORD_ERROR',message:"password error!"},
-        ZAN_OUT_LIMIT:{errno:-13,code:'ZAN_OUT_LIMIT',message:"ZAN OUT LIMIT"},
+    },
+    Upload: {
+        TYPE_NOT_ALLOWD:  { errno: -801, code: 'TYPE_NOT_ALLOWD', message: 'only zip, json accept'},
+        FILE_TOO_LARGE:   { errno: -802, code:'FILE_TOO_LARGE',   message:'file too large,plz < 100MB'},
+        FILE_TYPE_REJECT: { errno: -803, code:'FILE_TYPE_REJECT', message:'file only accept json,zip'},
+        QINIU_SYNC_ERROR: { errno: -804, code:'QINIU_SYNC_ERROR', message:'sync file to qiniu error!'},
     },
     System:{
         //uncaught
@@ -25,9 +30,7 @@ module.exports = {
         SIGN_ERROR:{errno:-903,code:'SIGN_ERROR',message:"param sign error!"},
         NOT_METHOD:{errno:-908,code:'NOT_METHOD',message:"Cant find the method!"},
         TABLE_REQUIRED:{errno:-910,code:'TABLE_REQUIRED',message:"table required!"},
-        FILE_TOO_LARGE:{errno:-911,code:'FILE_TOO_LARGE',message:'file too large,plz < 100MB'},
-        FILE_TYPE_REJECT:{errno:-912,code:'FILE_TYPE_REJECT',message:'file only accept json,zip'},
-        QINIU_SYNC_ERROR:{errno:-913,code:'QINIU_SYNC_ERROR',message:'sync file to qiniu error!'},
+        
         VERSION_UNDEFINED:{errno:-914,code:'VERSION_UNDEFINED',message:'version not defined!'}
 
     },
