@@ -27,7 +27,8 @@
     "lodash": "^4.16.1",
     "md5": "^2.1.0",
     "moment": "^2.13.0",
-    "pubsub-js": "^1.5.5"
+    "pubsub-js": "^1.5.5",
+    "qiniu": "^6.1.13"
   },
   "devDependencies": {
     "babel-cli": "^6.22.2",

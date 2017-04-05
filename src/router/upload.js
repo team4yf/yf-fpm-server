@@ -3,6 +3,10 @@ import Router from 'koa-router'
 import multer from 'koa-multer'
 import fs from 'fs'
 import E from '../error.js'
+import { init, sync } from './qiniu.js'
+
+// 初始化七牛的配置信息
+init({})
 
 const router = Router()
 
@@ -29,15 +33,12 @@ const defaultHandler = upload.single('file')
 const handler = async (ctx, next) => {
   try{
     await defaultHandler(ctx, next)
-  }catch(e){
-    ctx.error = e
-  }
-  if(ctx.error){
-    ctx.fail(ctx.error)
-  }else{
     let data = ctx.req.file
     datas[data.filename] = data
-    ctx.success({data: {hash: data.filename, url: '/download/' + data.filename}})
+    let result = await sync(data)
+    ctx.success({data: _.assign({id: data.filename}, result)})
+  }catch(e){
+    ctx.fail(e)
   }
 }
 
