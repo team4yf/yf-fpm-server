@@ -1,3 +1,9 @@
+# 2.2.3 (2017-04-05)
+
+Feature
+
+- Support file middleware `qiniu`
+
 # 2.2.3 (2017-03-29)
 
 Feature
