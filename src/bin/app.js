@@ -12,7 +12,6 @@ import Hook from '../utils/hook.js'
 import Biz from '../utils/biz.js'
 import api from '../router/api.js'
 import ping from '../router/ping.js'
-import upload from '../router/upload.js'
 import core from './core'
 
 //load local config.json
@@ -175,7 +174,6 @@ class Fpm {
     this.app.use(compare)
     this.app.use(api.routes()).use(api.allowedMethods())
     this.app.use(ping.routes()).use(ping.allowedMethods())
-    this.app.use(upload.routes()).use(upload.allowedMethods())
 
     this.runAction('FPM_MIDDLEWARE', this, this.app)
     this.runAction('FPM_ROUTER', this, this.app)

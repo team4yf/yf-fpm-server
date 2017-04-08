@@ -1,3 +1,15 @@
+# 2.2.4 (2017-04-08)
+
+Remove
+
+- upload router
+- upload dir
+
+Plugin
+
+- qiniu upload plugin
+- memory upload plugin
+
 # 2.2.3 (2017-04-05)
 
 Feature
