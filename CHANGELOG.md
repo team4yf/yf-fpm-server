@@ -4,6 +4,7 @@ Remove
 
 - upload router
 - upload dir
+- remove `qiniu` dep
 
 Plugin
 
