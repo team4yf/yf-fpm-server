@@ -39,6 +39,7 @@
     "babel-register": "^6.14.0",
     "babel-runtime": "^6.0.0",
     "chai": "^3.5.0",
+    "fpm-plugin-qiniu-upload": "^1.0.0",
     "mocha": "^3.2.0"
   }
 }
