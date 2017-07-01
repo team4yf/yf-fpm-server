@@ -2,6 +2,7 @@ import Koa from 'koa'
 import BodyParser from 'koa-bodyparser'
 import cors from 'koa2-cors'
 import PubSub from 'pubsub-js'
+import Router from 'koa-router'
 import path from 'path'
 import fs from 'fs'
 import _ from 'lodash'
@@ -91,6 +92,15 @@ class Fpm {
     return this.app
   }
 
+  createRouter(){
+    return Router()
+  }
+
+  bindRouter(router){
+    this.app.use(router.routes())
+      .use(router.allowedMethods())
+  }
+
   addBizModules(biz){
     this.runAction('BEFORE_MODULES_ADDED', biz)
     if(biz instanceof Biz){
@@ -172,8 +182,8 @@ class Fpm {
     })
     this.app.use(auth)
     this.app.use(compare)
-    this.app.use(api.routes()).use(api.allowedMethods())
-    this.app.use(ping.routes()).use(ping.allowedMethods())
+    this.bindRouter(api)
+    this.bindRouter(ping)
 
     this.runAction('FPM_MIDDLEWARE', this, this.app)
     this.runAction('FPM_ROUTER', this, this.app)
