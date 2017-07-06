@@ -13,6 +13,7 @@ import Hook from '../utils/hook.js'
 import Biz from '../utils/biz.js'
 import api from '../router/api.js'
 import ping from '../router/ping.js'
+import webhook from '../router/webhook.js'
 import core from './core'
 
 //load local config.json
@@ -184,6 +185,7 @@ class Fpm {
     this.app.use(compare)
     this.bindRouter(api)
     this.bindRouter(ping)
+    this.bindRouter(webhook)
 
     this.runAction('FPM_MIDDLEWARE', this, this.app)
     this.runAction('FPM_ROUTER', this, this.app)

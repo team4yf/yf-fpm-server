@@ -3,7 +3,7 @@
  */
 import _ from 'lodash'
 
-const DEFAULT_ROUTERS = '/api,/upload,/ping,/admin'.split(',')
+const DEFAULT_ROUTERS = '/api,/ping,/webhook'.split(',')
 
 export default async (ctx, next) => {
   let req = ctx.request
