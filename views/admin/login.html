@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Fpm Admin Login</title>
+    <meta charset="UTF-8"/>
+    <link href="//cdn.bootcss.com/flat-ui/2.3.0/css/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//cdn.bootcss.com/flat-ui/2.3.0/css/flat-ui.min.css" rel="stylesheet">
+    <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <style>
+      html, body{
+        background-color: #1abc9c;
+      }
+      #container {
+        width:480px;
+        padding: 10px;
+        font: 18px "Lucida Grande", Helvetica, Arial, sans-serif;
+      }
+      h1>span{
+        font-size: 14px;
+      }
+      @media screen and (max-device-width:400px) {
+        #container {
+          width:380px;
+          padding: 10px;
+          font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;
+        }
+        h1{font-size:2.6em;}
+      }
+      a {
+        color: #00B7FF;
+      }
+    </style>
+  </head>
+  <body ng-app="ci-app">
+    <div id="container" class="center-block">
+      <h1 class="text-center">Welcome <span>fpm@{{version}}</span></h1>
+      <form class="login-form margin-top-2x" method="post" action="" id="login-form">
+        <div class="form-group">
+          <input type="text" class="form-control login-field" name="user" value="admin" placeholder="Enter your name" id="login-name">
+          <label class="login-field-icon fui-user" for="login-name"></label>
+        </div>
+
+        <div class="form-group">
+          <input type="password" class="form-control login-field" name="pass" value="" placeholder="Password" id="login-pass">
+          <label class="login-field-icon fui-lock" for="login-pass"></label>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg btn-block" >Log in</button>
+        <a class="login-link text-left" target="_blank" href="https://www.github.com/yfsoftcom">Created By Wangfan@Yun+.IO</a>
+      </form>
+    </div>
+    <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <script>
+      $().ready(function(){
+        var $name = $('#login-name');
+        var $pass = $('#login-pass');
+
+        $('#login-form').submit(function(){
+          var loginInfo = {name: $name.val() , pass: $pass.val()}
+          $.ajax({
+            url: '/admin/login',
+            type: 'POST',
+            data: loginInfo,
+            success: function(data){
+              console.log(data)
+              if(data.code === 0){
+                location.href = '/admin/main'
+              }else{
+                alert(data.error)
+              }
+            },
+            error: function(err){
+              alert(err)
+            }
+          });
+          return false;
+        });
+      });
+    </script>
+  </body>
+</html>

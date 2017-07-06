@@ -3,21 +3,31 @@ import BodyParser from 'koa-bodyparser'
 import cors from 'koa2-cors'
 import PubSub from 'pubsub-js'
 import Router from 'koa-router'
+import Views from 'koa-views'
+import Session from 'koa-session2'
+import Static from 'koa-static'
 import path from 'path'
 import fs from 'fs'
 import _ from 'lodash'
 import response from '../middleware/response.js'
 import auth from '../middleware/auth.js'
 import compare from '../middleware/compare.js'
+import session from '../middleware/session.js'
 import Hook from '../utils/hook.js'
 import Biz from '../utils/biz.js'
 import api from '../router/api.js'
+import admin from '../router/admin.js'
 import ping from '../router/ping.js'
 import webhook from '../router/webhook.js'
 import core from './core'
 
+const packageInfo = require('../../package.json')
+
+//runtime dir
+const CWD = process.cwd()
+
 //load local config.json
-let configPath = path.join(process.cwd(), 'config.json')
+let configPath = path.join(CWD, 'config.json')
 let config = {
   server:{
     port: 9999
@@ -73,13 +83,14 @@ class Fpm {
     app.use(BodyParser())
     app.use(cors())
     app.use(response)
-
+    
     this.app = app
     this._biz_module = {}
     this._hook = {}
     this._action = {}
     this._start_time = _.now()
     this._env = config.dev
+    this._version = packageInfo.version
     //add plugins
     loadPlugin(this)
     this.runAction('INIT', this)
@@ -91,6 +102,10 @@ class Fpm {
 
   getApp(){
     return this.app
+  }
+
+  getVersion(){
+    return this._version
   }
 
   createRouter(){
@@ -183,9 +198,21 @@ class Fpm {
     })
     this.app.use(auth)
     this.app.use(compare)
+
     this.bindRouter(api)
     this.bindRouter(ping)
     this.bindRouter(webhook)
+
+    this.app.use(Views(path.join(CWD, 'views'), {
+      extension: 'html',
+      map: { html: 'nunjucks' }
+    }))
+    this.app.use(Static(path.join(CWD, 'public')))
+    this.app.use(Session({ key: 'fpm-server-admin' }))
+    this.app.use(session)
+    
+    this.runAction('ADMIN', admin, this)
+    this.bindRouter(admin)
 
     this.runAction('FPM_MIDDLEWARE', this, this.app)
     this.runAction('FPM_ROUTER', this, this.app)
