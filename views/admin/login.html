@@ -63,7 +63,6 @@
             type: 'POST',
             data: loginInfo,
             success: function(data){
-              console.log(data)
               if(data.code === 0){
                 location.href = '/admin/main'
               }else{

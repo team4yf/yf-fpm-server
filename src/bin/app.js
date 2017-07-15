@@ -1,3 +1,12 @@
+/**
+ * FPM-Server 核心文件
+ * @author wang.fan
+ * @lastModifyAt 2017-07-15 09:18
+ */
+
+/*-----------------
+  about koa2
+------------------*/
 import Koa from 'koa'
 import BodyParser from 'koa-bodyparser'
 import cors from 'koa2-cors'
@@ -9,18 +18,38 @@ import Static from 'koa-static'
 import path from 'path'
 import fs from 'fs'
 import _ from 'lodash'
+
+/*-----------------
+  about middleware
+------------------*/
 import response from '../middleware/response.js'
-import auth from '../middleware/auth.js'
+import permission from '../middleware/permission.js'
 import compare from '../middleware/compare.js'
 import session from '../middleware/session.js'
+
+/*-----------------
+  about util
+------------------*/
 import Hook from '../utils/hook.js'
 import Biz from '../utils/biz.js'
+import Exception from '../utils/exception.js'
+
+/*-----------------
+  about router
+------------------*/
 import api from '../router/api.js'
 import admin from '../router/admin.js'
 import ping from '../router/ping.js'
 import webhook from '../router/webhook.js'
+
+/*-----------------
+  about invoker
+------------------*/
 import core from './core'
 
+/******* Import End *******/
+
+// package info
 const packageInfo = require('../../package.json')
 
 //runtime dir
@@ -68,11 +97,14 @@ const loadPlugin = function(fpm){
       let deps = m.getDependencies() || []
       _.map(deps, (d) => {
         if(!_.has(plugins, d.name)){
-          throw new Error('missing plugin ! plugin: ' + p.name + ' dependent plugin: ' + d.name)
+          throw new Exception({
+            code: 'Plugin-Load-Error',
+            errno: -10001,
+            message: 'missing plugin ! plugin: ' + p.name + ' dependent plugin: ' + d.name
+          })
         }
       })
     }
-
     return m.bind(fpm)
   })
 }
@@ -86,7 +118,7 @@ class Fpm {
     
     this.app = app
     this._biz_module = {}
-    this._hook = {}
+    this._hook = new Hook()
     this._action = {}
     this._start_time = _.now()
     this._env = config.dev
@@ -112,6 +144,10 @@ class Fpm {
     return Router()
   }
 
+  createBiz(version){
+    return new Biz(version)
+  }
+
   bindRouter(router){
     this.app.use(router.routes())
       .use(router.allowedMethods())
@@ -123,7 +159,11 @@ class Fpm {
       let m = biz.convert()
       this._biz_module[m.version] = m.modules
     }else{
-      throw new Error('Biz must be instanceof Biz')
+      throw new Exception({
+        code: 'Biz-Load-Error',
+        errno: -10011,
+        message: 'Biz must be instanceof Biz'
+      })
     }
     this.runAction('AFTER_MODULES_ADDED', biz)
   }
@@ -153,12 +193,12 @@ class Fpm {
     return await core(method, args, v, this)
   }
 
-  addHook(hook){
-    if(hook instanceof Hook){
-      this._hook = hook
-    }else{
-      throw new Error('Hook must be instanceof Hook')
-    }
+  addAfterHook(method, hookHandler, v, priority){
+    return this._hook.addAfterHook(method, hookHandler, v, priority)
+  }
+
+  addBeforeHook(method, hookHandler, v, priority){
+    return this._hook.addBeforeHook(method, hookHandler, v, priority)
   }
 
   getConfig(c){
@@ -196,7 +236,7 @@ class Fpm {
       ctx.fpm = self
       await next()
     })
-    this.app.use(auth)
+    this.app.use(permission)
     this.app.use(compare)
 
     this.bindRouter(api)
@@ -226,4 +266,4 @@ class Fpm {
 }
 
 
-export{ Fpm , Hook , Biz}
+export { Fpm , Hook , Biz}

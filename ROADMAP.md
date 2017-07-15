@@ -1,5 +1,22 @@
 ## Roadmap Of yf-fpm-server
 
+#### v3.0
+
+- 全局
+  - 自定义异常的处理
+  
+- 核心
+  - 去除Hook, Biz的export, 通过 createHook, createBiz 来创建
+  - 修改 auth 为 permision
+  - 添加后台页面
+    - 菜单
+
+- 插件
+  - 实现热部署
+
+- 弃用
+  - 文件上传的部分
+
 #### v2.3
 
 - 插件

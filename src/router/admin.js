@@ -21,12 +21,12 @@ admin.get('/admin/main', async (ctx, next) => {
 })
 
 admin.post('/admin/login', async (ctx, next) => {
-  console.log(ctx.session)
   //check pass
   let loginInfo = ctx.request.body
   if (loginInfo.name === 'admin' && loginInfo.pass === '741235896') {
     ctx.session.admin = loginInfo
     ctx.body = { code: 0 }
+    // TODO: check premission
   } else {
     ctx.body = { code: -99, error: 'User Or Pass Error ' }
   }

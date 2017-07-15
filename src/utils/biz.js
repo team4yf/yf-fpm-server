@@ -1,8 +1,14 @@
 import _ from 'lodash'
+import Exception from './exception.js'
+
 export default class {
   constructor(v, fpm){
     if(!v){
-      throw new Error('biz should be set version,ex: 0.0.1 or 1.0 ...')
+      throw new Exception({
+        code: 'Biz-Version-Required',
+        errno: -10021,
+        message: 'Biz Version Required'
+      })
     }
     this.v = v
     this.m = {}
