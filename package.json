@@ -7,7 +7,9 @@
     "compile": "babel -d lib/ src/",
     "prepublish": "npm run compile",
     "server": "node example/runner.js",
-    "test": "mocha test/*.test.js"
+    "test": "mocha test/*.test.js",
+    "dev": "./node_modules/.bin/nodemon ./example/dev.babel.js",
+    "build:gulp": "./node_modules/.bin/gulp"
   },
   "keywords": [
     "yf",
@@ -43,7 +45,13 @@
     "babel-register": "^6.14.0",
     "babel-runtime": "^6.0.0",
     "chai": "^3.5.0",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-jshint": "^2.0.4",
+    "gulp-rename": "^1.2.2",
+    "materialize-css": "^0.99.0",
     "mocha": "^3.2.0",
+    "nodemon": "^1.11.0",
     "yf-fpm-client-nodejs": "^1.0.13"
   }
 }

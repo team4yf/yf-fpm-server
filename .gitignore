@@ -16,7 +16,7 @@ lib
 
 .idea/*
 cache/*.json
-public/dist/*
+public/lib/*
 uploads/*.zip
 uploads/*.json
 uploads/*
