@@ -11,26 +11,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <style>
       .block{display: block; width: 100%;}
-      .margin-bottom-2{margin-bottom: 2em;}
+      .margin-bottom-1{margin-bottom: 1em;}
+      h2>span{
+        font-size: 18px;
+      }
     </style>
   </head>
   <body class="light-blue lighten-4">
     <div class="container light-blue lighten-5" style="margin-top: 3em; padding: 3em 0;">
-      <h2 class="margin-bottom-2 center-align">Welcome <span>fpm@{{version}}</span></h2>
+      <h2 class="margin-bottom-1 center-align">欢迎使用 <span>fpm@{{version}}</span></h2>
       <div class="container">
         <form class="form-horizontal" method="post" action="" id="login-form">
           <div class="input-field">
             <i class="prefix fa fa-user-circle-o"></i>
             <input id="login-name" type="text" class="validate" value="admin" />
-            <label for="login-name">UserName</label>
+            <label for="login-name">账户:</label>
           </div>
           <div class="input-field">
             <i class="prefix fa fa-unlock-alt"></i>
             <input id="login-pass" type="password" class="validate" />
-            <label for="login-pass">Password</label>
+            <label for="login-pass">密码:</label>
           </div>
 
-          <button type="submit" class="waves-effect waves-light btn btn-large block light-blue" >Log in</button>
+          <button type="submit" class="waves-effect waves-light btn btn-large block light-blue" >登录</button>
           <a class="login-link text-left" target="_blank" href="https://www.github.com/yfsoftcom">Created By Wangfan@Yun+.IO</a>
         </form>
       </div>

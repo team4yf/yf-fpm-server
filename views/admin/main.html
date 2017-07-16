@@ -21,7 +21,7 @@
         <a href="#" class="brand-logo"> &nbsp; FPM-ADMIN</a>
         <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
-          <li><a href="">注销</a></li>
+          <li><a href="/admin/logout">注销</a></li>
         </ul>
         <ul class="side-nav" id="mobile-demo">
           <li><a href="">仪表板</a></li>
@@ -70,6 +70,7 @@
       <!-- Targets */ -->
       <div class=" ">
         <div class="row">
+          <!-- /* API TESTER -->
           <div class="col s6 m6 container">
             <div class="card gray light-1">
               <div class="card-content">
@@ -83,15 +84,16 @@
                     <textarea id="textarea1" class="materialize-textarea"></textarea>
                     <label for="textarea1">参数</label>
                   </div>
-                  <button class="btn waves-effect waves-light" type="" name="action">提交
+                  <button class="btn waves-effect waves-light light-blue darken-3" type="" name="action">提交
                   </button>
                   <button class="btn waves-effect waves-light grey" type="reset" name="">重置
                   </button> 
                 </form>
               </div>
             </div>
-            
           </div>
+          <!-- API TESTER /* -->
+          <!-- /* OUTPUT -->
           <div class="col s6 m6 container">
             <div class="card gray light-1">
               <div class="card-content">
@@ -102,10 +104,35 @@
                 </div>
               </div>
             </div>
-            
+          </div>
+          <!-- OUTPUT /*-->
+        </div>
+        <!-- */ -->
+
+        <!-- /* Commander -->
+        <div class="row">
+          <div class="col s12 m12 container">
+            <div class="card gray light-1">
+              <div class="card-content">
+                <span class="card-title">终端控制台</span>
+                <div class="input-field">
+                  <textarea class="materialize-textarea"></textarea>
+                  <label for="textarea1">命令: yfci build , pm2 show, free</label>
+                </div>
+                <button 
+                  class="btn waves-effect waves-light light-blue darken-3" 
+                  type="" name="action">执行</button>
+              </div>
+              <div class="card-content">
+                <span class="card-title">输出结果</span>
+                <div class="input-field">
+                  <textarea disabled class="materialize-textarea"></textarea>
+                  <label for="textarea1">RESULT</label>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        
       </div>
     </div>
     <div id="tab-content-2">

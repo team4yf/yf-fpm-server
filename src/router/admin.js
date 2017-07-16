@@ -19,6 +19,10 @@ admin.get('/admin/main', async (ctx, next) => {
     version: ctx.fpm.getVersion(),
   })
 })
+admin.get('/admin/logout', async (ctx, next) => {
+  ctx.session.admin = undefined
+  await ctx.redirect('/admin/login')
+})
 
 admin.post('/admin/login', async (ctx, next) => {
   //check pass
