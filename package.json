@@ -49,6 +49,7 @@
     "gulp-concat": "^2.6.1",
     "gulp-jshint": "^2.0.4",
     "gulp-rename": "^1.2.2",
+    "jquery": "^3.2.1",
     "materialize-css": "^0.99.0",
     "mocha": "^3.2.0",
     "nodemon": "^1.11.0",
