@@ -55,6 +55,9 @@ const packageInfo = require('../../package.json')
 //runtime dir
 const CWD = process.cwd()
 
+// local dir
+const LOCAL = path.join(__dirname, '../../')
+
 //load local config.json
 let configPath = path.join(CWD, 'config.json')
 let config = {
@@ -243,11 +246,16 @@ class Fpm {
     this.bindRouter(ping)
     this.bindRouter(webhook)
 
-    this.app.use(Views(path.join(CWD, 'views'), {
+    // this.app.use(Views(path.join(CWD, 'views'), {
+    //   extension: 'html',
+    //   map: { html: 'nunjucks' }
+    // }))
+    this.app.use(Views(path.join(LOCAL, 'views'), {
       extension: 'html',
       map: { html: 'nunjucks' }
     }))
     this.app.use(Static(path.join(CWD, 'public')))
+    this.app.use(Static(path.join(LOCAL, 'public')))
     this.app.use(Session({ key: 'fpm-server-admin' }))
     this.app.use(session)
     
