@@ -19,6 +19,14 @@ admin.get('/admin/main', async (ctx, next) => {
     version: ctx.fpm.getVersion(),
   })
 })
+admin.get('/admin/setting/:menu', async (ctx, next) => {
+  await ctx.render('admin/setting/' + ctx.params.menu, {})
+})
+admin.get('/admin/about', async (ctx, next) => {
+  await ctx.render('admin/about', {
+    version: ctx.fpm.getVersion(),
+  })
+})
 admin.get('/admin/logout', async (ctx, next) => {
   ctx.session.admin = undefined
   await ctx.redirect('/admin/login')

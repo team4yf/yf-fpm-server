@@ -1,0 +1,56 @@
+{% extends "views/admin/base.html" %}
+{% block head %} 
+<link type="text/css" rel="stylesheet" href="/style.css"  media="screen,projection"/>
+{% endblock %}
+{% block style %} 
+{% endblock %}
+{% block body %}
+<header>
+  <nav class="top-nav light-blue">
+    <div class="container">
+      <div class="nav-wrapper">
+        <a href="#" data-activates="nav-mobile" 
+          class="button-collapse top-nav waves-effect waves-light circle hide-on-large-only">
+          <i class="fa fa-list"></i></a>
+        <a class="page-title">{% block pagetitle %} 标题 {% endblock %}</a></div>
+    </div>
+  </nav>
+  <ul id="nav-mobile" class="side-nav fixed" style="overflow: auto;">
+    <li class="logo">
+      <a id="logo-container" href="/admin/main" class="brand-logo blue-text">FPM-Admin</a>
+    </li>
+    <li class="nav-title">工作台</li>
+    <li class="bold "><a href="/admin/main" class="waves-effect waves-teal">仪表板</a></li>
+    <li class="no-padding">
+      <ul class="collapsible collapsible-accordion">
+        <li class="bold"><a class="collapsible-header  waves-effect waves-teal">CSS</a>
+          <div class="collapsible-body">
+            <ul>
+              <li class=""><a href="/color.html">颜色</a></li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </li>
+    <li class="nav-title">插件</li>
+    <li class="bold "><a href="/admin/about" class="waves-effect waves-teal">SocketIO</a></li>
+
+    <li class="nav-title">系统菜单</li>
+    <li class="bold "><a href="/admin/setting/database" class="waves-effect waves-teal">数据库</a></li>
+    <li class="bold "><a href="/admin/about" class="waves-effect waves-teal">关于</a></li>
+    <li class="bold "><a href="/admin/logout" class="waves-effect waves-teal">注销</a></li>
+  </ul>
+</header>
+<main>
+{% block main %}{% endblock %}
+</main>
+<footer>
+{% block footer %}{% endblock %}
+</footer>
+{% endblock %}
+
+{% block js %}
+<script>
+  $(".button-collapse").sideNav();
+</script>
+{% endblock %}

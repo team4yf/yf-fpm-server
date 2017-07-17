@@ -1,70 +1,62 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Fpm Admin Login</title>
-    <meta charset="UTF-8"/>
-    <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <!--Import materialize.css-->
-    <link type="text/css" rel="stylesheet" href="/lib/materialize-css/css/materialize.min.css"  media="screen,projection"/>
-
-    <!--Let browser know website is optimized for mobile-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <style>
-      .block{display: block; width: 100%;}
-      .margin-bottom-1{margin-bottom: 1em;}
-      h2>span{
-        font-size: 18px;
-      }
-    </style>
-  </head>
-  <body class="light-blue lighten-4">
-    <div class="container light-blue lighten-5" style="margin-top: 3em; padding: 3em 0;">
-      <h2 class="margin-bottom-1 center-align">欢迎使用 <span>fpm@{{version}}</span></h2>
-      <div class="container">
-        <form class="form-horizontal" method="post" action="" id="login-form">
-          <div class="input-field">
-            <i class="prefix fa fa-user-circle-o"></i>
-            <input id="login-name" type="text" class="validate" value="admin" />
-            <label for="login-name">账户:</label>
-          </div>
-          <div class="input-field">
-            <i class="prefix fa fa-unlock-alt"></i>
-            <input id="login-pass" type="password" class="validate" />
-            <label for="login-pass">密码:</label>
-          </div>
-
-          <button type="submit" class="waves-effect waves-light btn btn-large block light-blue" >登录</button>
-          <a class="login-link text-left" target="_blank" href="https://www.github.com/yfsoftcom">Created By Wangfan@Yun+.IO</a>
-        </form>
+{% extends "views/admin/base.html" %}
+{% block title %} Fpm Admin Login {% endblock %}
+{% block head %}
+<style>
+  .block{display: block; width: 100%;}
+  .margin-bottom-1{margin-bottom: 1em;}
+  h2>span{
+    font-size: 18px;
+  }
+</style>
+{% endblock %}
+{% block bodyclass %} light-blue lighten-4 {% endblock %}
+{% block body %}
+<div class="container light-blue lighten-5" style="max-width: 700px; margin-top: 3em; padding: 3em 0;">
+  <h2 class="margin-bottom-1 center-align">欢迎使用 <span>fpm@{{version}}</span></h2>
+  <div class="container">
+    <form class="form-horizontal" method="post" action="" id="login-form">
+      <div class="input-field">
+        <i class="prefix fa fa-user-circle-o"></i>
+        <input id="login-name" type="text" class="validate" value="admin" />
+        <label for="login-name">账户:</label>
       </div>
-    </div>
-    <script src="/lib/materialize-css/jquery.min.js"></script>
-    <script src="/lib/materialize-css/js/materialize.min.js"></script>
-    <script>
-      $().ready(function(){
-        var $name = $('#login-name');
-        var $pass = $('#login-pass');
+      <div class="input-field">
+        <i class="prefix fa fa-unlock-alt"></i>
+        <input id="login-pass" type="password" class="validate" />
+        <label for="login-pass">密码:</label>
+      </div>
 
-        $('#login-form').submit(function(){
-          var loginInfo = {name: $name.val() , pass: $pass.val()}
-          $.ajax({
-            url: '/admin/login',
-            type: 'POST',
-            data: loginInfo,
-            success: function(data){
-              if(data.code === 0){
-                location.href = '/admin/main'
-              }else{
-                alert(data.error)
-              }
-            },
-            error: function(err){
-              alert(err)
-            }
-          });
-          return false;
-        });
+      <button type="submit" class="waves-effect waves-light btn btn-large block light-blue" >登录</button>
+      <a class="login-link text-left" target="_blank" href="https://www.github.com/yfsoftcom">Created By Wangfan@Yun+.IO</a>
+    </form>
+  </div>
+</div>
+{% endblock %}
+{% block script %}
+<script>
+  $().ready(function(){
+    var $name = $('#login-name');
+    var $pass = $('#login-pass');
+
+    $('#login-form').submit(function(){
+      var loginInfo = {name: $name.val() , pass: $pass.val()}
+      $.ajax({
+        url: '/admin/login',
+        type: 'POST',
+        data: loginInfo,
+        success: function(data){
+          if(data.code === 0){
+            location.href = '/admin/main'
+          }else{
+            alert(data.error)
+          }
+        },
+        error: function(err){
+          alert(err)
+        }
       });
-    </script>
-  </body>
-</html>
+      return false;
+    });
+  });
+</script>
+{% endblock %}

@@ -4,6 +4,7 @@
 
 - 全局
   - 自定义异常的处理
+  - log4js
   
 - 核心
   - 去除Hook, Biz的export, 通过 createHook, createBiz 来创建
