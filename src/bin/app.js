@@ -33,6 +33,7 @@ import session from '../middleware/session.js'
 import Hook from '../utils/hook.js'
 import Biz from '../utils/biz.js'
 import Exception from '../utils/exception.js'
+import AdminKit from '../utils/admin.js'
 
 /*-----------------
   about router
@@ -120,6 +121,10 @@ class Fpm {
     app.use(response)
     
     this.app = app
+    this._options = {
+      'LOCAL': LOCAL,
+      'CWD': CWD,
+    }
     this._biz_module = {}
     this._hook = new Hook()
     this._action = {}
@@ -133,6 +138,15 @@ class Fpm {
     this.errorHandler = (err, ctx) => {
     	console.error('server error', err, ctx)
     }
+    AdminKit(this)
+  }
+
+  set(k, v){
+    this._options[k] = v
+  }
+
+  get(k, udv){
+    return (this._options[k] === undefined)? udv :this._options[k]
   }
 
   getApp(){
