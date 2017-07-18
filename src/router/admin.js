@@ -3,27 +3,27 @@ import Router from 'koa-router'
 const admin = Router()
 
 admin.get('/admin', async (ctx, next) => {
-  await ctx.render('admin/login', {
+  await ctx.render('admin/login.html', {
     version: ctx.fpm.getVersion()
   })
 })
 
 admin.get('/admin/login', async (ctx, next) => {
-  await ctx.render('admin/login', {
+  await ctx.render('admin/login.html', {
     version: ctx.fpm.getVersion()
   })
 })
 
 admin.get('/admin/main', async (ctx, next) => {
-  await ctx.render('admin/main', {
+  await ctx.render('admin/main.html', {
     version: ctx.fpm.getVersion(),
   })
 })
 admin.get('/admin/setting/:menu', async (ctx, next) => {
-  await ctx.render('admin/setting/' + ctx.params.menu, {})
+  await ctx.render('admin/setting/' + ctx.params.menu + '.html', {})
 })
 admin.get('/admin/about', async (ctx, next) => {
-  await ctx.render('admin/about', {
+  await ctx.render('admin/about.html', {
     version: ctx.fpm.getVersion(),
   })
 })

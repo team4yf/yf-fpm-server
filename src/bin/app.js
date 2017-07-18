@@ -33,7 +33,6 @@ import session from '../middleware/session.js'
 import Hook from '../utils/hook.js'
 import Biz from '../utils/biz.js'
 import Exception from '../utils/exception.js'
-import AdminKit from '../utils/admin.js'
 
 /*-----------------
   about router
@@ -138,7 +137,6 @@ class Fpm {
     this.errorHandler = (err, ctx) => {
     	console.error('server error', err, ctx)
     }
-    AdminKit(this)
   }
 
   set(k, v){
@@ -266,7 +264,7 @@ class Fpm {
     // }))
     this.app.use(Views(path.join(LOCAL, 'views'), {
       extension: 'html',
-      map: { html: 'nunjucks' }
+      map: { html: 'nunjucks' },
     }))
     this.app.use(Static(path.join(CWD, 'public')))
     this.app.use(Static(path.join(LOCAL, 'public')))
