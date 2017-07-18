@@ -131,24 +131,24 @@ class Fpm {
     this._start_time = _.now()
     this._env = config.dev
     this._version = packageInfo.version
+    this.copyViews(path.join(LOCAL, './views/admin'), 'admin')
     //add plugins
     loadPlugin(this)
     this.runAction('INIT', this)
-    this.copyViews()
     this.errorHandler = (err, ctx) => {
     	console.error('server error', err, ctx)
     }
   }
 
-  copyViews(){
-    if (fs.existsSync(path.join(CWD, './views/admin'))){
+  copyViews(src, distDir){
+    if (fs.existsSync(path.join(CWD, './views', distDir))){
       return
     }
     if (!fs.existsSync(path.join(CWD, './views'))){
       // mkdir views
       fs.mkdirSync(path.join(CWD, './views'))
     }
-    ncp(path.join(LOCAL, './views/admin'), path.join(CWD, './views/admin'),  (err) => {
+    ncp(src, path.join(CWD, './views/', distDir),  (err) => {
       if (err) {
         throw new Exception({
           errno: -1100,
