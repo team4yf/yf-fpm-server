@@ -265,6 +265,11 @@ class Fpm {
     this.app.use(Views(path.join(LOCAL, 'views'), {
       extension: 'html',
       map: { html: 'nunjucks' },
+      options: {
+        partials : {
+          // LOCAL_DIR: path.join(LOCAL, './')
+        }
+      }
     }))
     this.app.use(Static(path.join(CWD, 'public')))
     this.app.use(Static(path.join(LOCAL, 'public')))
