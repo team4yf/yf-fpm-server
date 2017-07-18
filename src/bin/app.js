@@ -18,6 +18,7 @@ import Static from 'koa-static'
 import path from 'path'
 import fs from 'fs'
 import _ from 'lodash'
+import { ncp } from 'ncp'
 
 /*-----------------
   about middleware
@@ -133,10 +134,19 @@ class Fpm {
     //add plugins
     loadPlugin(this)
     this.runAction('INIT', this)
-
+    this.copyViews()
     this.errorHandler = (err, ctx) => {
     	console.error('server error', err, ctx)
     }
+  }
+
+  copyViews(){
+    ncp(path.join(LOCAL, './views'), path.join(CWD, './pages'), function (err) {
+      if (err) {
+        return console.error(err);
+      }
+      console.log('done!');
+      });
   }
 
   set(k, v){
@@ -262,14 +272,14 @@ class Fpm {
     //   extension: 'html',
     //   map: { html: 'nunjucks' }
     // }))
-    this.app.use(Views(path.join(LOCAL, 'views'), {
+    this.app.use(Views(path.join(LOCAL, 'pages'), {
       extension: 'html',
       map: { html: 'nunjucks' },
-      options: {
-        partials : {
-          // LOCAL_DIR: path.join(LOCAL, './')
-        }
-      }
+      // options: {
+      //   partials : {
+      //     LOCAL_DIR: path.join(LOCAL, './')
+      //   }
+      // }
     }))
     this.app.use(Static(path.join(CWD, 'public')))
     this.app.use(Static(path.join(LOCAL, 'public')))
