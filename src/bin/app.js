@@ -141,12 +141,22 @@ class Fpm {
   }
 
   copyViews(){
-    ncp(path.join(LOCAL, './views'), path.join(CWD, './pages'), function (err) {
+    if (fs.existsSync(path.join(CWD, './views/admin'))){
+      return
+    }
+    if (!fs.existsSync(path.join(CWD, './views'))){
+      // mkdir views
+      fs.mkdirSync(path.join(CWD, './views'))
+    }
+    ncp(path.join(LOCAL, './views/admin'), path.join(CWD, './views/admin'),  (err) => {
       if (err) {
-        return console.error(err);
+        throw new Exception({
+          errno: -1100,
+          code: 'copy views exception',
+          message: 'Copy Views Error'
+        })
       }
-      console.log('done!');
-      });
+    })
   }
 
   set(k, v){
@@ -272,7 +282,7 @@ class Fpm {
     //   extension: 'html',
     //   map: { html: 'nunjucks' }
     // }))
-    this.app.use(Views(path.join(LOCAL, 'pages'), {
+    this.app.use(Views(path.join(CWD, 'views'), {
       extension: 'html',
       map: { html: 'nunjucks' },
       // options: {
