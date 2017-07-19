@@ -34,6 +34,7 @@ import session from '../middleware/session.js'
 import Hook from '../utils/hook.js'
 import Biz from '../utils/biz.js'
 import Exception from '../utils/exception.js'
+import { doCommand } from '../utils/process.js'
 
 /*-----------------
   about router
@@ -125,6 +126,7 @@ class Fpm {
       'LOCAL': LOCAL,
       'CWD': CWD,
     }
+    this.doCommand = doCommand
     this._biz_module = {}
     this._hook = new Hook()
     this._action = {}
