@@ -35,6 +35,7 @@ import Hook from '../utils/hook.js'
 import Biz from '../utils/biz.js'
 import Exception from '../utils/exception.js'
 import { doCommand } from '../utils/process.js'
+import { deletedir }  from '../utils/kit.js'
 
 /*-----------------
   about router
@@ -133,13 +134,23 @@ class Fpm {
     this._start_time = _.now()
     this._env = config.dev
     this._version = packageInfo.version
+
+    this.cleanViews()
     this.copyViews(path.join(LOCAL, './views/admin'), 'admin')
+
     //add plugins
     loadPlugin(this)
     this.runAction('INIT', this)
     this.errorHandler = (err, ctx) => {
     	console.error('server error', err, ctx)
     }
+  }
+
+  cleanViews(){
+    if(LOCAL == CWD){
+      return
+    }
+    deletedir(path.join(CWD, './views'))
   }
 
   copyViews(src, distDir){

@@ -1,3 +1,6 @@
+import fs from 'fs'
+import path from 'path'
+
 let parseQueryString = (url) => {
   let obj = {}
   , keyvalue = []
@@ -13,4 +16,22 @@ let parseQueryString = (url) => {
   }
   return obj;
 }
-export { parseQueryString }
+
+const deletedir = (dir) => {
+  if(!fs.existsSync(path)) {
+    return
+  }
+  let files = []
+  files = fs.readdirSync(path)
+  files.forEach((file, index) => {
+    let curPath = path.join(path, file)
+    if(fs.statSync(curPath).isDirectory()) { // recurse  
+      deletedir(curPath)
+    } else { // delete file  
+      fs.unlinkSync(curPath)
+    }
+  })
+  fs.rmdirSync(path)
+}
+
+export { parseQueryString, deletedir }
