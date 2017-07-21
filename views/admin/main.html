@@ -102,3 +102,28 @@
   </div>
 </div>
 {% endblock %}
+
+{% block js %}
+<script>
+  var inputData = {
+      method: 'system.show',
+      appkey: '123123',
+      masterKey: '123123',
+      v: '0.0.1',
+      timestamp: 1111111111111,
+      sign: 'a',
+      param: '{}',
+    }
+  fetch('/api', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+    body: JSON.stringify(inputData)
+  }).then(function(data){
+    return data.json()
+  }).then(function(data){
+    console.log(data)
+  }).catch(function(err){
+    console.log(err)
+  })
+</script>
+{% endblock %}
