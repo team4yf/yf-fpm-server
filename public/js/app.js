@@ -6,6 +6,9 @@
   win.app = app;
 })(window);
 
+/**
+ * Main
+ */
 (function(app){
   app.controller('MainCtrl', ['$scope', '$ae', function($scope, $ae){
     $scope.api = {
@@ -52,4 +55,34 @@
   }])
 })(window.app);
   
+(function(app){
+  app.controller('MysqlCtrl', ['$scope', '$ae', function($scope, $ae){
+    $scope.tables = [
+      {
+        name: 'A',
+        desc: 'fpm_user',
+      },
+      {
+        name: 'B',
+        desc: 'fpm_user',
+      },
+      {
+        name: 'C',
+        desc: 'fpm_user',
+      },
+      {
+        name: 'A',
+        desc: 'fpm_user',
+      },
+      {
+        name: 'B',
+        desc: 'fpm_user',
+      },
+      {
+        name: 'C',
+        desc: 'fpm_user',
+      },
+    ]
+  }]);
+})(window.app);
 

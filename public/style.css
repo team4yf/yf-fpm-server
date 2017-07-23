@@ -27,6 +27,9 @@ pre{
   background-color: #fff;
   border: 2px solid #e7e9ec;
   border-radius: 6px;
+  display: block;
+  word-break: break-all;
+  word-wrap: break-word;
 }
 @media only screen and (max-width: 992px){
   header, main{
