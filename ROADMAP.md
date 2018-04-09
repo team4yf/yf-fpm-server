@@ -14,6 +14,8 @@
 
 - 插件
   - 实现热部署
+  - MockServer
+  - UnitTest
 
 - 弃用
   - 文件上传的部分
