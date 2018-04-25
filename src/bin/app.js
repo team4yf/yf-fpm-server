@@ -112,7 +112,7 @@ const loadPlugin = function(fpm){
     }
     m.bind(fpm)
   })
-  this._plugins = _.assign(this._plugins, plugins)
+  fpm._plugins = _.assign(fpm._plugins, plugins)
 }
 
 class Fpm {
