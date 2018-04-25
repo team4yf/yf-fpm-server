@@ -15,6 +15,10 @@ export default class {
     this.fpm = fpm
   }
 
+  getVersion(){
+    return this.v
+  }
+
   convert(){
     return {
       version: this.v,

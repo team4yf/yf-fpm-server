@@ -15,4 +15,15 @@ describe('Function', function(){
   
   })
 
+  it('test ExtendModule', function(done){
+    var func = new YF.Func('demo.foo');
+    func.invoke({})
+      .then(function(d){
+        console.log(d)
+        done();
+      }).catch(function(err){
+        done(err);
+      });
+  
+  })
 })

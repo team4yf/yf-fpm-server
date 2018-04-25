@@ -1,4 +1,18 @@
-# 3.0.0 (2017-07-15)
+# 2.2.22 (2017-04-25)
+
+Change 
+
+- The `BEFORE_MODULES_ADDED` & `AFTER_MODULES_ADDED` Action Hook Points May Invoke Multi Times; `fpm.addBizModules(biz:Biz)` can be called many times
+
+Add
+
+- `extendModule(name:String!, module:Object/Function!, version:String?)` for plugin in `DEV` mode
+
+Remove 
+
+- example\runner.js 
+
+# 2.2.21 (2017-07-15)
 
 Add
 

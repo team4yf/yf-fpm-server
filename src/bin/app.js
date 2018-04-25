@@ -201,6 +201,31 @@ class Fpm {
       .use(router.allowedMethods())
   }
 
+  extendModule(name, module, version){
+    if(_.isFunction(module)){
+      module = module(this)
+    }
+    if(!version){
+      // extend for every version
+      _.map(this._biz_module, (bizModule) => {
+        bizModule[name] = module
+      })
+    }else{
+      // extend for Special Version
+      if(!_.has(this.getBizVersions(), version)){
+        throw new Exception({
+          code: 'Biz-Module-Extend-Error',
+          errno: -10013,
+          message: `Biz Version ${version} Not Exists!`
+        })
+      }
+      this._biz_module[version][name] = module
+    }
+  }
+
+  getBizVersions(){
+    return _.keys(this._biz_module)
+  }
   addBizModules(biz){
     this.runAction('BEFORE_MODULES_ADDED', biz)
     if(biz instanceof Biz){
