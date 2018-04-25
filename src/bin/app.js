@@ -93,8 +93,7 @@ const loadPlugin = function(fpm){
     let packageInfo = require(path.join(modulesDir, f, 'package.json'))
     plugins[packageInfo.name] = { name: packageInfo.name, version: packageInfo.version}
   })
-
-  plugins = _.map(plugins, (p) => {
+  _.map(plugins, (p) => {
     let m = require(path.join(modulesDir, p.name))
     if(_.has(m, 'default')){
       m = m.default
@@ -111,8 +110,9 @@ const loadPlugin = function(fpm){
         }
       })
     }
-    return m.bind(fpm)
+    m.bind(fpm)
   })
+  this._plugins = _.assign(this._plugins, plugins)
 }
 
 class Fpm {
@@ -134,6 +134,7 @@ class Fpm {
     this._start_time = _.now()
     this._env = config.dev
     this._version = packageInfo.version
+    this._plugins = {}
 
     this.cleanViews()
     this.copyViews(path.join(LOCAL, './views/admin'), 'admin')
@@ -188,6 +189,14 @@ class Fpm {
     return this._version
   }
 
+  getPlugins(){
+    return this._plugins
+  }
+
+  isPluginInstalled(name){
+    return _.has(this._plugins, name)
+  }
+
   createRouter(){
     return Router()
   }
@@ -227,7 +236,6 @@ class Fpm {
     return _.keys(this._biz_module)
   }
   addBizModules(biz){
-    this.runAction('BEFORE_MODULES_ADDED', biz)
     if(biz instanceof Biz){
       let m = biz.convert()
       this._biz_module[m.version] = m.modules
@@ -238,7 +246,6 @@ class Fpm {
         message: 'Biz must be instanceof Biz'
       })
     }
-    this.runAction('AFTER_MODULES_ADDED', biz)
   }
 
   registerAction(actionName, action){

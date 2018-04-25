@@ -1,6 +1,6 @@
-# 2.2.23 (2017-04-25)
+# 2.2.24 (2017-04-25)
 
-Change 
+Remove 
 
 - The `BEFORE_MODULES_ADDED` & `AFTER_MODULES_ADDED` Action Hook Points May Invoke Multi Times; `fpm.addBizModules(biz:Biz)` can be called many times
 
@@ -21,6 +21,8 @@ Change
 Add
 
 - `extendModule(name:String!, module:Object/Function!, version:String?)` for plugin in `DEV` mode
+- `getPlugins()` show all loaded plugins
+- `isPluginInstalled(name:String!)`
 
 Remove 
 
