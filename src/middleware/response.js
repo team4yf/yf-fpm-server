@@ -20,13 +20,17 @@ export default async (ctx, next) => {
 
   ctx.success = (result, msg) => {
     data.message = msg || ''
-    data.data = result.data
+    if(_.isPlainObject(result)){
+      data.data = result.data
+    }else{
+      data.data = result
+    }    
   }
 
   ctx.fail = (err) => {
     data.message = err.message || 'System Error!'
     data.errno = err.errno == undefined ? -999 : err.errno
-    data.code = err.code
+    data.code = err.code == undefined ? 'UnDefined' : err.code
     data.error = err
   }
   await next()

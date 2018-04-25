@@ -1,8 +1,20 @@
-# 2.2.22 (2017-04-25)
+# 2.2.23 (2017-04-25)
 
 Change 
 
 - The `BEFORE_MODULES_ADDED` & `AFTER_MODULES_ADDED` Action Hook Points May Invoke Multi Times; `fpm.addBizModules(biz:Biz)` can be called many times
+
+- In The Middleware `response.js`;  Support More Type Of Result Not Only `Object`
+  ```javascript
+  ctx.success = (result, msg) => {
+    data.message = msg || ''
+    if(_.isPlainObject(result)){
+      data.data = result.data
+    }else{
+      data.data = result
+    }    
+  }
+  ```
 
 Add
 
