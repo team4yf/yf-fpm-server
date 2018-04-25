@@ -21,10 +21,12 @@ export default async (ctx, next) => {
   ctx.success = (result, msg) => {
     data.message = msg || ''
     if(_.isPlainObject(result)){
-      data.data = result.data
-    }else{
-      data.data = result
+      if(_.has(result, data)){
+        data.data = result.data
+        return
+      }
     }    
+    data.data = result   
   }
 
   ctx.fail = (err) => {

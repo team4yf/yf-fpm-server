@@ -11,7 +11,7 @@ app.addBizModules(biz)
 
 app.extendModule('demo', {
   foo: async function(args){
-    return Promise.reject({errno: -4001})
+    return Promise.resolve(1)
   }
 })
 app.run()
