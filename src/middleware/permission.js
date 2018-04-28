@@ -7,6 +7,9 @@ import _ from 'lodash'
 export default async (ctx, next) => {
   let req = ctx.request
   let path = req.url
+  const ip = ctx.ip
+  //TODO:对客户端ip进行过滤等操作
+
   //如果调用的是api路由，则进行分析和拦截
   if(path === '/api'){
     //验证安全性

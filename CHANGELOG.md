@@ -1,4 +1,9 @@
-# 2.2.24 (2017-04-25)
+# 2.2.24 (2018-04-28)
+
+TODO:
+- Add Ip Filter In File `permission.js`
+
+# 2.2.24 (2018-04-25)
 
 Remove 
 
