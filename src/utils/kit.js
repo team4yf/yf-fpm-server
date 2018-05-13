@@ -25,9 +25,9 @@ const deletedir = (dir) => {
   files = fs.readdirSync(path)
   files.forEach((file, index) => {
     let curPath = path.join(path, file)
-    if(fs.statSync(curPath).isDirectory()) { // recurse  
+    if(fs.statSync(curPath).isDirectory()) { // recurse
       deletedir(curPath)
-    } else { // delete file  
+    } else { // delete file
       fs.unlinkSync(curPath)
     }
   })

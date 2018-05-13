@@ -14,7 +14,6 @@ function versionUndefinedHandler(){
 
 let getFunction = (method, v, bizModule) => {
     bizModule = bizModule || {}
-    console.log("[CALL METHOD]:" + method + "@" + v)
     if(!_.has(bizModule,v)){
         return versionUndefinedHandler
     }

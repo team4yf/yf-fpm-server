@@ -25,8 +25,8 @@ export default async (ctx, next) => {
         data.data = result.data
         return
       }
-    }    
-    data.data = result   
+    }
+    data.data = result
   }
 
   ctx.fail = (err) => {

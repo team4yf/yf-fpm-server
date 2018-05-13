@@ -76,7 +76,7 @@ let sign = (args, apps) => {
     let md5 = crypto.createHash('md5')
     let sign = args.sign
     delete args.sign
-    
+
     if(apps){
         args.masterKey = apps[args.appkey].secretkey
     }else{

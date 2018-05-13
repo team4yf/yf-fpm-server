@@ -1,3 +1,10 @@
+# 2.2.24 (2018-05-13)
+
+ADD:
+- Add Action Before Api Invoke
+`ctx.fpm.runAction('CALL_API', ctx.fpm, ctx, { method, param, v })`
+
+
 # 2.2.24 (2018-04-28)
 
 TODO:

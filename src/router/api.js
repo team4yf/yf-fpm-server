@@ -10,6 +10,8 @@ Api.post('/api', async (ctx, next) => {
   let param = postData.param
   param = JSON.parse(param)
   try{
+    ctx.fpm.logger.log("[CALL METHOD]:" + method + "@" + v)
+    ctx.fpm.runAction('CALL_API', ctx.fpm, ctx, { method, param, v })
     let p = await core(method, param, v, ctx.fpm)
     ctx.success(p)
   }catch(err){

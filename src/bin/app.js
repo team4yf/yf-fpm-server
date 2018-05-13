@@ -121,7 +121,7 @@ class Fpm {
     app.use(BodyParser())
     app.use(cors())
     app.use(response)
-    
+
     this.app = app
     this._options = {
       'LOCAL': LOCAL,
@@ -135,6 +135,8 @@ class Fpm {
     this._env = config.dev
     this._version = packageInfo.version
     this._plugins = {}
+    //TODO: make a logger plugin replace this
+    this.logger = console
 
     this.cleanViews()
     this.copyViews(path.join(LOCAL, './views/admin'), 'admin')
@@ -143,7 +145,7 @@ class Fpm {
     loadPlugin(this)
     this.runAction('INIT', this)
     this.errorHandler = (err, ctx) => {
-    	console.error('server error', err, ctx)
+    	this.logger.error('server error', err, ctx)
     }
   }
 
@@ -323,24 +325,15 @@ class Fpm {
     this.bindRouter(ping)
     this.bindRouter(webhook)
 
-    // this.app.use(Views(path.join(CWD, 'views'), {
-    //   extension: 'html',
-    //   map: { html: 'nunjucks' }
-    // }))
     this.app.use(Views(path.join(CWD, 'views'), {
       extension: 'html',
       map: { html: 'nunjucks' },
-      // options: {
-      //   partials : {
-      //     LOCAL_DIR: path.join(LOCAL, './')
-      //   }
-      // }
     }))
     this.app.use(Static(path.join(CWD, 'public')))
     this.app.use(Static(path.join(LOCAL, 'public')))
     this.app.use(Session({ key: 'fpm-server-admin' }))
     this.app.use(session)
-    
+
     this.runAction('ADMIN', admin, this)
     this.bindRouter(admin)
 
@@ -351,7 +344,7 @@ class Fpm {
     this.app.on('error', this.errorHandler)
     this.app.listen(config.server.port)
     this.runAction('AFTER_SERVER_START', this, this.app)
-    console.log(`http server listening on port ${config.server.port}`)
+    this.logger.log(`http server listening on port ${config.server.port}`)
   }
 }
 

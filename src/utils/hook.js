@@ -55,7 +55,6 @@ export default class {
     let len = _list.length
     let results = []
     try{
-      
       for(let i = 0; i < len; i++){
         let h = _list[i]
         let result = await h.handler(input)

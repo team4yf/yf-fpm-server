@@ -9,7 +9,7 @@ export default async (ctx, next) => {
   let path = req.url
   const ip = ctx.ip
   //TODO:对客户端ip进行过滤等操作
-
+  // ctx.fpm.get('')
   //如果调用的是api路由，则进行分析和拦截
   if(path === '/api'){
     //验证安全性
@@ -28,7 +28,6 @@ export default async (ctx, next) => {
         await next()
         return
       }
-      
       let method = postData.method
       // 使用正则表达式来匹配信息
       let root = '^' + approot + '$'
@@ -37,7 +36,6 @@ export default async (ctx, next) => {
         await next()
         return
       }
-      
     }
     // 限定访问
     ctx.fail(E.System.ROOT_ERROR)
