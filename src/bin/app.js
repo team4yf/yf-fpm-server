@@ -117,6 +117,9 @@ const loadPlugin = function(fpm){
 
 class Fpm {
   constructor(){
+    //TODO: make a logger plugin replace this
+    this.logger = console
+
     let app = new Koa()
     app.use(BodyParser())
     app.use(cors())
@@ -135,8 +138,6 @@ class Fpm {
     this._env = config.dev
     this._version = packageInfo.version
     this._plugins = {}
-    //TODO: make a logger plugin replace this
-    this.logger = console
 
     this.cleanViews()
     this.copyViews(path.join(LOCAL, './views/admin'), 'admin')
@@ -271,8 +272,8 @@ class Fpm {
     }
   }
 
-  async execute(method, args, v){
-    return await core(method, args, v, this)
+  async execute(method, args, v, ctx){
+    return await core(method, args, v, this, ctx)
   }
 
   addAfterHook(method, hookHandler, v, priority){

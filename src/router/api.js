@@ -12,7 +12,7 @@ Api.post('/api', async (ctx, next) => {
   try{
     ctx.fpm.logger.log("[CALL METHOD]:" + method + "@" + v)
     ctx.fpm.runAction('CALL_API', ctx.fpm, ctx, { method, param, v })
-    let p = await core(method, param, v, ctx.fpm)
+    let p = await core(method, param, v, ctx.fpm, ctx)
     ctx.success(p)
   }catch(err){
     ctx.fail(err)

@@ -1,6 +1,6 @@
 // babel
 require('babel-core/register')({
-	presets: ['es2015', 'stage-2']
+	presets: ['env']
 });
 require('babel-polyfill');
 
