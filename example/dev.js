@@ -4,7 +4,7 @@ let app = new Fpm()
 let biz = new Biz('0.0.1')
 biz.addSubModules('test', {
   foo: async function(args, ctx, before){
-    console.log(before)
+    // console.log(before)
     return Promise.reject({errno: -3001})
   }
 })
@@ -24,6 +24,27 @@ app.registerAction('CALL_API', (params) => {
   const ctx = params[1]
   const args = params[2]
 
-  fpm.logger.log("CALL_API Action", ctx.ip, args)
+  //fpm.logger.log("CALL_API Action", ctx.ip, args)
+})
+
+app.registerAction('FPM_MIDDLEWARE', (params) => {
+  const fpm = params[0]
+  const koa = params[1]
+  koa.use(async(ctx, next) => {
+    fpm.logger.log('log from middleware', ctx.ip)
+    // get ipv4 from it
+    //"^"
+    const reg = /(?=(\b|\D))(((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))\.){3}((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))(?=(\b|\D))$/
+    if(reg.test(ctx.ip)){
+      let ipv4 = reg.exec(ctx.ip)[0]
+      if(ipv4 === '127.0.0.1'){
+        ctx.fail({errno:-920,code:'AUTH_ERROR',message:'auth error! plz check your appkey ~ '})
+        return
+      }
+      console.log(ipv4)
+    }
+    // console.log(reg.exec(ctx.ip))
+    await next()
+  })
 })
 app.run()

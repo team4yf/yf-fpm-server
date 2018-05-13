@@ -322,6 +322,8 @@ class Fpm {
     this.app.use(permission)
     this.app.use(compare)
 
+    this.runAction('FPM_MIDDLEWARE', this, this.app)
+
     this.bindRouter(api)
     this.bindRouter(ping)
     this.bindRouter(webhook)
@@ -338,7 +340,6 @@ class Fpm {
     this.runAction('ADMIN', admin, this)
     this.bindRouter(admin)
 
-    this.runAction('FPM_MIDDLEWARE', this, this.app)
     this.runAction('FPM_ROUTER', this, this.app)
     this.runAction('BEFORE_SERVER_START', this, this.app)
 
