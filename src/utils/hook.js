@@ -47,17 +47,17 @@ export default class {
     return this.addHook('before_' + hookName, hookHandler, v, priority)
   }
 
-  async runHook(hookName, input, v){
+  async runHook(hookName, input, v, ctx){
     let _list = this._hooks[hookName + '@' + v] || []
     if(_.isEmpty(_list)){
-        return 1
+        return []
     }
     let len = _list.length
     let results = []
     try{
       for(let i = 0; i < len; i++){
         let h = _list[i]
-        let result = await h.handler(input)
+        let result = await h.handler(input, ctx)
         results[i] = result
       }
       return new Promise( (resolve, reject) => {

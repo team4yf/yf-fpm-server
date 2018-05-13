@@ -36,17 +36,17 @@ let getFunction = (method, v, bizModule) => {
     return handler
 }
 
-export default async (method, args, v, fpm) => {
+export default async (method, args, v, fpm, ctx) => {
     let handler = getFunction(method, v, fpm._biz_module)
     let hook = fpm._hook
     try{
       let result = {}
       if(_.isFunction(hook.runHook)){
-        let beforeResult = await hook.runHook('before_' + method, args, v)
-        result = await handler(args)
-        let afterResult = await hook.runHook('after_' + method, {input: args, result: result.data}, v)
+        let beforeResult = await hook.runHook('before_' + method, args, v, ctx)
+        result = await handler(args, ctx, beforeResult)
+        let afterResult = await hook.runHook('after_' + method, {input: args, result: result.data}, v, ctx)
       }else{
-        result = await handler(args)
+        result = await handler(args, ctx, [])
       }
       return new Promise( (resolve, reject) => {
         resolve(result)

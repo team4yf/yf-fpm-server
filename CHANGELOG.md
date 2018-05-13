@@ -3,16 +3,20 @@
 ADD:
 - Add Action Before Api Invoke
 `ctx.fpm.runAction('CALL_API', ctx.fpm, ctx, { method, param, v })`
+- Attach An Argument `ctx` At Function `core(method, args, v, fpm, ctx)`
+- Attach An Argument `ctx` At Each Handler `handler(args, ctx, [])`
+  - The Last Argument should be replaced by the output of before_*_hook, It always be an Array
+- Attach An Argument `ctx` At `hook.runHook('before_' + method, args, v, ctx)`
 
 
 # 2.2.24 (2018-04-28)
 
 TODO:
-- Add Ip Filter In File `permission.js`
+- Add Ip Filter In File `permission.js`ss
 
 # 2.2.24 (2018-04-25)
 
-Remove 
+Remove
 
 - The `BEFORE_MODULES_ADDED` & `AFTER_MODULES_ADDED` Action Hook Points May Invoke Multi Times; `fpm.addBizModules(biz:Biz)` can be called many times
 
