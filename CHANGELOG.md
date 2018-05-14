@@ -1,3 +1,13 @@
+# 2.2.25 (2018-05-14)
+
+Remove: 
+- views/
+- public/ 
+- admin.js
+
+TODO:
+- implement a fpm-plugin-admin
+
 # 2.2.24 (2018-05-13)
 
 ADD:
