@@ -1,6 +1,6 @@
 {
   "name": "yf-fpm-server",
-  "version": "2.2.27",
+  "version": "2.2.28",
   "description": "yf fast-platform api server",
   "main": "lib/bin/app.js",
   "scripts": {
@@ -25,15 +25,11 @@
     "koa-bodyparser": "^3.2.0",
     "koa-multer": "^1.0.1",
     "koa-router": "^7.1.0",
-    "koa-session2": "^2.2.4",
-    "koa-static": "^4.0.0",
-    "koa-views": "^6.0.2",
     "koa2-cors": "^2.0.3",
     "lodash": "^4.16.1",
     "md5": "^2.1.0",
     "moment": "^2.13.0",
     "ncp": "^2.0.0",
-    "nunjucks": "^3.0.1",
     "pubsub-js": "^1.5.5"
   },
   "devDependencies": {

@@ -12,9 +12,6 @@ import BodyParser from 'koa-bodyparser'
 import cors from 'koa2-cors'
 import PubSub from 'pubsub-js'
 import Router from 'koa-router'
-import Views from 'koa-views'
-import Session from 'koa-session2'
-import Static from 'koa-static'
 import path from 'path'
 import fs from 'fs'
 import _ from 'lodash'
@@ -26,7 +23,6 @@ import { ncp } from 'ncp'
 import response from '../middleware/response.js'
 import permission from '../middleware/permission.js'
 import compare from '../middleware/compare.js'
-import session from '../middleware/session.js'
 
 /*-----------------
   about util
@@ -41,7 +37,6 @@ import { deletedir }  from '../utils/kit.js'
   about router
 ------------------*/
 import api from '../router/api.js'
-import admin from '../router/admin.js'
 import ping from '../router/ping.js'
 import webhook from '../router/webhook.js'
 
@@ -139,9 +134,6 @@ class Fpm {
     this._version = packageInfo.version
     this._plugins = {}
 
-    this.cleanViews()
-    this.copyViews(path.join(LOCAL, './views/admin'), 'admin')
-
     //add plugins
     loadPlugin(this)
     this.runAction('INIT', this)
@@ -150,6 +142,7 @@ class Fpm {
     }
   }
 
+  /*
   cleanViews(){
     if(LOCAL == CWD){
       return
@@ -176,6 +169,7 @@ class Fpm {
     })
   }
 
+  //*/
   set(k, v){
     this._options[k] = v
   }
@@ -328,18 +322,8 @@ class Fpm {
     this.bindRouter(ping)
     this.bindRouter(webhook)
 
-    this.app.use(Views(path.join(CWD, 'views'), {
-      extension: 'html',
-      map: { html: 'nunjucks' },
-    }))
-    this.app.use(Static(path.join(CWD, 'public')))
-    this.app.use(Static(path.join(LOCAL, 'public')))
-    this.app.use(Session({ key: 'fpm-server-admin' }))
-    this.app.use(session)
-
-    this.runAction('ADMIN', admin, this)
-    this.bindRouter(admin)
-
+    this.runAction('ADMIN', this, this.app)
+    
     this.runAction('FPM_ROUTER', this, this.app)
     this.runAction('BEFORE_SERVER_START', this, this.app)
 
