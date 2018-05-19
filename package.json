@@ -1,6 +1,6 @@
 {
   "name": "yf-fpm-server",
-  "version": "2.2.28",
+  "version": "2.3.0",
   "description": "yf fast-platform api server",
   "main": "lib/bin/app.js",
   "scripts": {
@@ -28,7 +28,6 @@
     "koa2-cors": "^2.0.3",
     "lodash": "^4.16.1",
     "md5": "^2.1.0",
-    "moment": "^2.13.0",
     "ncp": "^2.0.0",
     "pubsub-js": "^1.5.5"
   },
@@ -41,12 +40,6 @@
     "babel-register": "^6.14.0",
     "babel-runtime": "^6.0.0",
     "chai": "^3.5.0",
-    "gulp": "^3.9.1",
-    "gulp-concat": "^2.6.1",
-    "gulp-jshint": "^2.0.4",
-    "gulp-rename": "^1.2.2",
-    "jquery": "^3.2.1",
-    "materialize-css": "^0.99.0",
     "mocha": "^3.2.0",
     "nodemon": "^1.11.0",
     "yf-fpm-client-nodejs": "^1.0.13"

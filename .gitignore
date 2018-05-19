@@ -20,6 +20,7 @@ public/lib/*
 uploads/*.zip
 uploads/*.json
 uploads/*
+log/*
 
 key.js
 .DS_Store

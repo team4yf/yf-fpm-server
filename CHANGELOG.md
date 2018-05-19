@@ -1,3 +1,12 @@
+# 2.3.0 (2018-05-19)
+
+Remove:
+- gulp
+- jquery
+- materialize-css
+- log
+- moment
+
 # 2.2.25 (2018-05-14)
 
 Remove: 
