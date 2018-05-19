@@ -1,11 +1,23 @@
 # 2.3.0 (2018-05-19)
 
+ADD:
+- fpm._counter : count the api calls
+- fpm._project_info: the project package.json
+
+Exception Code: from `900` ~ `999`
+
+Update:
+- yf-fpm-nodejs-client@1.0.15
+
 Remove:
 - gulp
 - jquery
 - materialize-css
 - log
 - moment
+- md5
+- ncp
+- koa-multer
 
 # 2.2.25 (2018-05-14)
 

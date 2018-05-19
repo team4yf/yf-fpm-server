@@ -9,10 +9,12 @@ Api.post('/api', async (ctx, next) => {
   let method = postData.method
   let param = postData.param
   param = JSON.parse(param)
+  const fpm = ctx.fpm
   try{
-    ctx.fpm.logger.log("[CALL METHOD]:" + method + "@" + v)
-    ctx.fpm.runAction('CALL_API', ctx.fpm, ctx, { method, param, v })
-    let p = await core(method, param, v, ctx.fpm, ctx)
+    fpm._counter = fpm._counter + 1
+    fpm.logger.debug("[CALL METHOD]:" + method + "@" + v)
+    fpm.runAction('CALL_API', fpm, ctx, { method, param, v })
+    let p = await core(method, param, v, fpm, ctx)
     ctx.success(p)
   }catch(err){
     ctx.fail(err)

@@ -1,20 +1,28 @@
 import fs from 'fs'
 import path from 'path'
+import crypto from 'crypto'
 
-let parseQueryString = (url) => {
+const MD5 = crypto.createHash('md5')
+
+const md5 = (content) => {
+  MD5.update(content)
+  return MD5.digest('hex')
+}
+
+const parseQueryString = (url) => {
   let obj = {}
   , keyvalue = []
   , key = ''
   , value = ''
-  , paraString = url.split('&');
+  , paraString = url.split('&')
   for(let i in paraString) {
-      keyvalue = paraString[i].split('=');
-      key = keyvalue[0];
-      value = keyvalue[1];
-      value = decodeURIComponent(value);
-      obj[key] = value;
+      keyvalue = paraString[i].split('=')
+      key = keyvalue[0]
+      value = keyvalue[1]
+      value = decodeURIComponent(value)
+      obj[key] = value
   }
-  return obj;
+  return obj
 }
 
 const deletedir = (dir) => {
@@ -34,4 +42,4 @@ const deletedir = (dir) => {
   fs.rmdirSync(path)
 }
 
-export { parseQueryString, deletedir }
+export { parseQueryString, deletedir, md5 }

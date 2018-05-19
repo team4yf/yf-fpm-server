@@ -1,7 +1,7 @@
 'use strict';
 import { Fpm, Hook,Biz }  from '../src/bin/app'
 let app = new Fpm()
-let biz = new Biz('0.0.1')
+let biz = app.createBiz('0.0.1')
 biz.addSubModules('test', {
   foo: async function(args, ctx, before){
     // console.log(before)
@@ -37,8 +37,8 @@ app.registerAction('FPM_MIDDLEWARE', (params) => {
     const reg = /(?=(\b|\D))(((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))\.){3}((\d{1,2})|(1\d{1,2})|(2[0-4]\d)|(25[0-5]))(?=(\b|\D))$/
     if(reg.test(ctx.ip)){
       let ipv4 = reg.exec(ctx.ip)[0]
-      if(ipv4 === '127.0.0.1'){
-        ctx.fail({errno:-920,code:'AUTH_ERROR',message:'auth error! plz check your appkey ~ '})
+      if(ipv4 !== '127.0.0.1'){
+        ctx.fail({errno:-997, code:'IP_NOT_ALLOWED', message:'IP NOT ALLOWED ~ '})
         return
       }
       console.log(ipv4)

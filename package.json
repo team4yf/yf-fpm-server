@@ -7,9 +7,7 @@
     "compile": "./node_modules/.bin/babel -d lib/ src/",
     "prepublish": "npm run compile",
     "test": "./node_modules/.bin/mocha test/*.test.js",
-    "dev": "./node_modules/.bin/nodemon ./example/dev.babel.js",
-    "predev": "npm run build:gulp",
-    "build:gulp": "./node_modules/.bin/gulp"
+    "dev": "./node_modules/.bin/nodemon ./example/dev.babel.js"
   },
   "keywords": [
     "yf",
@@ -23,12 +21,9 @@
   "dependencies": {
     "koa": "^2.0.0",
     "koa-bodyparser": "^3.2.0",
-    "koa-multer": "^1.0.1",
     "koa-router": "^7.1.0",
     "koa2-cors": "^2.0.3",
     "lodash": "^4.16.1",
-    "md5": "^2.1.0",
-    "ncp": "^2.0.0",
     "pubsub-js": "^1.5.5"
   },
   "devDependencies": {
@@ -42,6 +37,6 @@
     "chai": "^3.5.0",
     "mocha": "^3.2.0",
     "nodemon": "^1.11.0",
-    "yf-fpm-client-nodejs": "^1.0.13"
+    "yf-fpm-client-nodejs": "^1.0.15"
   }
 }

@@ -1,7 +1,7 @@
 'use strict'
 import _ from 'lodash'
 import E from '../error'
-import crypto from 'crypto'
+import { md5 } from '../utils/kit'
 
 const ARG_ARRAY = 'method,appkey,timestamp,sign'.split(',')
 
@@ -73,7 +73,6 @@ let checkArgs = (args, dev) => {
  * @param args
  */
 let sign = (args, apps) => {
-    let md5 = crypto.createHash('md5')
     let sign = args.sign
     delete args.sign
 
@@ -93,8 +92,7 @@ let sign = (args, apps) => {
         return k + '=' + encodeURIComponent(val)
     })
     let content = strArgs.join('&')
-    md5.update(content)
-    let d = md5.digest('hex')
+    let d = md5(content)
     return d == sign
 }
 

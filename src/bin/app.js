@@ -15,7 +15,6 @@ import Router from 'koa-router'
 import path from 'path'
 import fs from 'fs'
 import _ from 'lodash'
-import { ncp } from 'ncp'
 
 /*-----------------
   about middleware
@@ -45,13 +44,21 @@ import webhook from '../router/webhook.js'
 ------------------*/
 import core from './core'
 
+/*-----------------
+  about error
+------------------*/
+import E from '../error'
+
 /******* Import End *******/
 
-// package info
+// fpm core package info
 const packageInfo = require('../../package.json')
 
 //runtime dir
 const CWD = process.cwd()
+
+// project package info
+const projectInfo = require(path.join(CWD, 'package.json'))
 
 // local dir
 const LOCAL = path.join(__dirname, '../../')
@@ -77,7 +84,7 @@ if(fs.existsSync(configPath)){
 }
 
 const loadPlugin = function(fpm){
-  let modulesDir = path.join(process.cwd(), 'node_modules')
+  let modulesDir = path.join(CWD, 'node_modules')
   let files = fs.readdirSync(modulesDir)
   files = _.filter(files, (f)=>{
     return _.startsWith(f, 'fpm-plugin-')
@@ -97,11 +104,7 @@ const loadPlugin = function(fpm){
       let deps = m.getDependencies() || []
       _.map(deps, (d) => {
         if(!_.has(plugins, d.name)){
-          throw new Exception({
-            code: 'Plugin-Load-Error',
-            errno: -10001,
-            message: 'missing plugin ! plugin: ' + p.name + ' dependent plugin: ' + d.name
-          })
+          throw new Exception(E.System.PLUGIN_LOAD_ERROR(p.name, d.name))
         }
       })
     }
@@ -112,7 +115,6 @@ const loadPlugin = function(fpm){
 
 class Fpm {
   constructor(){
-    //TODO: make a logger plugin replace this
     this.logger = console
 
     let app = new Koa()
@@ -130,6 +132,8 @@ class Fpm {
     this._hook = new Hook()
     this._action = {}
     this._start_time = _.now()
+    this._counter = 0
+    this._prject_info = projectInfo
     this._env = config.dev
     this._version = packageInfo.version
     this._plugins = {}
@@ -142,34 +146,6 @@ class Fpm {
     }
   }
 
-  /*
-  cleanViews(){
-    if(LOCAL == CWD){
-      return
-    }
-    deletedir(path.join(CWD, './views'))
-  }
-
-  copyViews(src, distDir){
-    if (fs.existsSync(path.join(CWD, './views', distDir))){
-      return
-    }
-    if (!fs.existsSync(path.join(CWD, './views'))){
-      // mkdir views
-      fs.mkdirSync(path.join(CWD, './views'))
-    }
-    ncp(src, path.join(CWD, './views/', distDir),  (err) => {
-      if (err) {
-        throw new Exception({
-          errno: -1100,
-          code: 'copy views exception',
-          message: 'Copy Views Error'
-        })
-      }
-    })
-  }
-
-  //*/
   set(k, v){
     this._options[k] = v
   }
