@@ -1,5 +1,5 @@
 export default {
-    System:{
+    System: {
         LOST_PARAM: col => { 
             return {
                 errno: -900,
@@ -24,7 +24,7 @@ export default {
         },
         PLUGIN_LOAD_ERROR: (pname, dname) =>{
             return {
-                code: 'Plugin-Load-Error',
+                code: 'PLUGIN_LOAD_ERROR',
                 errno: -904,
                 message: `missing plugin ! plugin: ${ pname } dependent plugin: ${ dname }`
             }
@@ -50,31 +50,37 @@ export default {
             code: 'NOT_METHOD',
             message: 'Cant find the method!'
         },
+        BIZ_VERSION_NOT_FNOUND: (version) =>{
+            return {
+                code: 'BIZ_MODULE_EXTEND_ERROR',
+                errno: -909,
+                message: `Biz Version ${version} Not Exists!`
+            }
+        },
         TABLE_REQUIRED:{
             errno: -910,
             code: 'TABLE_REQUIRED',
             message: 'table required!'
-        },   
-        
+        },
         VERSION_UNDEFINED:{
-            errno: -914,
+            errno: -911,
             code: 'VERSION_UNDEFINED',
             message: 'version not defined!'
         },
         //uncaught
         AUTH_ERROR:{
-            errno: -920,
+            errno: -912,
             code: 'AUTH_ERROR',
             message: 'auth error! plz check your appkey ~ '
         },
         ROOT_ERROR:{
-            errno: -921,
+            errno: -913,
             code: 'ROOT_ERROR',
             message: 'auth error! plz check roots of your app  ~ '
         },
 
         UNCAUGHT_ERROR:{
-            errno: -998,
+            errno: -999,
             code: 'UNCAUGHT_ERROR',
             message: 'uncaughtException!'
         },

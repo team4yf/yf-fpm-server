@@ -8,7 +8,13 @@ Add:
     port: 9999
   }
   ```
-- add callback for `fpm.run()`, it will be called after the server startup
+- Return A Promise In `fpm.run()`, it will be called after the server startup
+  ```javascript
+  app.run()
+    .then(fpm => {
+      fpm.logger.info('ready ...')
+    })
+  ```
 
 # 2.3.0 (2018-05-19)
 

@@ -67,21 +67,43 @@ $ vi app.js
 `
 ```javascript
 'use strict';
-import { Fpm, Hook,Biz }  from 'yf-fpm-server'
+import { Fpm }  from 'yf-fpm-server'
 let app = new Fpm()
-let biz = new Biz('0.0.1')
+let biz = app.createBiz('0.0.1')
 biz.addSubModules('test', {
-  foo: async function(args){
-    return new Promise( (resolve, reject) => {
-      reject({errno: -3001});
-	})
+  foo: async (args, ctx, before) => {
+    return Promise.reject({errno: -3001})
   }
 })
 app.addBizModules(biz)
 app.run()
-
+  .then(() => {
+    app.logger.info('ready ...')
+  })
 ```
-### 3.Run With Babel
+### 3.Run It
 `
 $ node app.js
 `
+
+### 4.Global Error Define
+
+#### System 系统错误定义
+
+| 异常编号 | 异常代码 | 异常信息 | 排查办法 |
+|:-------:|:-------:|:-----:|:-----:|
+| -900 | LOST_PARAM | param: [${col}] required! | 检查接口传入的参数 |
+| -901 | NO_POST_DATA | post data is empty! | 接口未传入参数 |
+| -902 | TIMEZONE_OVER | your time zone not sync the server! | 传入参数中的时间戳与服务器的事件戳相差超过了30分钟 |
+| -903 | SIGN_ERROR | param sign error! | 参数签名错误，请检查参数拼接过程是否异常 |
+| -904 | PLUGIN_LOAD_ERROR | missing plugin ! plugin: ${ pname } dependent plugin: ${ dname } | 某个插件缺失了另外一个插件的依赖 |
+| -905 | PARAM_IS_NOT_JSON | Param is not json! | 参数Param不是一个正确的json格式 |
+| -906 | SQL_INJECTION | you have sql keyword! ex:['drop ','delete ','truncate ',';','insert ','update ','set ','use '] | 传入的参数可能有sql注入 |
+| -907 | NOT_LATEST | Not the latest version | 不是最新的版本，请及时更新 |
+| -908 | NOT_METHOD | Cant find the method! | 调用的业务函数没有定义 |
+| -909 | BIZ_MODULE_EXTEND_ERROR | Biz Version ${version} Not Exists! | 扩展业务的接口版本不存在 |
+| -910 | TABLE_REQUIRED | table required! | 使用 DB 插件时，需要传入 table 参数 |
+| -911 | VERSION_UNDEFINED | version not defined! | 调用的业务函数版本不存在 |
+| -912 | AUTH_ERROR | auth error! plz check your appkey ~ ' | 客户端的appkey未授权 |
+| -913 | ROOT_ERROR | auth error! plz check roots of your app  ~  | 客户端的appkey权限不够 |
+| -914 | UNCAUGHT_ERROR | System uncaughtException | 系统异常 |

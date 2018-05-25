@@ -197,11 +197,7 @@ class Fpm {
     }else{
       // extend for Special Version
       if(!_.has(this.getBizVersions(), version)){
-        throw new Exception({
-          code: 'Biz-Module-Extend-Error',
-          errno: -10013,
-          message: `Biz Version ${version} Not Exists!`
-        })
+        throw new Exception(E.System.BIZ_VERSION_NOT_FNOUND(version))
       }
       this._biz_module[version][name] = module
     }
@@ -308,7 +304,7 @@ class Fpm {
     this.app.on('error', this.errorHandler)
     this.app.listen(config.server.port, config.server.hostname)
     this.runAction('AFTER_SERVER_START', this, this.app)
-    this.logger.info(`FPM-SERVER is Running On ${config.server.hostname}:${config.server.port}, And Bind Domain: ${config.server.domain}`)
+    this.logger.info(`FPM-SERVER is Running On ${config.server.hostname}:${config.server.port}, And Bind At http://${config.server.domain}:${config.server.port}`)
     return Promise.resolve(this)
   }
 }
