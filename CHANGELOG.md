@@ -1,3 +1,7 @@
+# 2.4.0 (2018-05-25)
+update:
+- koa@2.5.x
+
 # 2.3.1 (2018-05-25)
 Add:
 - default config `server.hostname` & `server.domain`
