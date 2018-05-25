@@ -1,3 +1,15 @@
+# 2.3.1 (2018-05-25)
+Add:
+- default config `server.hostname` & `server.domain`
+  ```javascript
+  server:{
+    hostname: '0.0.0.0',
+    domain: 'localhost',
+    port: 9999
+  }
+  ```
+- add callback for `fpm.run()`, it will be called after the server startup
+
 # 2.3.0 (2018-05-19)
 
 ADD:

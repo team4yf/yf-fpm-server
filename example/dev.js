@@ -48,3 +48,6 @@ app.registerAction('FPM_MIDDLEWARE', (params) => {
   })
 })
 app.run()
+  .then(fpm => {
+    fpm.logger.info('ready ...')
+  })

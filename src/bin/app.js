@@ -67,6 +67,8 @@ const LOCAL = path.join(__dirname, '../../')
 let configPath = path.join(CWD, 'config.json')
 let config = {
   server:{
+    hostname: '0.0.0.0',
+    domain: 'localhost',
     port: 9999
   },
   defaultVersion: '0.0.1',
@@ -304,9 +306,10 @@ class Fpm {
     this.runAction('BEFORE_SERVER_START', this, this.app)
 
     this.app.on('error', this.errorHandler)
-    this.app.listen(config.server.port)
+    this.app.listen(config.server.port, config.server.hostname)
     this.runAction('AFTER_SERVER_START', this, this.app)
-    this.logger.log(`http server listening on port ${config.server.port}`)
+    this.logger.info(`FPM-SERVER is Running On ${config.server.hostname}:${config.server.port}, And Bind Domain: ${config.server.domain}`)
+    return Promise.resolve(this)
   }
 }
 
