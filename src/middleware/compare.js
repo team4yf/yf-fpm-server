@@ -1,6 +1,6 @@
 'use strict'
 import _ from 'lodash'
-import E from '../error'
+import { E } from '../utils/exception.js'
 import { md5 } from '../utils/kit'
 
 const ARG_ARRAY = 'method,appkey,timestamp,sign'.split(',')

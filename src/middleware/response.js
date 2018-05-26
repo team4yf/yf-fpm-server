@@ -2,6 +2,7 @@
  * 返回信息中间件
  */
 import _ from 'lodash'
+import { E } from '../utils/exception.js'
 
 const DEFAULT_ROUTERS = '/api,/ping,/webhook'.split(',')
 
@@ -30,9 +31,9 @@ export default async (ctx, next) => {
   }
 
   ctx.fail = (err) => {
-    data.message = err.message || 'System Error!'
-    data.errno = err.errno == undefined ? -999 : err.errno
-    data.code = err.code == undefined ? 'UnDefined' : err.code
+    data.message = err.message || E.System.UNDEFINED_EXCEPTION.message
+    data.errno = err.errno == undefined ? E.System.UNDEFINED_EXCEPTION.errno : err.errno
+    data.code = err.code == undefined ? E.System.UNDEFINED_EXCEPTION.code : err.code
     data.error = err
   }
   await next()

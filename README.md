@@ -81,7 +81,7 @@ app.run()
     app.logger.info('ready ...')
   })
 ```
-### 3.Run It
+### 3.Run It With Babel
 `
 $ node app.js
 `
@@ -106,4 +106,8 @@ $ node app.js
 | -911 | VERSION_UNDEFINED | version not defined! | 调用的业务函数版本不存在 |
 | -912 | AUTH_ERROR | auth error! plz check your appkey ~ ' | 客户端的appkey未授权 |
 | -913 | ROOT_ERROR | auth error! plz check roots of your app  ~  | 客户端的appkey权限不够 |
-| -914 | UNCAUGHT_ERROR | System uncaughtException | 系统异常 |
+| -914 | BIZ_VERSION_REQUIRED | Biz Version Required | 业务组件版本未定义 |
+| -915 | HOOK_VERSION_REQUIRED | hook version cant be undefined | 钩子版本未定义 |
+| -916 | HOOK_HANDLER_REQUIRED | hook handler cant be undefined | 钩子函数未定义 |
+| -920 | UNDEFINED_EXCEPTION | UnDefinedException | 未定义的异常 |
+| -999 | UNCAUGHT_ERROR | System uncaughtException | 系统异常 |

@@ -7,6 +7,12 @@ Add 3 Field For Plugin:
 - registry: `http://registry.npmjs.org/${packageInfo.name}` 
   The Registry Info Of The Plugin
 
+Remove:
+- remove `deletedir`
+
+Update:
+- format all error code & errno
+
 # 2.4.0 (2018-05-25)
 update:
 - koa@2.5.x

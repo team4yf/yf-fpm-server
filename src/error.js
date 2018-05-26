@@ -78,6 +78,26 @@ export default {
             code: 'ROOT_ERROR',
             message: 'auth error! plz check roots of your app  ~ '
         },
+        BIZ_VERSION_REQUIRED: {
+            code: 'Biz-Version-Required',
+            errno: -914,
+            message: 'Biz Version Required'
+        },
+        HOOK_VERSION_REQUIRED: {
+            errno: -915,
+            code: 'Hook-Version-Required',
+            message: 'hook version cant be undefined'
+        },
+        HOOK_HANDLER_REQUIRED: {
+            errno: -916,
+            code: 'Hook-Handler-Required',
+            message: 'hook handler cant be undefined'
+        },
+        UNDEFINED_EXCEPTION: {
+            errno: -920,
+            code: 'UnDefinedException',
+            message: 'UnDefinedException',
+        },
 
         UNCAUGHT_ERROR:{
             errno: -999,

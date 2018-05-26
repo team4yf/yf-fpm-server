@@ -1,4 +1,4 @@
-import E from '../error.js'
+import { E } from '../utils/exception.js'
 import _ from 'lodash'
 function noMethodHandler(){
   return new Promise( (resolve, reject) => {

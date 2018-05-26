@@ -1,5 +1,7 @@
 import _ from 'lodash'
+import E from '../error'
 
+export { E }
 export default class {
   constructor(err){
     let _error = undefined
@@ -7,11 +9,7 @@ export default class {
       _error = {}
       this._error.errno = err
     }else if(_.isObject(err)){
-      _error = _.assign({
-        errno: -10000,
-        code: 'UnDefinedException',
-        message: 'UnDefinedException',
-      }, err)
+      _error = _.assign(E.System.UNDEFINED_EXCEPTION, err)
     }
     this._error = _error
   }

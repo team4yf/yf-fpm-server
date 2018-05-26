@@ -1,7 +1,7 @@
 /**
  进行api请求的权限过滤
 */
-import E from '../error'
+import { E } from '../utils/exception.js'
 import _ from 'lodash'
 
 export default async (ctx, next) => {

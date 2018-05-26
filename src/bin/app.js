@@ -28,9 +28,7 @@ import compare from '../middleware/compare.js'
 ------------------*/
 import Hook from '../utils/hook.js'
 import Biz from '../utils/biz.js'
-import Exception from '../utils/exception.js'
 import { doCommand } from '../utils/process.js'
-import { deletedir }  from '../utils/kit.js'
 
 /*-----------------
   about router
@@ -45,9 +43,9 @@ import webhook from '../router/webhook.js'
 import core from './core'
 
 /*-----------------
-  about error
+  about error and exception
 ------------------*/
-import E from '../error'
+import Exception, { E } from '../utils/exception.js'
 
 /******* Import End *******/
 
@@ -309,5 +307,5 @@ class Fpm {
   }
 }
 
-
 export { Fpm , Hook , Biz}
+export default Fpm

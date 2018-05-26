@@ -1,5 +1,5 @@
 'use strict';
-import { Fpm, Hook,Biz }  from '../src/bin/app'
+import Fpm from '../src/bin/app'
 let app = new Fpm()
 let biz = app.createBiz('0.0.1')
 biz.addSubModules('test', {

@@ -1,6 +1,5 @@
 import _ from 'lodash'
-import E from '../error.js'
-import Exception from './exception.js'
+import Exception, { E } from './exception.js'
 
 export default class {
   constructor(){
@@ -10,18 +9,10 @@ export default class {
   addHook(hookName, hookHandler, v, priority){
     priority = priority || 100
     if(!v){
-      throw new Exception({
-        errno: -10002,
-        code: 'Hook-Version-Required',
-        message: 'hook version cant be undefined'
-      })
+      throw new Exception(E.System.HOOK_VERSION_REQUIRED)
     }
     if(!_.isFunction(hookHandler)){
-      throw new Exception({
-        errno: -10003,
-        code: 'Hook-Handler-Required',
-        message: 'hook handler cant be undefined'
-      })
+      throw new Exception(E.System.HOOK_HANDLER_REQUIRED)
     }
     let versionArray = []
     if(_.isArray(v)){
