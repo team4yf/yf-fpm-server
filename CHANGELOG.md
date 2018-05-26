@@ -1,3 +1,12 @@
+# 2.4.1 (2018-05-26)
+Add 3 Field For Plugin:
+- info: `packageInfo` 
+  The package.json For The Plugin
+- npm:`https://www.npmjs.com/package/${packageInfo.name}`
+  The HomePage For The Plugin In `npmjs.com`
+- registry: `http://registry.npmjs.org/${packageInfo.name}` 
+  The Registry Info Of The Plugin
+
 # 2.4.0 (2018-05-25)
 update:
 - koa@2.5.x

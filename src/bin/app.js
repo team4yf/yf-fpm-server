@@ -95,7 +95,7 @@ const loadPlugin = function(fpm){
   let plugins = {}
   _.map(files, (f)=>{
     let packageInfo = require(path.join(modulesDir, f, 'package.json'))
-    plugins[packageInfo.name] = { name: packageInfo.name, version: packageInfo.version}
+    plugins[packageInfo.name] = { name: packageInfo.name, version: packageInfo.version, info: packageInfo, npm:`https://www.npmjs.com/package/${packageInfo.name}`, registry: `http://registry.npmjs.org/${packageInfo.name}` }
   })
   _.map(plugins, (p) => {
     let m = require(path.join(modulesDir, p.name))
