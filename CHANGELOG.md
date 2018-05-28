@@ -1,3 +1,12 @@
+# 2.4.2 (2018-05-28)
+Update:
+- `loadPlugin`
+  - Add Field `package` For Each Plugin, It links this origin reference of the plugin module
+  - Add Field `isBound` For Each Plugin, It means plugin invoke `bind()` ok
+
+Files:
+- Move `loadPlugin` from `bin\app.js` to `utils\plugin.js`
+
 # 2.4.1 (2018-05-26)
 Add 3 Field For Plugin:
 - info: `packageInfo` 
