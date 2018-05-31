@@ -1,3 +1,10 @@
+# 2.4.7 (2018-05-31)
+Add:
+- `execShell(shellPath:String!, params:[]?) => Promise`
+  Add an execShell method For Run `.sh` or `.bat` files. 
+ 
+  *The ShellPath Should Be An Abstract Path*
+
 # 2.4.2 (2018-05-28)
 Update:
 - `loadPlugin`

@@ -28,7 +28,7 @@ import compare from '../middleware/compare.js'
 ------------------*/
 import Hook from '../utils/hook.js'
 import Biz from '../utils/biz.js'
-import { doCommand } from '../utils/process.js'
+import { doCommand, execShell } from '../utils/process.js'
 import { loadPlugin } from '../utils/plugin.js'
 
 /*-----------------
@@ -100,6 +100,7 @@ class Fpm {
       'CWD': CWD,
     }
     this.doCommand = doCommand
+    this.execShell = execShell
     this._biz_module = {}
     this._hook = new Hook()
     this._action = {}

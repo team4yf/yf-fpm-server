@@ -5,6 +5,13 @@ let biz = app.createBiz('0.0.1')
 biz.addSubModules('test', {
   foo: async function(args, ctx, before){
     // console.log(before)
+    app.execShell('D:/Workspace/Nodejs/yf-fpm-server/test/test.bat', ['bobo'])
+      .then(data => {
+        console.error(data)
+      })
+      .catch(e => {
+        console.error(e)
+      })
     return Promise.reject({errno: -3001})
   }
 })

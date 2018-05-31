@@ -9,6 +9,10 @@ export default async (ctx, next) => {
   let path = req.url
   //如果调用的是api路由，则进行分析和拦截
   if(path === '/api'){
+    if( req.method !== 'POST'){
+      ctx.fail(E.System.ONLY_POST_ALLOWED)
+      return
+    }
     //验证安全性
     let postData = ctx.request.body
     let apps = await ctx.fpm.getClients()

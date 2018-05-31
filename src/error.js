@@ -93,6 +93,11 @@ export default {
             code: 'Hook-Handler-Required',
             message: 'hook handler cant be undefined'
         },
+        ONLY_POST_ALLOWED: {
+            errno: -917,
+            code: 'ONLY_POST_ALLOWED',
+            message: 'only post method allowed~'
+        },
         UNDEFINED_EXCEPTION: {
             errno: -920,
             code: 'UnDefinedException',

@@ -1,10 +1,10 @@
 var should = require("chai").should;
-var YF = require("yf-fpm-client-nodejs").default;
-YF.init({ mode: 'DEV', appkey:'123123', masterKey:'123123', endpoint: 'http://localhost:9999/api' });
+var fpmc = require("yf-fpm-client-js").default;
+fpmc.init({ mode: 'DEV', appkey:'123123', masterKey:'123123', domain: 'http://localhost:9999' });
 
 describe('Function', function(){
   it('test', function(done){
-    var func = new YF.Func('test.foo');
+    var func = new fpmc.Func('test.foo');
     func.invoke({})
       .then(function(d){
         console.log(d)
@@ -16,7 +16,7 @@ describe('Function', function(){
   })
 
   it('test ExtendModule', function(done){
-    var func = new YF.Func('demo.foo');
+    var func = new fpmc.Func('demo.foo');
     func.invoke({})
       .then(function(d){
         console.log(d)
