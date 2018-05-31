@@ -47,7 +47,7 @@ let compare = (ctx) => {
 }
 
 
-let checkArgs = (args, dev) => {
+let checkArgs = (args, dev, apps) => {
     if(!args){
         return E.System.NO_POST_DATA
     }
@@ -62,7 +62,7 @@ let checkArgs = (args, dev) => {
       return true
     }
     //验证数据的完整性
-    if(sign(args)){
+    if(sign(args, apps)){
       return true
     }
     return E.System.SIGN_ERROR

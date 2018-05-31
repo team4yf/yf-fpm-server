@@ -1,3 +1,9 @@
+# 2.4.9 (2018-05-31)
+BugFix:
+- masterkey lost from 
+  before: `let sign = (args) => {` ; after: `let sign = (args, apps) => {`
+  
+
 # 2.4.7 (2018-05-31)
 Add:
 - `execShell(shellPath:String!, params:[]?) => Promise`

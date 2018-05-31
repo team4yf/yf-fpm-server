@@ -1,6 +1,6 @@
 {
   "name": "yf-fpm-server",
-  "version": "2.4.8",
+  "version": "2.4.9",
   "description": "yf fast-platform api server",
   "main": "lib/bin/app.js",
   "scripts": {
@@ -37,6 +37,6 @@
     "chai": "^3.5.0",
     "mocha": "^3.2.0",
     "nodemon": "^1.11.0",
-    "yf-fpm-client-js": "^1.0.1"
+    "yf-fpm-client-js": "^1.0.2"
   }
 }

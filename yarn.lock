@@ -2423,9 +2423,9 @@ xdg-basedir@^2.0.0:
   dependencies:
     os-homedir "^1.0.0"
 
-yf-fpm-client-js@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/yf-fpm-client-js/-/yf-fpm-client-js-1.0.1.tgz#4dd53064d24d3dd89db17abb6da9e0a20b1ebe7f"
+yf-fpm-client-js@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/yf-fpm-client-js/-/yf-fpm-client-js-1.0.2.tgz#199866c134ad5251c1cd571a1c9a9c8acb1c7476"
   dependencies:
     axios "^0.18.0"
     lodash "^4.17.4"

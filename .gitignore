@@ -24,3 +24,4 @@ log/*
 
 key.js
 .DS_Store
+config.json
