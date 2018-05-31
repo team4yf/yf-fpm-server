@@ -4,6 +4,9 @@ Add:
   Add an execShell method For Run `.sh` or `.bat` files. 
  
   *The ShellPath Should Be An Abstract Path*
+BugFix:
+- `Digest already called` AT File `yf-fpm-server/lib/utils/kit.js:25:7`
+  https://github.com/nodejs/node-v0.x-archive/issues/1415
 
 # 2.4.2 (2018-05-28)
 Update:

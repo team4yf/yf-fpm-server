@@ -2,9 +2,8 @@ import fs from 'fs'
 import path from 'path'
 import crypto from 'crypto'
 
-const MD5 = crypto.createHash('md5')
-
 const md5 = (content) => {
+  let MD5 = crypto.createHash('md5')
   MD5.update(content)
   return MD5.digest('hex')
 }
