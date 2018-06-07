@@ -1,3 +1,9 @@
+# 2.4.10 (2018-06-07)
+Modify:
+- `async execute(method, args, v, ctx)` The `v` Change To Be Optional
+- add `fpm._publish_topics`, it save all the topics published by the biz functions
+- `publish(topic, data)` , It May Throw An Exception When The TOPIC Published By Other Function
+
 # 2.4.9 (2018-05-31)
 BugFix:
 - masterkey lost from 

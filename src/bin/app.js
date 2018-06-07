@@ -111,6 +111,7 @@ class Fpm {
     this._version = packageInfo.version
     //add plugins
     this._plugins = loadPlugin(this) || {}
+    this._publish_topics = []
     this.runAction('INIT', this)
     this.errorHandler = (err, ctx) => {
     	this.logger.error('server error', err, ctx)
@@ -210,22 +211,22 @@ class Fpm {
   }
 
   async execute(method, args, v, ctx){
-    return await core(method, args, v, this, ctx)
+    return await core(method, args, v || config.defaultVersion , this, ctx)
   }
 
   addAfterHook(method, hookHandler, v, priority){
-    return this._hook.addAfterHook(method, hookHandler, v, priority)
+    return this._hook.addAfterHook(method, hookHandler, v || config.defaultVersion, priority)
   }
 
   addBeforeHook(method, hookHandler, v, priority){
-    return this._hook.addBeforeHook(method, hookHandler, v, priority)
+    return this._hook.addBeforeHook(method, hookHandler, v || config.defaultVersion, priority)
   }
 
-  getConfig(c){
+  getConfig(c, defaultValue){
     if(_.isEmpty(c)){
       return config
     }
-    return config[c]
+    return config[c] || (defaultValue || {})
   }
 
   extendConfig(c){
@@ -242,7 +243,11 @@ class Fpm {
   }
 
   publish(topic, data){
+    if(_.includes(this._publish_topics, topic)){
+      throw new Exception(E.System.TOPIC_BEEN_PUBLISHED)
+    }
     PubSub.publish(topic, data)
+    this._publish_topics.push(topic)
   }
 
   subscribe(topic, callback){

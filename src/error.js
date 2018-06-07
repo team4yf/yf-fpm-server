@@ -98,6 +98,11 @@ export default {
             code: 'ONLY_POST_ALLOWED',
             message: 'only post method allowed~'
         },
+        TOPIC_BEEN_PUBLISHED: {
+            errno: -918,
+            code: 'TOPIC_BEEN_PUBLISHED',
+            message: 'topic has been published by other biz'
+        },
         UNDEFINED_EXCEPTION: {
             errno: -920,
             code: 'UnDefinedException',
