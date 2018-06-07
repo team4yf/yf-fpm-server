@@ -1,3 +1,7 @@
+# 2.4.10.1 (2018-06-07)
+BugFix:
+- `publish(topic, data)`
+
 # 2.4.10 (2018-06-07)
 Modify:
 - `async execute(method, args, v, ctx)` The `v` Change To Be Optional

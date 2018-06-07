@@ -243,11 +243,10 @@ class Fpm {
   }
 
   publish(topic, data){
-    if(_.includes(this._publish_topics, topic)){
-      throw new Exception(E.System.TOPIC_BEEN_PUBLISHED)
+    if(!_.includes(this._publish_topics, topic)){
+      this._publish_topics.push(topic)
     }
-    PubSub.publish(topic, data)
-    this._publish_topics.push(topic)
+    PubSub.publish(topic, data)    
   }
 
   subscribe(topic, callback){
