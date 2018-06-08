@@ -1,4 +1,9 @@
-# 2.4.10.1 (2018-06-07)
+# 2.4.12 (2018-06-08) 
+
+Add:
+- `fpm.getPluginRef(pname)` get the origin ref of the plugin by the plugin name, ex: `getPluginRef('mysql')` or `getPluginRef('fpm-plugin-mysql')`
+
+# 2.4.11 (2018-06-07)
 BugFix:
 - `publish(topic, data)`
 

@@ -138,6 +138,16 @@ class Fpm {
     return this._plugins
   }
 
+  getPluginRef(pname){
+    if(!_.startsWith(pname, 'fpm-plugin-')){
+      pname = 'fpm-plugin-' + pname
+    }
+    if(_.has(this._plugins, pname)){
+      return this._plugins[pname].ref
+    }
+    return undefined
+  }
+
   isPluginInstalled(name){
     return _.has(this._plugins, name)
   }
