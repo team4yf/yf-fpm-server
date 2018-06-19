@@ -112,6 +112,7 @@ class Fpm {
     //add plugins
     this._plugins = loadPlugin(this) || {}
     this._publish_topics = []
+    this._webhook_events = []
     this.runAction('INIT', this)
     this.errorHandler = (err, ctx) => {
     	this.logger.error('server error', err, ctx)

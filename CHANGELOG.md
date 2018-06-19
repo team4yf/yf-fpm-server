@@ -3,6 +3,14 @@
 Add:
 - `fpm.getPluginRef(pname)` get the origin ref of the plugin by the plugin name, ex: `getPluginRef('mysql')` or `getPluginRef('fpm-plugin-mysql')`
 
+- `fpm._webhook_events` record the webhook events
+  contains: { topic!String, message!Object, at!timestamp}
+
+- Use `curl` to perform webhook
+  Webhook Url: `/webhook/:upstream/:type/:data`
+  Publish Topic: `#webhook/${upstream}/${type}`
+  `$ curl -H "Content-Type:application/json" -X POST --data '{"id":10}' http://localhost:9999/webhook/test/foo/bar `
+
 # 2.4.11 (2018-06-07)
 BugFix:
 - `publish(topic, data)`
