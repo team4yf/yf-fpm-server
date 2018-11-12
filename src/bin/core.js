@@ -1,15 +1,11 @@
 import { E } from '../utils/exception.js'
 import _ from 'lodash'
-function noMethodHandler(){
-  return new Promise( (resolve, reject) => {
-    reject(E.System.NOT_METHOD)
-  })
+const noMethodHandler = () =>{
+  return Promise.reject(E.System.NOT_METHOD);
 }
 
-function versionUndefinedHandler(){
-  return new Promise( (resolve, reject) => {
-    reject(E.System.VERSION_UNDEFINED)
-  })
+const versionUndefinedHandler = () => {
+  return Promise.reject(E.System.VERSION_UNDEFINED);
 }
 
 let getFunction = (method, v, bizModule) => {
@@ -37,26 +33,23 @@ let getFunction = (method, v, bizModule) => {
 }
 
 export default async (method, args, v, fpm, ctx) => {
-    let handler = getFunction(method, v, fpm._biz_module)
-    let hook = fpm._hook
-    try{
-      let result = {}
-      if(_.isFunction(hook.runHook)){
-        let beforeResult = await hook.runHook('before_' + method, args, v, ctx)
-        result = await handler(args, ctx, beforeResult)
-        let afterResult = await hook.runHook('after_' + method, {input: args, result: result.data}, v, ctx)
-      }else{
-        result = await handler(args, ctx, [])
-      }
-      return new Promise( (resolve, reject) => {
-        resolve(result)
-      })
-    }catch(err){
-      if(err.errno > 0){
-          err.errno = 0 - err.errno
-      }
-      return new Promise( (resolve, reject) => {
-        reject(err)
-      })
+  let handler = getFunction(method, v, fpm._biz_module)
+  let hook = fpm._hook
+  try{
+    let result = {}
+    if(_.isFunction(hook.runHook)){
+      let beforeResult = await hook.runHook('before_' + method, args, v, ctx)
+      result = await handler(args, ctx, beforeResult)
+      // the after hook ignore the result.
+      await hook.runHook('after_' + method, {input: args, result: result.data}, v, ctx)
+    }else{
+      result = await handler(args, ctx, [])
     }
+    return Promise.resolve(result)
+  }catch(err){
+    if(err.errno > 0){
+        err.errno = 0 - err.errno
+    }
+    return Promise.reject(err)
+  }
 }

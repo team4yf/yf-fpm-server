@@ -67,21 +67,21 @@ $ vi app.js
 `
 ```javascript
 'use strict';
-import { Fpm }  from 'yf-fpm-server'
-let app = new Fpm()
-let biz = app.createBiz('0.0.1')
+const { Fpm } = require('yf-fpm-server');
+const fpm = new Fpm();
+const biz = fpm.createBiz('0.0.1');
 biz.addSubModules('test', {
   foo: async (args, ctx, before) => {
     return Promise.reject({errno: -3001})
   }
-})
-app.addBizModules(biz)
-app.run()
+});
+fpm.addBizModules(biz);
+fpm.run()
   .then(() => {
-    app.logger.info('ready ...')
-  })
+    fpm.logger.info('ready ...')
+  });
 ```
-### 3.Run It With Babel
+### 3.Run It
 `
 $ node app.js
 `

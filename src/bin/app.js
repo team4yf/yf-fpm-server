@@ -63,7 +63,7 @@ const projectInfo = require(path.join(CWD, 'package.json'))
 const LOCAL = path.join(__dirname, '../../')
 
 //load local config.json
-let configPath = path.join(CWD, 'config.json')
+const configPath = path.join(CWD, 'config.json')
 let config = {
   server:{
     hostname: '0.0.0.0',
@@ -83,6 +83,9 @@ let config = {
 if(fs.existsSync(configPath)){
   config = _.assign(config, require(configPath));
 }
+
+// load the process.ENV
+const ENV = process.env;
 
 
 class Fpm {
@@ -240,6 +243,13 @@ class Fpm {
     return config[c] || (defaultValue || {})
   }
 
+  getEnv(key, defaultValue){
+    if(_.isEmpty(key)){
+      return ENV;
+    }
+    return ENV[key] || defaultValue;
+  }
+
   extendConfig(c){
     config = _.assign(config, c || {})
   }
@@ -257,7 +267,7 @@ class Fpm {
     if(!_.includes(this._publish_topics, topic)){
       this._publish_topics.push(topic)
     }
-    PubSub.publish(topic, data)    
+    PubSub.publish(topic, data)
   }
 
   subscribe(topic, callback){
@@ -281,7 +291,7 @@ class Fpm {
     this.bindRouter(webhook)
 
     this.runAction('ADMIN', this, this.app)
-    
+
     this.runAction('FPM_ROUTER', this, this.app)
     this.runAction('BEFORE_SERVER_START', this, this.app)
 

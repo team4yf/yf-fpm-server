@@ -1,3 +1,12 @@
+# 2.5.0 (2018-11-12)
+
+Add:
+- `package-lock.json`
+- `fpm.getEnv(envKey, defaultValue)` get the process.env key-values
+
+Remove:
+- yarn.lock
+
 # 2.4.12 (2018-06-08) 
 
 Add:
