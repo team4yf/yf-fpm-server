@@ -1,6 +1,5 @@
-var should = require("chai").should;
-var fpmc = require("yf-fpm-client-js").default;
-fpmc.init({ mode: 'DEV', appkey:'123123', masterKey:'123123', domain: 'http://localhost:9999' });
+var fpmc = require("fpmc-jssdk").default;
+fpmc.init({ mode: 'DEV', appkey:'123123', masterKey:'123123', endpoint: 'http://localhost:9999/api' });
 
 describe('Function', function(){
   it('test', function(done){

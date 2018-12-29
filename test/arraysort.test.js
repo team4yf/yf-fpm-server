@@ -1,4 +1,3 @@
-var expect = require('chai').expect;
 var _ = require('lodash');
 describe('Array Sort', function() {
 
