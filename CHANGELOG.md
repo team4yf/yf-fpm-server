@@ -3,6 +3,20 @@
 Add:
 - Support https
 
+Simple Config:
+```javascript
+{
+  ssl: {
+    key: 'ssl/server.key',  // the key filepath
+    cert: 'ssl/server.crt', // the crt filepath
+    port: 9443,             // the https port
+  },
+}
+```
+
+How to make a ssl key/cert?
+
+[Here](https://www.cnblogs.com/liyulong1982/p/6106129.html)
 
 # 2.5.0 (2018-11-12)
 

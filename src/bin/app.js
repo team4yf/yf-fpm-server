@@ -14,6 +14,8 @@ import PubSub from 'pubsub-js'
 import Router from 'koa-router'
 import path from 'path'
 import fs from 'fs'
+import https from 'https'
+import enforceHttps from 'koa-sslify'
 import _ from 'lodash'
 
 /*-----------------
@@ -70,6 +72,11 @@ let config = {
     domain: 'localhost',
     port: 9999
   },
+  // ssl: {
+  //   key: 'ssl/server.key',
+  //   cert: 'ssl/server.crt',
+  //   port: 9443,
+  // },
   defaultVersion: '0.0.1',
   dev: 'DEV',
   apps: {
@@ -284,6 +291,13 @@ class Fpm {
     this.app.use(permission)
     this.app.use(compare)
 
+    // TODO: i dont know what it's for ????
+    if(config.ssl){
+      this.app.use(enforceHttps({
+        port: config.ssl.port,
+      }));
+    }
+
     this.runAction('FPM_MIDDLEWARE', this, this.app)
 
     this.bindRouter(api)
@@ -296,7 +310,16 @@ class Fpm {
     this.runAction('BEFORE_SERVER_START', this, this.app)
 
     this.app.on('error', this.errorHandler)
+
     this.app.listen(config.server.port, config.server.hostname || '0.0.0.0')
+    if(config.ssl){
+      const options = {
+        key: fs.readFileSync(path.join(CWD, `${config.ssl.key}`)),
+        cert: fs.readFileSync(path.join(CWD, `${config.ssl.cert}`)),
+      }
+      https.createServer(options, this.app.callback()).listen(config.ssl.port);
+    }
+
     this.runAction('AFTER_SERVER_START', this, this.app)
     this.logger.info(`FPM-SERVER is Running On ${config.server.hostname || '0.0.0.0'}:${config.server.port}, And Bind At http://${config.server.domain || 'localhost'}:${config.server.port}`)
     return Promise.resolve(this)
