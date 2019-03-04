@@ -298,7 +298,7 @@ class Fpm {
     this.app.on('error', this.errorHandler)
     this.app.listen(config.server.port, config.server.hostname || '0.0.0.0')
     this.runAction('AFTER_SERVER_START', this, this.app)
-    this.logger.info(`FPM-SERVER is Running On ${config.server.hostname || '0.0.0.0'}:${config.server.port}, And Bind At http://${config.server.domain}:${config.server.port}`)
+    this.logger.info(`FPM-SERVER is Running On ${config.server.hostname || '0.0.0.0'}:${config.server.port}, And Bind At http://${config.server.domain || 'localhost'}:${config.server.port}`)
     return Promise.resolve(this)
   }
 }

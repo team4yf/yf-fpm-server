@@ -1,4 +1,4 @@
-var fpmc = require("fpmc-jssdk").default;
+var fpmc = require("fpmc-jssdk");
 fpmc.init({ mode: 'DEV', appkey:'123123', masterKey:'123123', endpoint: 'http://localhost:9999/api' });
 
 describe('Function', function(){
