@@ -1,0 +1,31 @@
+{
+    "restartable": "rs",
+    "ignore": [
+      ".git",
+      "*.md",
+      "*.bat",
+      "*.json",
+      "*.*ignore",
+      "*.*rc",
+      "*.lock",
+      "kit",
+      "logs",
+      "sql",
+      "test",
+      "images",
+      "fake/",
+      "mysqldata",
+      "node_modules/**/node_modules",
+      "public/lib/"
+    ],
+    "verbose": false,
+    "execMap": {
+      "js": "node"
+    },
+    "events": {},
+    "watch": [
+    ],
+    "env": {
+      "NODE_ENV": "development"
+    }
+  }
