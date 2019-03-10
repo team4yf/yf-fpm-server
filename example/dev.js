@@ -1,6 +1,6 @@
 'use strict';
 import Fpm from '../src/bin/app'
-let app = new Fpm()
+let app = new Fpm({ disableBodyParser: ['/notify']})
 let biz = app.createBiz('0.0.1')
 biz.addSubModules('test', {
   foo: async function(args, ctx, before){
@@ -61,6 +61,13 @@ router.get('/', async (ctx, next) => {
   ctx.body = '<h1>Ok</h1>';
 })
 router.post('/notify', async (ctx, next) =>{
+  let request = ctx.request
+  console.log(request);
+
+  ctx.body = { code: 0 }
+});
+
+router.post('/aa', async (ctx, next) =>{
   let postData = ctx.request.body
   console.log(postData);
 

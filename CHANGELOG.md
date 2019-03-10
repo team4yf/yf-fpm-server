@@ -1,6 +1,32 @@
 # 2.5.1 (2019-03-04)
 
 Add:
+- Add `disableBodyParser` config.
+  
+  use `new Fpm({ disableBodyParser: ['/notify']})` to disable the `/notify` post handler
+
+  add a middleware:
+  ```javascript
+    app.use(async(ctx, next) => {
+      delete ctx.disableBodyParser;
+      const disableBodyParser = this.get('disableBodyParser');
+      if(disableBodyParser){
+        let urls;
+        if(_.isArray(disableBodyParser)){
+          urls = disableBodyParser;
+        }else if(_.isString(disableBodyParser)){
+          urls = disableBodyParser.split(',');
+        }
+        const urlPath = ctx.request.url ;
+        _.map(urls, url => {
+          if(_.endsWith(urlPath, url)){
+            ctx.disableBodyParser = true;
+          }
+        })
+      }
+      await next()
+    })
+  ```
 - Support https
 
 Simple Config:

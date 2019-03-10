@@ -96,19 +96,16 @@ const ENV = process.env;
 
 
 class Fpm {
-  constructor(){
+  constructor( options ){
     this.logger = console
 
     let app = new Koa()
-    app.use(BodyParser())
-    app.use(cors())
-    app.use(response)
-
     this.app = app
-    this._options = {
+    this._options = _.assign({
       'LOCAL': LOCAL,
       'CWD': CWD,
-    }
+    }, options);
+
     this.doCommand = doCommand
     this.execShell = execShell
     this._biz_module = {}
@@ -127,6 +124,33 @@ class Fpm {
     this.errorHandler = (err, ctx) => {
     	this.logger.error('server error', err, ctx)
     }
+    this.app.use(async(ctx, next) => {
+      delete ctx.disableBodyParser;
+      if(ctx.request.method !== 'POST'){
+        // ignore all request exclude the POST
+        await next();
+        return;
+      }
+      const disableBodyParser = this.get('disableBodyParser');
+      if(disableBodyParser){
+        let urls;
+        if(_.isArray(disableBodyParser)){
+          urls = disableBodyParser;
+        }else if(_.isString(disableBodyParser)){
+          urls = disableBodyParser.split(',');
+        }
+        const urlPath = ctx.request.url ;
+        _.map(urls, url => {
+          if(_.endsWith(urlPath, url)){
+            ctx.disableBodyParser = true;
+          }
+        })
+      }
+      await next()
+    })
+    this.app.use(BodyParser())
+    this.app.use(cors())
+    this.app.use(response)
   }
 
   set(k, v){
@@ -284,7 +308,7 @@ class Fpm {
   run(){
     let self = this
     this.app.use(async(ctx, next) => {
-      //将fpm注入到ctx中,供其他中间件使用
+      // add fpm ref to context, for other middleware to use.
       ctx.fpm = self
       await next()
     })
