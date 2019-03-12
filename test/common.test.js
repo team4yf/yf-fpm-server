@@ -1,9 +1,9 @@
-var expect = require('chai').expect;
+const assert = require('assert');
 var _ = require('lodash');
-describe('Common Test', function() {
+describe('Common Test', () => {
 
-  describe('#Method Reg Test()', function () {
-    it('Match a method with order.*', function (done) {
+  describe('#Method Reg Test()',  () => {
+    it('Match a method with order.*', async () => {
         var root = '^' + 'order.*' + '$';
         var method1 = 'order.add.dd';
         var method2 = 'order.move';
@@ -12,16 +12,16 @@ describe('Common Test', function() {
         var method5 = 'app.dd';
         var method6 = 'app.ff';
         var reg = new RegExp(root);
-        expect(reg.test(method1)).to.equal(true);
-        expect(reg.test(method2)).to.equal(true);
-        expect(reg.test(method3)).to.equal(false);
-        expect(reg.test(method4)).to.equal(false);
-        expect(reg.test(method5)).to.equal(false);
-        expect(reg.test(method6)).to.equal(false);
-        done()
+        assert(reg.test(method1))
+        assert(reg.test(method2))
+
+        assert(!reg.test(method3))
+        assert(!reg.test(method4))
+        assert(!reg.test(method5))
+        assert(!reg.test(method6))
     });
 
-    it('Match a method with app.*', function (done) {
+    it('Match a method with app.*', async () => {
         var root = '^' + 'app.*' + '$';
         var method1 = 'order.add.dd';
         var method2 = 'order.move';
@@ -30,13 +30,13 @@ describe('Common Test', function() {
         var method5 = 'app.dd';
         var method6 = 'app.ff';
         var reg = new RegExp(root);
-        expect(reg.test(method1)).to.equal(false);
-        expect(reg.test(method2)).to.equal(false);
-        expect(reg.test(method3)).to.equal(true);
-        expect(reg.test(method4)).to.equal(true);
-        expect(reg.test(method5)).to.equal(true);
-        expect(reg.test(method6)).to.equal(true);
-        done()
+        assert(!reg.test(method1))
+        assert(!reg.test(method2))
+
+        assert(reg.test(method3))
+        assert(reg.test(method4))
+        assert(reg.test(method5))
+        assert(reg.test(method6))
     });
 
     it('Match a method with (app|order).*', function (done) {
@@ -48,13 +48,13 @@ describe('Common Test', function() {
         var method5 = 'app.dd';
         var method6 = 'app.ff';
         var reg = new RegExp(root);
-        expect(reg.test(method1)).to.equal(true);
-        expect(reg.test(method2)).to.equal(true);
-        expect(reg.test(method3)).to.equal(true);
-        expect(reg.test(method4)).to.equal(true);
-        expect(reg.test(method5)).to.equal(true);
-        expect(reg.test(method6)).to.equal(true);
-        done()
+        assert(reg.test(method1))
+        assert(reg.test(method2))
+
+        assert(reg.test(method3))
+        assert(reg.test(method4))
+        assert(reg.test(method5))
+        assert(reg.test(method6))
     });
   });
 });

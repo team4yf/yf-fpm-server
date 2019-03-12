@@ -45,7 +45,7 @@ export default async (method, args, v, fpm, ctx) => {
     }else{
       result = await handler(args, ctx, [])
     }
-    return Promise.resolve(result)
+    return result;
   }catch(err){
     if(err.errno > 0){
         err.errno = 0 - err.errno

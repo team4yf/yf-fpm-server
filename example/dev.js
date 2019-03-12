@@ -55,27 +55,6 @@ app.registerAction('FPM_MIDDLEWARE', (params) => {
   })
 })
 
-const router = app.createRouter();
-
-router.get('/', async (ctx, next) => {
-  ctx.body = '<h1>Ok</h1>';
-})
-router.post('/notify', async (ctx, next) =>{
-  let request = ctx.request
-  console.log(request);
-
-  ctx.body = { code: 0 }
-});
-
-router.post('/aa', async (ctx, next) =>{
-  let postData = ctx.request.body
-  console.log(postData);
-
-  ctx.body = { code: 0 }
-});
-
-app.bindRouter(router)
-
 app.run()
   .then(fpm => {
     fpm.logger.info('ready ...')

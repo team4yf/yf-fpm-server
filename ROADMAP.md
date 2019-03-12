@@ -6,6 +6,8 @@
   - 自定义异常的处理
   - log4js
   - support https://
+  - 异常通过 throw 传递到最外层，减少 Promise.reject 的调用。
+  - 添加 `debug` 模块
   
 - 核心
   - 去除Hook, Biz的export, 通过 createHook, createBiz 来创建
@@ -20,6 +22,8 @@
 
 - 弃用
   - 文件上传的部分
+  - `chai` 模块 替换成 Nodejs 自带的 `assert` 模块
+  - Pormise 的部分使用 `Bluebird`
 
 #### v2.3
 
