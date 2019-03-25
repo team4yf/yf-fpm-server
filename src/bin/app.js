@@ -4,6 +4,16 @@
  * @lastModifyAt 2017-07-15 09:18
  */
 
+
+/**
+  The startup workflow:
+  - 1) load the static params: package.json, EVN, CWD, LOCAL, config.json/config.*.json accroding by the ENV.NODE_ENV
+  - 2) create a koa2 instance, loadPlugins, execute the INIT hook.
+  - 3) bind default routers: api/ping/webhook
+  - 4) run some hooks
+  - 5) listen the requests
+ */
+
 /*-----------------
   about koa2
 ------------------*/
@@ -58,6 +68,9 @@ const packageInfo = require('../../package.json')
 //runtime dir
 const CWD = process.cwd()
 
+// load the process.ENV
+const ENV = process.env;
+
 // project package info
 const projectInfo = require(path.join(CWD, 'package.json'))
 
@@ -87,12 +100,22 @@ let config = {
     }
   }
 }
+
+// load the default global config
 if(fs.existsSync(configPath)){
   config = _.assign(config, require(configPath));
 }
 
-// load the process.ENV
-const ENV = process.env;
+// get the node runtime
+const RUN_MODE = ENV.NODE_ENV || 'dev';
+
+// load the config.dev.json / config.prod.json / config.*.json
+const RUNTIME_CONFIG = `config.${RUN_MODE.toLowerCase()}.json`;
+
+// extend the config object
+if(fs.existsSync(RUNTIME_CONFIG)){
+  config = _.assign(config, require(RUNTIME_CONFIG));
+}
 
 
 class Fpm {
@@ -345,7 +368,15 @@ class Fpm {
     }
 
     this.runAction('AFTER_SERVER_START', this, this.app)
-    this.logger.info(`FPM-SERVER is Running On ${config.server.hostname || '0.0.0.0'}:${config.server.port}, And Bind At http://${config.server.domain || 'localhost'}:${config.server.port}`)
+    this.logger.info(`FPM-SERVER is running on ${config.server.hostname || '0.0.0.0'}:${config.server.port}`);
+    if(config.server.domain){
+      this.logger.info(`Bind at HTTP Server: http://${config.server.domain}`);
+    }
+    if(config.ssl){
+      this.logger.info(`Bind at HTTPS Server: https://${config.server.domain || config.server.hostname}:${config.ssl.port}`);
+    }
+    
+
     return Promise.resolve(this)
   }
 }

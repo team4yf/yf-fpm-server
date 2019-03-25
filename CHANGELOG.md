@@ -1,3 +1,11 @@
+# 2.5.3 (2019-03-25)
+Add:
+- Extend the `config.*.json` to the config Object, the `*` is the `NODE_ENV` of the `process.ENV`; 
+  - Such as `process.ENV.NODE_ENV === 'DEV'` the `config.dev.json` file will be loaded and assign to the config object.
+  - The `*` must be lowercase.
+  - The `*` default value is `DEV`.
+
+
 # 2.5.1 (2019-03-04)
 
 Add:
