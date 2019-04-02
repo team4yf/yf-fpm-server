@@ -110,7 +110,7 @@ if(fs.existsSync(configPath)){
 const RUN_MODE = ENV.NODE_ENV || 'dev';
 
 // load the config.dev.json / config.prod.json / config.*.json
-const RUNTIME_CONFIG = `config.${RUN_MODE.toLowerCase()}.json`;
+const RUNTIME_CONFIG = path.join(CWD, `config.${RUN_MODE.toLowerCase()}.json`);
 
 // extend the config object
 if(fs.existsSync(RUNTIME_CONFIG)){
