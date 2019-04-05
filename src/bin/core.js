@@ -1,5 +1,9 @@
 import { E } from '../utils/exception.js'
 import _ from 'lodash'
+import Debug from 'debug';
+
+const debug = Debug('yf-fpm-server:core.js')
+
 const noMethodHandler = () =>{
   return Promise.reject(E.System.NOT_METHOD);
 }

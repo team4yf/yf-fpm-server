@@ -7,7 +7,7 @@
   - log4js
   - support https://
   - 异常通过 throw 传递到最外层，减少 Promise.reject 的调用。
-  - 添加 `debug` 模块
+  - [x] 添加 `debug` 模块
   
 - 核心
   - 去除Hook, Biz的export, 通过 createHook, createBiz 来创建

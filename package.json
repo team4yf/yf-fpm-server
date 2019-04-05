@@ -19,8 +19,8 @@
   "author": "yfsoftcom",
   "license": "MIT",
   "dependencies": {
-    "babel-runtime": "^6.0.0",
-    "koa": "^2.6.2",
+    "debug": "^4.1.1",
+    "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
     "koa-router": "^7.4.0",
     "koa-sslify": "^4.0.3",
@@ -29,14 +29,18 @@
     "pubsub-js": "^1.7.0"
   },
   "devDependencies": {
+    "babel-runtime": "^6.26.0",
     "babel-cli": "^6.22.2",
     "babel-core": "^6.14.0",
-    "babel-plugin-transform-runtime": "^6.0.0",
     "babel-polyfill": "^6.13.0",
     "babel-preset-env": "^1.6.1",
     "babel-register": "^6.14.0",
-    "fpmc-jssdk": "^1.0.4",
-    "mocha": "^3.2.0",
-    "nodemon": "^1.18.6"
+    "es6-promise": "^4.2.6",
+    "fpmc-jssdk": "^1.0.7",
+    "mocha": "^6.0.2",
+    "nodemon": "^1.18.10"
+  },
+  "engines": {
+    "node": ">=8.11.1"
   }
 }
