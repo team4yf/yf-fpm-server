@@ -13,27 +13,27 @@ const versionUndefinedHandler = () => {
 }
 
 let getFunction = (method, v, bizModule) => {
-    bizModule = bizModule || {}
-    if(!_.has(bizModule,v)){
-        return versionUndefinedHandler
-    }
-    let path = method.split('.')
-    let obj = bizModule[v]
-    let handler = noMethodHandler
-    let hasFunction = true
+  bizModule = bizModule || {}
+  if(!_.has(bizModule,v)){
+    return versionUndefinedHandler
+  }
+  let path = method.split('.')
+  let obj = bizModule[v]
+  let handler = noMethodHandler
+  let hasFunction = true
 
-    for(let i in path){
-      if(!_.has(obj, path[i])){
-        //未定位到任何的函数
-        hasFunction = false
-        break
-      }
-      obj = obj[path[i]]
+  for(let i in path){
+    if(!_.has(obj, path[i])){
+      //未定位到任何的函数
+      hasFunction = false
+      break
     }
-    if(hasFunction){
-        handler = obj
-    }
-    return handler
+    obj = obj[path[i]]
+  }
+  if(hasFunction){
+    handler = obj
+  }
+  return handler
 }
 
 export default async (method, args, v, fpm, ctx) => {
@@ -52,8 +52,9 @@ export default async (method, args, v, fpm, ctx) => {
     return result;
   }catch(err){
     if(err.errno > 0){
-        err.errno = 0 - err.errno
+      err.errno = 0 - err.errno
     }
+    debug('Core execute error: %O', err);
     return Promise.reject(err)
   }
 }

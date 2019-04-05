@@ -39,27 +39,21 @@ export default class {
   }
 
   async runHook(hookName, input, v, ctx){
-    let _list = this._hooks[hookName + '@' + v] || []
+    const _list = this._hooks[hookName + '@' + v] || []
     if(_.isEmpty(_list)){
-        return []
+      return []
     }
-    let len = _list.length
-    let results = []
+    const len = _list.length
+    const results = []
     try{
       for(let i = 0; i < len; i++){
         let h = _list[i]
         let result = await h.handler(input, ctx)
         results[i] = result
       }
-      return new Promise( (resolve, reject) => {
-        resolve(results)
-      })
+      return results
     }catch(err){
-      return new Promise( (resolve, reject) => {
-        reject(err)
-      })
+      return Promise.reject(err)
     }
-
   }
-
 }

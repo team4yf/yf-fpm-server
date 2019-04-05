@@ -34,6 +34,22 @@ app.registerAction('CALL_API', (params) => {
   //fpm.logger.log("CALL_API Action", ctx.ip, args)
 })
 
+app.registerAction('BEFORE_SERVER_START', async () => {
+  return new Promise( (resolve, reject) => {
+    setTimeout(() => {
+      console.log(100)
+      resolve(1)
+    }, 5000)
+  })
+  
+}, 100)
+app.registerAction('BEFORE_SERVER_START', () => {
+  console.log(10)
+}, 10)
+app.registerAction('BEFORE_SERVER_START', () => {
+  console.log(200)
+}, 200)
+/*
 app.registerAction('FPM_MIDDLEWARE', (params) => {
   const fpm = params[0]
   const koa = params[1]
@@ -53,7 +69,7 @@ app.registerAction('FPM_MIDDLEWARE', (params) => {
     // console.log(reg.exec(ctx.ip))
     await next()
   })
-})
+})//*/
 
 app.run()
   .then(fpm => {

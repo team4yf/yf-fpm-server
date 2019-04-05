@@ -1,6 +1,8 @@
 import Router from 'koa-router'
 import _ from 'lodash'
+import Debug from 'debug';
 
+const debug = Debug('yf-fpm-server:webhook.js')
 const webhook = Router()
 
 /**
@@ -15,7 +17,7 @@ webhook.post('/webhook/:upstream/:type/:data', (ctx, next) => {
   const message = ctx.request.body
   const events = ctx.fpm._webhook_events
   message.url_data = data
-  ctx.fpm.logger.log(`Webhook publish: ${topic}; Message is :`, message)
+  debug('Webhook publish => Request: %O, Topic: %s, Message: %O', ctx.request, topic, message);
   ctx.fpm.publish(topic, message)
   events.unshift({topic, message, at: _.now()})
   if(events.length > 100){

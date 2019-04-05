@@ -257,24 +257,20 @@ class Fpm {
     }
   }
 
-  registerAction(actionName, action){
-    let actionList
-    if(_.has(this._action, actionName)){
-      actionList = this._action[actionName]
-    }else {
-      actionList = []
-    }
-    actionList.push(action)
-    this._action[actionName] = actionList
+  registerAction(actionName, action, priority = 100){
+    const _list = this._action[actionName] || [];
+    _list.push({ priority, action })
+    this._action[actionName] = _list
   }
 
-  runAction(actionName){
+  async runAction(actionName){
     if(_.has(this._action, actionName)){
-      let actionList = this._action[actionName]
-      let argument = _.drop(arguments)
-      _.map(actionList, action=>{
-        action(argument)
-      })
+      let _list = this._action[actionName]
+      const argument = _.drop(arguments)
+      _list = _.sortBy(_list, 'priority')
+      for(let action of _list){
+        await action.action(argument);
+      }
     }
   }
 
@@ -309,7 +305,7 @@ class Fpm {
   }
 
   getClients(){
-    let apps = this.getConfig('apps')
+    const apps = this.getConfig('apps')
     return apps || {}
   }
 
@@ -328,7 +324,7 @@ class Fpm {
     PubSub.subscribe(topic, callback)
   }
 
-  run(){
+  async run(){
     let self = this
     this.app.use(async(ctx, next) => {
       // add fpm ref to context, for other middleware to use.
@@ -345,16 +341,16 @@ class Fpm {
       }));
     }
 
-    this.runAction('FPM_MIDDLEWARE', this, this.app)
+    await this.runAction('FPM_MIDDLEWARE', this, this.app)
 
     this.bindRouter(api)
     this.bindRouter(ping)
     this.bindRouter(webhook)
 
-    this.runAction('ADMIN', this, this.app)
+    await this.runAction('ADMIN', this, this.app)
 
-    this.runAction('FPM_ROUTER', this, this.app)
-    this.runAction('BEFORE_SERVER_START', this, this.app)
+    await this.runAction('FPM_ROUTER', this, this.app)
+    await this.runAction('BEFORE_SERVER_START', this, this.app)
 
     this.app.on('error', this.errorHandler)
 
@@ -367,7 +363,7 @@ class Fpm {
       https.createServer(options, this.app.callback()).listen(config.ssl.port);
     }
 
-    this.runAction('AFTER_SERVER_START', this, this.app)
+    await this.runAction('AFTER_SERVER_START', this, this.app)
     this.logger.info(`FPM-SERVER is running on ${config.server.hostname || '0.0.0.0'}:${config.server.port}`);
     if(config.server.domain){
       this.logger.info(`Bind at HTTP Server: http://${config.server.domain}`);
@@ -375,9 +371,7 @@ class Fpm {
     if(config.ssl){
       this.logger.info(`Bind at HTTPS Server: https://${config.server.domain || config.server.hostname}:${config.ssl.port}`);
     }
-    
-
-    return Promise.resolve(this)
+    return this;
   }
 }
 
