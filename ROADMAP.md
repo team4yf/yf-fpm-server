@@ -6,7 +6,7 @@
   - [ ] 使用 `nedb` 保存一些需要持久化的数据，启动时自动加载这些设置
   - [ ] 将 config 中的 apps 部分存储到 nedb 中，支持运行过程中修改这些选项
   - [ ] 自定义异常的处理
-  - [ ] pino
+  - [x] 使用日志模块`pino`，替换 fpm.logger
   - [x] support https://
   - [ ] 异常通过 throw 传递到最外层，减少 Promise.reject 的调用。
   - [x] 添加 `debug` 模块

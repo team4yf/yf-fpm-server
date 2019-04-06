@@ -39,7 +39,7 @@ app.registerAction('BEFORE_SERVER_START', async () => {
     setTimeout(() => {
       console.log(100)
       resolve(1)
-    }, 5000)
+    }, 500)
   })
   
 }, 100)

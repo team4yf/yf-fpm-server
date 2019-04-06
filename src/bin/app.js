@@ -28,6 +28,13 @@ import https from 'https'
 import enforceHttps from 'koa-sslify'
 import _ from 'lodash'
 
+
+/*-----------------
+  about logger
+------------------*/
+import pino from 'pino'
+import Debug from 'debug'
+
 /*-----------------
   about middleware
 ------------------*/
@@ -61,6 +68,9 @@ import core from './core'
 import Exception, { E } from '../utils/exception.js'
 
 /******* Import End *******/
+
+// debug
+const debug = Debug('yf-fpm-server:app.js')
 
 // fpm core package info
 const packageInfo = require('../../package.json')
@@ -98,6 +108,10 @@ let config = {
       approot: '*',
       secretkey: '123123',
     }
+  },
+  // set the options for pino logger, see the detail at [here](https://github.com/pinojs/pino/blob/master/docs/api.md#options)
+  pino: {
+    level: 'debug'
   }
 }
 
@@ -117,10 +131,11 @@ if(fs.existsSync(RUNTIME_CONFIG)){
   config = _.assign(config, require(RUNTIME_CONFIG));
 }
 
-
+debug('The Finally Runtime Config: %O', config);
 class Fpm {
   constructor( options ){
-    this.logger = console
+    // Important: the log file path must be existsed~
+    this.logger = pino( config.pino , path.join(CWD, config.pino.logfile || 'app.log'))
 
     let app = new Koa()
     this.app = app
@@ -145,7 +160,8 @@ class Fpm {
     this._webhook_events = []
     this.runAction('INIT', this)
     this.errorHandler = (err, ctx) => {
-    	this.logger.error('server error', err, ctx)
+      this.logger.error('server error', err, ctx)
+      debug('Server Error Handler: %O', err)
     }
     this.app.use(async(ctx, next) => {
       delete ctx.disableBodyParser;
@@ -364,6 +380,7 @@ class Fpm {
     }
 
     await this.runAction('AFTER_SERVER_START', this, this.app)
+    debug(`FPM-SERVER is running on ${config.server.hostname || '0.0.0.0'}:${config.server.port}`)
     this.logger.info(`FPM-SERVER is running on ${config.server.hostname || '0.0.0.0'}:${config.server.port}`);
     if(config.server.domain){
       this.logger.info(`Bind at HTTP Server: http://${config.server.domain}`);
