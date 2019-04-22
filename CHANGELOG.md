@@ -1,3 +1,14 @@
+# 2.6.2 (2019-04-22)
+Add:
+- `SSL`
+  - command:
+
+    ```bash
+    $ openssl genrsa -out privatekey.pem 1024
+    $ openssl req -new -key privatekey.pem -out certrequest.csr 
+    $ openssl x509 -req -in certrequest.csr -signkey privatekey.pem -out certificate.pem
+    ```
+    
 # 2.5.3 (2019-03-25)
 Add:
 - Extend the `config.*.json` to the config Object, the `*` is the `NODE_ENV` of the `process.ENV`; 
