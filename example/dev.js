@@ -6,7 +6,8 @@ let biz = app.createBiz('0.0.1')
 biz.addSubModules('test', {
   foo: async function(args, ctx, before){
     // console.log(before)
-    app.execShell(path.join(__dirname, '../test/test.sh'), ['bobo'], { stdio: [0, 1, 2] })
+    app.doCommand('python3 /Users/yfsoft/Product/yf-fpm-server/test/backup.py')
+    // app.execShell(path.join(__dirname, '../test/test.sh'), ['bobo'], { stdio: [0, 1, 2] })
       .then(data => {
         console.error(data)
       })

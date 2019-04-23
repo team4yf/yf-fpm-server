@@ -1,4 +1,4 @@
-# /bin/sh
+#!/bin/bash
 
-echo abc
-echo "abc" > result.log
+python3 /Users/yfsoft/Product/yf-fpm-server/test/backup.py
+echo '1'
