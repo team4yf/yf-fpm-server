@@ -76,4 +76,6 @@ app.registerAction('FPM_MIDDLEWARE', (params) => {
 app.run()
   .then(fpm => {
     fpm.logger.info('ready ...')
+    fpm.logger.debug('debug...')
+    fpm.logger.error('error...' + new Date().getTime())
   })

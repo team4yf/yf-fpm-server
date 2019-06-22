@@ -33,6 +33,7 @@ import _ from 'lodash'
   about logger
 ------------------*/
 import pino from 'pino'
+import { multistream } from 'pino-multi-stream'
 import Debug from 'debug'
 
 /*-----------------
@@ -110,6 +111,7 @@ let config = {
     }
   },
   // set the options for pino logger, see the detail at [here](https://github.com/pinojs/pino/blob/master/docs/api.md#options)
+  // set the level at [here](https://github.com/trentm/node-bunyan#levels)
   pino: {
     level: 'debug'
   }
@@ -135,8 +137,14 @@ debug('The Finally Runtime Config: %O', config);
 class Fpm {
   constructor( options ){
     // Important: the log file path must be existsed~
-    this.logger = pino( config.pino , path.join(CWD, config.pino.logfile || 'app.log'))
-
+    const logStreams = [
+      // {stream: process.stdout},
+      {level: 'debug', stream: fs.createWriteStream(path.join(CWD, config.pino.logfile || 'app.log'), { flags: 'a' })},
+      {level: 'error', stream: fs.createWriteStream(path.join(CWD, config.pino.errfile || 'error.log'), { flags: 'a' })},
+      {level: 'fatal', stream: fs.createWriteStream(path.join(CWD, config.pino.fatalfile || 'fatal.log'), { flags: 'a' })}
+    ];
+    this.logger = pino( config.pino , multistream(logStreams));
+    
     let app = new Koa()
     this.app = app
     this._options = _.assign({

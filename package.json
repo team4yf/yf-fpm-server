@@ -27,6 +27,7 @@
     "koa2-cors": "^2.0.5",
     "lodash": "^4.17.10",
     "pino": "^5.12.2",
+    "pino-multi-stream": "^4.1.0",
     "pubsub-js": "^1.7.0"
   },
   "devDependencies": {
