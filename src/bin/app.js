@@ -359,11 +359,11 @@ class Fpm {
     this.app.use(compare)
 
     // TODO: i dont know what it's for ????
-    if(config.ssl){
-      this.app.use(enforceHttps({
-        port: config.ssl.port,
-      }));
-    }
+    // if(config.ssl){
+    //   this.app.use(enforceHttps({
+    //     port: config.ssl.port,
+    //   }));
+    // }
 
     await this.runAction('FPM_MIDDLEWARE', this, this.app)
 
