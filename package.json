@@ -1,13 +1,13 @@
 {
   "name": "yf-fpm-server",
-  "version": "2.6.1",
+  "version": "2.6.2",
   "description": "yf fast-platform api server",
   "main": "lib/bin/app.js",
   "scripts": {
-    "compile": "./node_modules/.bin/babel -d lib/ src/",
+    "compile": "npx babel-cli -d lib/ src/",
     "prepublishOnly": "npm run compile",
-    "test": "./node_modules/.bin/mocha test/*.test.js",
-    "dev": "./node_modules/.bin/nodemon ./example/dev.babel.js"
+    "test": "npx mocha test/*.test.js",
+    "dev": "npx nodemon ./example/dev.babel.js"
   },
   "keywords": [
     "yf",

@@ -4,7 +4,7 @@
 import _ from 'lodash'
 import { E } from '../utils/exception.js'
 
-const DEFAULT_ROUTERS = '/api,/ping,/webhook'.split(',')
+const DEFAULT_ROUTERS = '/api,/ping,/webhook,/notify'.split(',')
 
 export default async (ctx, next) => {
   let req = ctx.request
