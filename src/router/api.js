@@ -19,7 +19,7 @@ Api.post('/api', async (ctx, next) => {
     debug("[CALL METHOD]: %s @ %s. StartAt: %d", method, v, startAt)
     debug("PostData: %O", postData)
     
-    fpm.logger.debug('[CALL METHOD]: %s @ %s. StartAt: %d, PostData: %O', method, v, startAt, postData);
+    fpm.logger.info('[CALL METHOD]: %s @ %s. StartAt: %d, PostData: %O', method, v, startAt, postData);
 
     fpm.runAction('CALL_API', fpm, ctx, { method, param, v })
     const p = await core(method, param, v, fpm, ctx)
@@ -27,11 +27,11 @@ Api.post('/api', async (ctx, next) => {
     // TODO: save the api call detail.
     const endAt = _.now();
     debug('Api Biz result: %O, EntAt: %d, Use Total: %d', p, endAt, endAt - startAt)
-    fpm.logger.debug('Api Biz result: %O, EntAt: %d, Use Total: %d', p, endAt, endAt - startAt)
+    fpm.logger.info('Api Biz result: %O, EntAt: %d, Use Total: %d', p, endAt, endAt - startAt)
 
     ctx.success(p)
   }catch(err){
-    fpm.logger.debug('Api Biz Execute Error: %O', err)
+    fpm.logger.error('Api Biz Execute Error: %O', err)
     debug('Api Biz Execute Error: %O', err)
     ctx.fail(err)
   }
