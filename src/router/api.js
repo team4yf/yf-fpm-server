@@ -14,15 +14,15 @@ Api.post('/api', async (ctx, next) => {
   const hash = uuid()
   const startAt = _.now()
   try{
-    param = JSON.parse(param)
+    const paramObject = JSON.parse(param)
     // TODO: should check the overflow error!
     fpm._counter = fpm._counter + 1
 
     debug("[CALL METHOD]: %s @ %s. StartAt: %d", method, v, startAt)
     debug("PostData: %O", postData)
     
-    fpm.runAction('CALL_API', fpm, ctx, { method, param, v })
-    const p = await core(method, param, v, fpm, ctx)
+    fpm.runAction('CALL_API', fpm, ctx, { method, paramObject, v })
+    const p = await core(method, paramObject, v, fpm, ctx)
 
     // TODO: save the api call detail.
     const endAt = _.now();
@@ -32,8 +32,8 @@ Api.post('/api', async (ctx, next) => {
       status: 'success',
       result: p,
       param,
-      startAt: new Date(startAt).toLocaleDateString(),
-      endAt: new Date(endAt).toLocaleDateString(),
+      startAt: new Date(startAt).toLocaleString(),
+      endAt: new Date(endAt).toLocaleString(),
       hash,
       method,
       v,
@@ -46,8 +46,8 @@ Api.post('/api', async (ctx, next) => {
       status: 'error',
       type: 'biz',
       param,
-      startAt: new Date(startAt).toLocaleDateString(),
-      endAt: new Date(endAt).toLocaleDateString(),
+      startAt: new Date(startAt).toLocaleString(),
+      endAt: new Date(endAt).toLocaleString(),
       hash,
       method,
       v,
