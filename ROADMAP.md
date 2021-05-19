@@ -13,7 +13,7 @@
   
 - 核心
   - [x] 去除Hook, Biz的export, 通过 createHook, createBiz 来创建
-  - [x] 修改 auth 为 permision
+  - [x] 修改 auth 为 permission
   - ~添加后台页面~
     - 菜单
 

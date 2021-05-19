@@ -1,3 +1,9 @@
+# 2.7.0 (2021-05-19)
+Modify:
+- `Logger`
+  
+  Make it more flexiable, eg: define where the log output!
+
 # 2.6.2 (2019-04-22)
 Add:
 - `SSL`
